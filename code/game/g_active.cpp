@@ -1726,6 +1726,15 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 				ent->flags &= ~FL_OVERCHARGED_HEALTH;
 			}
 		}
+		if ( (ent->health < ent->client->ps.stats[STAT_MAX_HEALTH]) && (ent->client->ps.forcePower > 0) )
+		{//gradually increase health back to max if force power isn't 0
+			ent->health++;
+			ent->client->ps.stats[STAT_HEALTH] = ent->health;
+		}
+		if ( ent->client->ps.stats[STAT_ARMOR] < ent->client->ps.stats[STAT_MAX_HEALTH] )
+		{//gradually increase armor back to max
+			ent->client->ps.stats[STAT_ARMOR]++;
+		}
 	}
 }
 
