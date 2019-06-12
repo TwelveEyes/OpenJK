@@ -6838,7 +6838,7 @@ void CG_Player( centity_t *cent ) {
 		return;
 	}
 
-	if( cent->gent->s.number == 0 && cg.weaponSelect == WP_NONE && cg.zoomMode == 1 )
+	if( cent->gent->s.number == 0 && cg.weaponSelect == WP_NONE && (cg.zoomMode == 1 || cg.zoomMode == 3) )
 	{
 		// HACK
 		return;
@@ -7231,6 +7231,24 @@ extern vmCvar_t	cg_thirdPersonAlpha;
 				ent.renderfx |= RF_ALPHA_FADE;
 				ent.shaderRGBA[3] = (unsigned char)(alpha * 255.0f);
 			}
+		}
+
+		static qboolean fplsModelEnabled;
+
+		if ( !cg.renderingThirdPerson
+			&& ( cg.snap->ps.weapon == WP_SABER || cg.snap->ps.weapon == WP_MELEE )
+			&& !cent->gent->s.number
+			&& !fplsModelEnabled )
+		{// Yeah um, this needs to not do this quite this way
+			gi.SendConsoleCommand( "playermodel fpls\n" );
+			// ent.customSkin = cgi_R_RegisterSkin( "models/players/kyle/model_fpls.skin" );	//precached in g_client.cpp
+			fplsModelEnabled = qtrue;
+		}
+		else if ( fplsModelEnabled && ( cg.renderingThirdPerson || ( cg.snap->ps.weapon != WP_SABER && cg.snap->ps.weapon != WP_MELEE ) ) )
+		{
+			gi.SendConsoleCommand( "playermodel player\n" );
+			// ent.customSkin = 0;
+			fplsModelEnabled = qfalse;
 		}
 
 		if ( cg_debugHealthBars.integer )

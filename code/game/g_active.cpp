@@ -1726,6 +1726,13 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 				ent->flags &= ~FL_OVERCHARGED_HEALTH;
 			}
 		}
+		if ( (ent->health > 0 && ent->health < ent->client->ps.stats[STAT_MAX_HEALTH]/4) &&
+			 (ent->client->ps.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_1) &&
+			 (ent->painDebounceTime < level.time) )
+		{//gradually increase health back to 25% of max if force sight >= 1
+			ent->health++;
+			ent->client->ps.stats[STAT_HEALTH] = ent->health;
+		}
 	}
 }
 
@@ -4908,14 +4915,14 @@ extern cvar_t	*g_skippingcin;
 			ucmd->upmove = 0;
 			PM_AdjustAnglesToGripper( ent, ucmd );
 		}
-		if ( ent->client->ps.leanofs )
+		/*if ( ent->client->ps.leanofs )
 		{//no shooting while leaning
 			ucmd->buttons &= ~BUTTON_ATTACK;
 			if ( ent->client->ps.weapon != WP_DISRUPTOR )
 			{//can still zoom around corners
 				ucmd->buttons &= ~BUTTON_ALT_ATTACK;
 			}
-		}
+		}*/
 	}
 	else
 	{

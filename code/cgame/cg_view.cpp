@@ -463,7 +463,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		VectorMA(cameraIdealTarget, -(cg_thirdPersonRange.value), camerafwd, cameraIdealLoc);
 	}
 
-	if ( cg.renderingThirdPerson && (cg.snap->ps.forcePowersActive&(1<<FP_SPEED)) && player->client->ps.forcePowerDuration[FP_SPEED] )
+	/*if ( cg.renderingThirdPerson && (cg.snap->ps.forcePowersActive&(1<<FP_SPEED)) && player->client->ps.forcePowerDuration[FP_SPEED] )
 	{
 		float timeLeft = player->client->ps.forcePowerDuration[FP_SPEED] - cg.time;
 		float length = FORCE_SPEED_DURATION*forceSpeedValue[player->client->ps.forcePowerLevel[FP_SPEED]];
@@ -480,7 +480,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		{
 			VectorMA(cameraIdealLoc, amt, camerafwd, cameraIdealLoc);
 		}
-	}
+	}*/
 }
 
 
@@ -2092,7 +2092,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView ) {
 		|| (cg.snap->ps.stats[STAT_HEALTH] <= 0)
 		|| (cg.snap->ps.eFlags&EF_HELD_BY_SAND_CREATURE)
 		|| ((g_entities[0].client&&g_entities[0].client->NPC_class==CLASS_ATST)
-		|| (cg.snap->ps.weapon == WP_SABER || cg.snap->ps.weapon == WP_MELEE) ));
+		/*|| (cg.snap->ps.weapon == WP_SABER || cg.snap->ps.weapon == WP_MELEE)*/ ));
 
 	if ( cg.zoomMode )
 	{

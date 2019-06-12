@@ -35,6 +35,8 @@ extern void NPC_UseResponse( gentity_t *self, gentity_t *user, qboolean useWhenD
 extern void Jedi_Decloak( gentity_t *self );
 
 extern qboolean BG_FullBodyTauntAnim( int anim );
+extern qboolean BG_RestAnim( int anim );
+extern qboolean BG_CrouchAnim( int anim );
 
 extern bot_state_t *botstates[MAX_CLIENTS];
 
@@ -1691,7 +1693,7 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec
 			}
 			if (ForcePowerUsableOn(self, traceEnt, FP_LIGHTNING))
 			{
-				int	dmg = Q_irand(1,2); //Q_irand( 1, 3 );
+				int	dmg = Q_irand( 2, 6 ); //Q_irand( 1, 2 );
 
 				int modPowerLevel = -1;
 
@@ -5427,7 +5429,20 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 				if ( self->client->ps.powerups[PW_FORCE_BOON] )
 					WP_ForcePowerRegenerate( self, 6 );
 				else if ( self->client->ps.isJediMaster && level.gametype == GT_JEDIMASTER )
-					WP_ForcePowerRegenerate( self, 4 ); //jedi master regenerates 4 times as fast
+					WP_ForcePowerRegenerate( self, 4 );		//jedi master regenerates 4 times as fast
+				else if ( BG_CrouchAnim( self->client->ps.legsAnim ) )
+					WP_ForcePowerRegenerate( self, 2 );		//regen force much faster when crouched
+				else if ( BG_RestAnim( self->client->ps.legsAnim ) )
+				{
+					WP_ForcePowerRegenerate( self, 4 );		//regen force extremly fast when meditating
+
+					if ( (self->health < self->client->ps.stats[STAT_MAX_HEALTH]) &&
+						 (self->client->ps.fd.forcePower >= self->client->ps.fd.forcePowerMax) &&
+						 (self->client->ps.fd.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_2) )
+					{
+						self->health++;						//regen health to max when force is max (force sight must be >= 2)
+					}
+				}	
 				else
 					WP_ForcePowerRegenerate( self, 0 );
 			}

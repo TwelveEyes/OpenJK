@@ -6710,6 +6710,17 @@ qboolean PM_InRoll( playerState_t *ps )
 	return qfalse;
 }
 
+qboolean PM_RestAnim( int anim )
+{
+	switch ( anim )
+	{
+	case BOTH_MEDITATE:			// default taunt
+		return qtrue;
+		break;
+	}
+	return qfalse;
+}
+
 qboolean PM_CrouchAnim( int anim )
 {
 	switch ( anim )
@@ -8916,7 +8927,7 @@ static void PM_BeginWeaponChange( int weapon ) {
 	// eezstreet edit: also ignore if we change to WP_NONE..sorta hacky fix for binoculars using WP_SABER
 	if ( pm->ps->clientNum == 0 && cg.weaponSelect != WP_NONE )
 	{
-		if ( cg.zoomMode > 0 && cg.zoomMode < 3 )
+		if ( (cg.zoomMode > 0 && cg.zoomMode < 3) || (cg.zoomMode == 3 && cg.weaponSelect == WP_SABER) )
 		{
 			cg.zoomMode = 0;
 			cg.zoomTime = cg.time;
@@ -9034,7 +9045,7 @@ static void PM_FinishWeaponChange( void ) {
 		if ( pm->gent )
 		{
 			WP_SaberInitBladeData( pm->gent );
-			if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) )
+			if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) && cg_saberAutoThird.integer )
 			{
 				gi.cvar_set( "cg_thirdperson", "1" );
 			}

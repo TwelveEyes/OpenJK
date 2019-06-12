@@ -820,6 +820,13 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 		if ( client->ps.stats[STAT_ARMOR] > client->ps.stats[STAT_MAX_HEALTH] ) {
 			client->ps.stats[STAT_ARMOR]--;
 		}
+
+		//gradually increase health back to 25% of max if force sight >= 1
+		if ( (ent->health > 0 && ent->health < client->ps.stats[STAT_MAX_HEALTH]/4) &&
+			 (client->ps.fd.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_1) &&
+			 (ent->painDebounceTime < level.time) ) {
+			ent->health++;
+		}
 	}
 }
 
@@ -1603,13 +1610,13 @@ void G_SetTauntAnim( gentity_t *ent, int taunt )
 	{ //hack, don't do while moving
 		return;
 	}
-	if ( taunt != TAUNT_TAUNT )
+	/*if ( taunt != TAUNT_TAUNT )		//always allow all taunts (why did you do this raven software?!)
 	{//normal taunt always allowed
 		if ( level.gametype != GT_DUEL && level.gametype != GT_POWERDUEL )
 		{//no taunts unless in Duel
 			return;
 		}
-	}
+	}*/
 
 	// fix: rocket lock bug
 	BG_ClearRocketLock(&ent->client->ps);

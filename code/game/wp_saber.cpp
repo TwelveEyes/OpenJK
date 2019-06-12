@@ -103,6 +103,7 @@ extern saberMoveName_t PM_BrokenParryForAttack( int move );
 extern saberMoveName_t PM_KnockawayForParry( int move );
 extern qboolean PM_FlippingAnim( int anim );
 extern qboolean PM_RollingAnim( int anim );
+extern qboolean PM_RestAnim( int anim );
 extern qboolean PM_CrouchAnim( int anim );
 extern qboolean PM_SaberInIdle( int move );
 extern qboolean PM_SaberInReflect( int move );
@@ -281,15 +282,15 @@ float forceSpeedRangeMod[NUM_FORCE_POWER_LEVELS] =
 float forceSpeedFOVMod[NUM_FORCE_POWER_LEVELS] =
 {
 	0.0f,//none
-	20.0f,
-	30.0f,
-	40.0f
+	0.0f,//20.0f,
+	0.0f,//30.0f,
+	0.0f//40.0f
 };
 
 int forceGripDamage[NUM_FORCE_POWER_LEVELS] =
 {
 	0,//none
-	0,
+	3,//0,
 	6,
 	9
 };
@@ -11004,19 +11005,19 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, flo
 				{
 					if ( dist < 100 )
 					{
-						dmg += 2;
+						dmg += 4;//2;
 					}
 					else if ( dist < 200 )
 					{
-						dmg += 1;
+						dmg += 2;//1;
 					}
 					if ( dot > 0.9f )
 					{
-						dmg += 2;
+						dmg += 4;//2;
 					}
 					else if ( dot > 0.7f )
 					{
-						dmg += 1;
+						dmg += 2;//1;
 					}
 				}
 				if ( self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING
@@ -11029,7 +11030,7 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, flo
 			}
 			else
 			{
-				dmg = Q_irand( 1, 3 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];
+				dmg = Q_irand( 2, 6 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];	//Q_irand( 1, 3 );
 			}
 
 			if ( traceEnt->client
@@ -14375,6 +14376,27 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 		{
 			WP_ForcePowerRegenerate( self, self->client->ps.forcePowerRegenAmount );
 			self->client->ps.forcePowerRegenDebounceTime = level.time + self->client->ps.forcePowerRegenRate;
+			if ( PM_CrouchAnim( self->client->ps.legsAnim ) )
+			{//regen force much faster when crouched
+				WP_ForcePowerRegenerate( self, 2 );
+			}
+			else if ( PM_RestAnim( self->client->ps.legsAnim ) )
+			{//regen force extremly fast when meditating
+				WP_ForcePowerRegenerate( self, 4 );
+
+				if ( (self->health > 0 && self->health < self->client->ps.stats[STAT_MAX_HEALTH]) &&
+					 (self->client->ps.forcePower >= self->client->ps.forcePowerMax) &&
+					 (self->client->ps.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_2) &&
+					 (self->painDebounceTime < level.time) )
+				{//regen health to max when force is max (force sight must be >= 2)
+					self->health++;
+
+					if ( self->health >= self->client->ps.stats[STAT_MAX_HEALTH]/3 )
+					{
+						gi.G2API_ClearSkinGore(self->ghoul2);
+					}
+				}
+			}
 			if ( self->client->ps.forceRageRecoveryTime >= level.time )
 			{//regen half as fast
 				self->client->ps.forcePowerRegenDebounceTime += self->client->ps.forcePowerRegenRate;

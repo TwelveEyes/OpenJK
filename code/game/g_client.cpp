@@ -77,6 +77,8 @@ void SP_info_player_deathmatch(gentity_t *ent) {
 	else
 	{
 		RegisterItem( FindItemForWeapon( WP_SABER ) );	//these are given in ClientSpawn(), but we register them now before cgame starts
+		G_ModelIndex( "models/players/kyle/model.glm" );		//precache the model used in cg_players.cpp
+		G_SkinIndex( "models/players/kyle/model_fpls.skin" );	//precache the skin used in cg_players.cpp
 		saberInfo_t	saber;
 		WP_SaberParseParms( g_saber->string, &saber );//get saber sounds and models cached before client begins
 		if (saber.model) G_ModelIndex( saber.model );

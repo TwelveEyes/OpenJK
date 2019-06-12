@@ -164,36 +164,36 @@ char *forceMasteryLevels[NUM_FORCE_MASTERY_LEVELS] =
 
 int forceMasteryPoints[NUM_FORCE_MASTERY_LEVELS] =
 {
-	0,		// FORCE_MASTERY_UNINITIATED,
-	5,		// FORCE_MASTERY_INITIATE,
-	10,		// FORCE_MASTERY_PADAWAN,
-	20,		// FORCE_MASTERY_JEDI,
-	30,		// FORCE_MASTERY_JEDI_GUARDIAN,
-	50,		// FORCE_MASTERY_JEDI_ADEPT,
-	75,		// FORCE_MASTERY_JEDI_KNIGHT,
-	100		// FORCE_MASTERY_JEDI_MASTER,
+	0,		// FORCE_MASTERY_UNINITIATED,		//0
+	10,		// FORCE_MASTERY_INITIATE,			//5
+	15,		// FORCE_MASTERY_PADAWAN,			//10
+	30,		// FORCE_MASTERY_JEDI,				//20
+	45,		// FORCE_MASTERY_JEDI_GUARDIAN,		//30
+	75,		// FORCE_MASTERY_JEDI_ADEPT,		//50
+	110,	// FORCE_MASTERY_JEDI_KNIGHT,		//75
+	150		// FORCE_MASTERY_JEDI_MASTER,		//100
 };
 
 int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS] = //0 == neutral
 {
-	{	0,	2,	4,	6	},	// Heal			// FP_HEAL
-	{	0,	0,	2,	6	},	// Jump			//FP_LEVITATION,//hold/duration
-	{	0,	2,	4,	6	},	// Speed		//FP_SPEED,//duration
-	{	0,	1,	3,	6	},	// Push			//FP_PUSH,//hold/duration
-	{	0,	1,	3,	6	},	// Pull			//FP_PULL,//hold/duration
-	{	0,	4,	6,	8	},	// Mind Trick	//FP_TELEPATHY,//instant
-	{	0,	1,	3,	6	},	// Grip			//FP_GRIP,//hold/duration
-	{	0,	2,	5,	8	},	// Lightning	//FP_LIGHTNING,//hold/duration
-	{	0,	4,	6,	8	},	// Dark Rage	//FP_RAGE,//duration
-	{	0,	2,	5,	8	},	// Protection	//FP_PROTECT,//duration
-	{	0,	1,	3,	6	},	// Absorb		//FP_ABSORB,//duration
-	{	0,	1,	3,	6	},	// Team Heal	//FP_TEAM_HEAL,//instant
-	{	0,	1,	3,	6	},	// Team Force	//FP_TEAM_FORCE,//instant
-	{	0,	2,	4,	6	},	// Drain		//FP_DRAIN,//hold/duration
-	{	0,	2,	5,	8	},	// Sight		//FP_SEE,//duration
-	{	0,	1,	5,	8	},	// Saber Attack	//FP_SABER_OFFENSE,
-	{	0,	1,	5,	8	},	// Saber Defend	//FP_SABER_DEFENSE,
-	{	0,	4,	6,	8	}	// Saber Throw	//FP_SABERTHROW,
+	{	0,	2,	4,	6	},	// Heal			// FP_HEAL							//0246
+	{	0,	0,	2,	6	},	// Jump			//FP_LEVITATION,//hold/duration		//0026
+	{	0,	2,	4,	6	},	// Speed		//FP_SPEED,//duration				//0246
+	{	0,	1,	3,	6	},	// Push			//FP_PUSH,//hold/duration			//0136
+	{	0,	1,	3,	6	},	// Pull			//FP_PULL,//hold/duration			//0136
+	{	0,	4,	6,	8	},	// Mind Trick	//FP_TELEPATHY,//instant			//0468
+	{	0,	1,	3,	6	},	// Grip			//FP_GRIP,//hold/duration			//0136
+	{	0,	2,	5,	8	},	// Lightning	//FP_LIGHTNING,//hold/duration		//0258
+	{	0,	4,	6,	8	},	// Dark Rage	//FP_RAGE,//duration				//0468
+	{	0,	2,	5,	8	},	// Protection	//FP_PROTECT,//duration				//0258
+	{	0,	1,	3,	6	},	// Absorb		//FP_ABSORB,//duration				//0136
+	{	0,	1,	3,	6	},	// Team Heal	//FP_TEAM_HEAL,//instant			//0136
+	{	0,	1,	3,	6	},	// Team Force	//FP_TEAM_FORCE,//instant			//0136
+	{	0,	2,	4,	6	},	// Drain		//FP_DRAIN,//hold/duration			//0246
+	{	0,	2,	5,	8	},	// Sight		//FP_SEE,//duration					//0258
+	{	0,	1,	5,	8	},	// Saber Attack	//FP_SABER_OFFENSE,					//0158
+	{	0,	1,	5,	8	},	// Saber Defend	//FP_SABER_DEFENSE,					//0158
+	{	0,	4,	6,	8	}	// Saber Throw	//FP_SABERTHROW,					//0468
 	//NUM_FORCE_POWERS
 };
 
@@ -493,13 +493,13 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 	i = 0;
 	while (i < NUM_FORCE_POWERS)
 	{ //if this power doesn't match the side we're on, then 0 it now.
-		if (final_Powers[i] &&
+		/*if (final_Powers[i] &&
 			forcePowerDarkLight[i] &&
 			forcePowerDarkLight[i] != final_Side)
 		{
 			final_Powers[i] = 0;
 			//This is only likely to happen with g_forceBasedTeams. Let it slide.
-		}
+		}*/
 
 		if ( final_Powers[i] &&
 			(fpDisabled & (1 << i)) )
