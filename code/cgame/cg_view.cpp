@@ -463,7 +463,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		VectorMA(cameraIdealTarget, -(cg_thirdPersonRange.value), camerafwd, cameraIdealLoc);
 	}
 
-	if ( cg.renderingThirdPerson && (cg.snap->ps.forcePowersActive&(1<<FP_SPEED)) && player->client->ps.forcePowerDuration[FP_SPEED] )
+	/*if ( cg.renderingThirdPerson && (cg.snap->ps.forcePowersActive&(1<<FP_SPEED)) && player->client->ps.forcePowerDuration[FP_SPEED] )
 	{
 		float timeLeft = player->client->ps.forcePowerDuration[FP_SPEED] - cg.time;
 		float length = FORCE_SPEED_DURATION*forceSpeedValue[player->client->ps.forcePowerLevel[FP_SPEED]];
@@ -480,7 +480,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		{
 			VectorMA(cameraIdealLoc, amt, camerafwd, cameraIdealLoc);
 		}
-	}
+	}*/
 }
 
 
