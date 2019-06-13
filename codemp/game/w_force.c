@@ -35,6 +35,7 @@ extern void NPC_UseResponse( gentity_t *self, gentity_t *user, qboolean useWhenD
 extern void Jedi_Decloak( gentity_t *self );
 
 extern qboolean BG_FullBodyTauntAnim( int anim );
+extern qboolean BG_CrouchAnim( int anim );
 
 extern bot_state_t *botstates[MAX_CLIENTS];
 
@@ -5428,6 +5429,8 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 					WP_ForcePowerRegenerate( self, 6 );
 				else if ( self->client->ps.isJediMaster && level.gametype == GT_JEDIMASTER )
 					WP_ForcePowerRegenerate( self, 4 ); //jedi master regenerates 4 times as fast
+				else if ( BG_CrouchAnim( self->client->ps.legsAnim ) )
+					WP_ForcePowerRegenerate( self, 8 ); //regen much faster when crouched
 				else
 					WP_ForcePowerRegenerate( self, 0 );
 			}

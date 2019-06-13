@@ -821,8 +821,8 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			client->ps.stats[STAT_ARMOR]--;
 		}
 
-		//gradually increase health back to max if force power isn't 0
-		if ( (ent->health < client->ps.stats[STAT_MAX_HEALTH]) && (client->ps.fd.forcePower > 0) ) {
+		//gradually increase health back to max
+		if ( ent->health < client->ps.stats[STAT_MAX_HEALTH] ) {
 			ent->health++;
 		}
 
