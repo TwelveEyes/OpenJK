@@ -11004,19 +11004,19 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, flo
 				{
 					if ( dist < 100 )
 					{
-						dmg += 2;
+						dmg += 4;//2;
 					}
 					else if ( dist < 200 )
 					{
-						dmg += 1;
+						dmg += 2;//1;
 					}
 					if ( dot > 0.9f )
 					{
-						dmg += 2;
+						dmg += 4;//2;
 					}
 					else if ( dot > 0.7f )
 					{
-						dmg += 1;
+						dmg += 2;//1;
 					}
 				}
 				if ( self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING
@@ -11029,7 +11029,7 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, flo
 			}
 			else
 			{
-				dmg = Q_irand( 2, 4 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];
+				dmg = Q_irand( 2, 6 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];	//Q_irand( 1, 3 );
 			}
 
 			if ( traceEnt->client
