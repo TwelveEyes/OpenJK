@@ -289,7 +289,7 @@ float forceSpeedFOVMod[NUM_FORCE_POWER_LEVELS] =
 int forceGripDamage[NUM_FORCE_POWER_LEVELS] =
 {
 	0,//none
-	0,
+	3,//0,
 	6,
 	9
 };
@@ -11029,7 +11029,7 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, flo
 			}
 			else
 			{
-				dmg = Q_irand( 1, 3 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];
+				dmg = Q_irand( 2, 4 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];
 			}
 
 			if ( traceEnt->client

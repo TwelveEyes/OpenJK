@@ -807,11 +807,11 @@ extern bool WP_DoingMoronicForcedAnimationForForcePowers(gentity_t *ent);
 		{
 			other->owner->client->sess.missionStats.saberBlocksCnt++;
 		}
-		if ( ( g_spskill->integer <= 0//on easy, it reflects all shots
+		if ( /*( g_spskill->integer <= 0//on easy, it reflects all shots
 				|| (g_spskill->integer == 1 && ent->s.weapon != WP_FLECHETTE && ent->s.weapon != WP_DEMP2 )//on medium it won't reflect flechette or demp shots
 				|| (g_spskill->integer >= 2 && ent->s.weapon != WP_FLECHETTE && ent->s.weapon != WP_DEMP2 && ent->s.weapon != WP_BOWCASTER && ent->s.weapon != WP_REPEATER )//on hard it won't reflect flechette, demp, repeater or bowcaster shots
 			 )
-			&& (!ent->splashDamage || !ent->splashRadius) //this would be cool, though, to "bat" the thermal det away...
+			&&*/ (!ent->splashDamage || !ent->splashRadius) //this would be cool, though, to "bat" the thermal det away...
 			&& ent->s.weapon != WP_NOGHRI_STICK )//gas bomb, don't reflect
 		{
 			//FIXME: take other's owner's FP_SABER_DEFENSE into account here somehow?
@@ -819,17 +819,17 @@ extern bool WP_DoingMoronicForcedAnimationForForcePowers(gentity_t *ent);
 				|| (InFront( ent->currentOrigin, other->owner->currentOrigin, other->owner->client->ps.viewangles, SABER_REFLECT_MISSILE_CONE ) &&
 				!WP_DoingMoronicForcedAnimationForForcePowers(other)) )//other->owner->s.number != 0 ||
 			{//Jedi cannot block shots from behind!
-				int blockChance = 0;
+				int blockChance = 1;// 0;
 				switch ( other->owner->client->ps.forcePowerLevel[FP_SABER_DEFENSE] )
 				{//level 1 reflects 50% of the time, level 2 reflects 75% of the time
 				case FORCE_LEVEL_3:
 					blockChance = 10;
 					break;
 				case FORCE_LEVEL_2:
-					blockChance = 3;
+					blockChance = 6;// 3;
 					break;
 				case FORCE_LEVEL_1:
-					blockChance = 1;
+					blockChance = 2;// 1;
 					break;
 				}
 				if ( blockChance && (other->owner->client->ps.forcePowersActive&(1<<FP_SPEED)) )
