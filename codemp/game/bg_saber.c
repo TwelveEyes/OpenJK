@@ -2718,9 +2718,9 @@ qboolean PM_CheckAltKickAttack( void )
 int bg_parryDebounce[NUM_FORCE_POWER_LEVELS] =
 {
 	500,//if don't even have defense, can't use defense!
-	150,//300,
-	75,//150,
-	25//50
+	300,
+	150,
+	50
 };
 
 qboolean PM_SaberPowerCheck(void)
