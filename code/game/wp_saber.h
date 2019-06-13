@@ -52,7 +52,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define	FORCE_POWER_MAX	100
 
-#define	SABER_REFLECT_MISSILE_CONE	0.4f//0.2f
+#define	SABER_REFLECT_MISSILE_CONE	0.2f
 
 #define SABER_RADIUS_STANDARD	3.0f
 

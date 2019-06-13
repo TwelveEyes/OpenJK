@@ -323,9 +323,9 @@ int saberThrowDistSquared[NUM_FORCE_POWER_LEVELS] =
 int parryDebounce[NUM_FORCE_POWER_LEVELS] =
 {
 	500,//if don't even have defense, can't use defense!
-	150,//300,
-	75,//150,
-	25//50
+	300,
+	150,
+	50
 };
 
 float saberAnimSpeedMod[NUM_FORCE_POWER_LEVELS] =
