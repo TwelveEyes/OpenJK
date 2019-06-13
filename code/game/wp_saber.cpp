@@ -14374,7 +14374,11 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 		if ( self->client->ps.forcePowerRegenDebounceTime < level.time )
 		{
 			WP_ForcePowerRegenerate( self, self->client->ps.forcePowerRegenAmount );
-			self->client->ps.forcePowerRegenDebounceTime = level.time + self->client->ps.forcePowerRegenRate;
+			self->client->ps.forcePowerRegenDebounceTime = level.time + 200; //self->client->ps.forcePowerRegenDebounceTime = level.time + self->client->ps.forcePowerRegenRate;
+			if ( PM_CrouchAnim( self->client->ps.legsAnim ) )
+			{//regen much faster when crouched
+				WP_ForcePowerRegenerate( self, 8 );
+			}
 			if ( self->client->ps.forceRageRecoveryTime >= level.time )
 			{//regen half as fast
 				self->client->ps.forcePowerRegenDebounceTime += self->client->ps.forcePowerRegenRate;
