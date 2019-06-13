@@ -281,9 +281,9 @@ float forceSpeedRangeMod[NUM_FORCE_POWER_LEVELS] =
 float forceSpeedFOVMod[NUM_FORCE_POWER_LEVELS] =
 {
 	0.0f,//none
-	20.0f,
-	30.0f,
-	40.0f
+	0.0f,//20.0f,
+	0.0f,//30.0f,
+	0.0f//40.0f
 };
 
 int forceGripDamage[NUM_FORCE_POWER_LEVELS] =
@@ -323,9 +323,9 @@ int saberThrowDistSquared[NUM_FORCE_POWER_LEVELS] =
 int parryDebounce[NUM_FORCE_POWER_LEVELS] =
 {
 	500,//if don't even have defense, can't use defense!
-	300,
-	150,
-	50
+	150,//300,
+	75,//150,
+	25//50
 };
 
 float saberAnimSpeedMod[NUM_FORCE_POWER_LEVELS] =
