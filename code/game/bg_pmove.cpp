@@ -6710,6 +6710,17 @@ qboolean PM_InRoll( playerState_t *ps )
 	return qfalse;
 }
 
+qboolean PM_RestAnim( int anim )
+{
+	switch ( anim )
+	{
+	case BOTH_MEDITATE:			// default taunt
+		return qtrue;
+		break;
+	}
+	return qfalse;
+}
+
 qboolean PM_CrouchAnim( int anim )
 {
 	switch ( anim )

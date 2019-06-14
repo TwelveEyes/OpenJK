@@ -103,6 +103,7 @@ extern saberMoveName_t PM_BrokenParryForAttack( int move );
 extern saberMoveName_t PM_KnockawayForParry( int move );
 extern qboolean PM_FlippingAnim( int anim );
 extern qboolean PM_RollingAnim( int anim );
+extern qboolean PM_RestAnim( int anim );
 extern qboolean PM_CrouchAnim( int anim );
 extern qboolean PM_SaberInIdle( int move );
 extern qboolean PM_SaberInReflect( int move );
@@ -14375,7 +14376,11 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 		{
 			WP_ForcePowerRegenerate( self, self->client->ps.forcePowerRegenAmount );
 			self->client->ps.forcePowerRegenDebounceTime = level.time + 200; //self->client->ps.forcePowerRegenDebounceTime = level.time + self->client->ps.forcePowerRegenRate;
-			if ( PM_CrouchAnim( self->client->ps.legsAnim ) )
+			if ( PM_RestAnim( self->client->ps.legsAnim ) )
+			{//regen very fast when meditating
+				WP_ForcePowerRegenerate( self, 10 );
+			}
+			else if ( PM_CrouchAnim( self->client->ps.legsAnim ) )
 			{//regen much faster when crouched
 				WP_ForcePowerRegenerate( self, 8 );
 			}
