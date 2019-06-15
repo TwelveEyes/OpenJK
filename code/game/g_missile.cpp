@@ -810,8 +810,10 @@ extern bool WP_DoingMoronicForcedAnimationForForcePowers(gentity_t *ent);
 		if ( /*( g_spskill->integer <= 0//on easy, it reflects all shots
 				|| (g_spskill->integer == 1 && ent->s.weapon != WP_FLECHETTE && ent->s.weapon != WP_DEMP2 )//on medium it won't reflect flechette or demp shots
 				|| (g_spskill->integer >= 2 && ent->s.weapon != WP_FLECHETTE && ent->s.weapon != WP_DEMP2 && ent->s.weapon != WP_BOWCASTER && ent->s.weapon != WP_REPEATER )//on hard it won't reflect flechette, demp, repeater or bowcaster shots
-			 )
-			&&*/ (!ent->splashDamage || !ent->splashRadius) //this would be cool, though, to "bat" the thermal det away...
+			 )*/
+			ent->s.weapon != WP_FLECHETTE//won't reflect flechette 
+			&& ent->s.weapon != WP_DEMP2//or demp shots
+			&& (!ent->splashDamage || !ent->splashRadius) //this would be cool, though, to "bat" the thermal det away...
 			&& ent->s.weapon != WP_NOGHRI_STICK )//gas bomb, don't reflect
 		{
 			//FIXME: take other's owner's FP_SABER_DEFENSE into account here somehow?
