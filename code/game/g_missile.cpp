@@ -812,7 +812,9 @@ extern bool WP_DoingMoronicForcedAnimationForForcePowers(gentity_t *ent);
 				|| (g_spskill->integer >= 2 && ent->s.weapon != WP_FLECHETTE && ent->s.weapon != WP_DEMP2 && ent->s.weapon != WP_BOWCASTER && ent->s.weapon != WP_REPEATER )//on hard it won't reflect flechette, demp, repeater or bowcaster shots
 			 )*/
 			ent->s.weapon != WP_FLECHETTE//won't reflect flechette 
-			&& ent->s.weapon != WP_DEMP2//or demp shots
+			&& ent->s.weapon != WP_DEMP2//demp
+			&& ent->s.weapon != WP_BOWCASTER//bowcaster
+			&& ent->s.weapon != WP_REPEATER//or repeater shots
 			&& (!ent->splashDamage || !ent->splashRadius) //this would be cool, though, to "bat" the thermal det away...
 			&& ent->s.weapon != WP_NOGHRI_STICK )//gas bomb, don't reflect
 		{
