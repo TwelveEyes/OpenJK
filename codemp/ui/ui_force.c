@@ -604,10 +604,10 @@ void UI_ReadLegalForce(void)
 			continue;  // skip this power
 		}
 
-		if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide)
+		/*if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide)
 		{ //Apparently the user has crafted a force config that has powers that don't fit with the config's side.
 			continue;  // skip this power
-		}
+		}*/
 
 		// Accrue cost for each assigned rank for this power.
 		for (currank=FORCE_LEVEL_1;currank<=forcePowerRank;currank++)
@@ -868,14 +868,14 @@ qboolean UI_ForceSide_HandleKey(int flags, float *special, int key, int num, int
 		uiForceSide = num;
 
 		// Resetting power ranks based on if light or dark side is chosen
-		while (x < NUM_FORCE_POWERS)
+		/*while (x < NUM_FORCE_POWERS)
 		{
 			if (uiForcePowerDarkLight[x] && uiForceSide != uiForcePowerDarkLight[x])
 			{
 				uiForcePowersRank[x] = 0;
 			}
 			x++;
-		}
+		}*/
 
 		UpdateForceUsed();
 
@@ -1022,11 +1022,11 @@ qboolean UI_ForcePowerRank_HandleKey(int flags, float *special, int key, int num
 		}
 
 		// If we are not on the same side as a power, or if we are not of any rank at all.
-		if (uiForcePowerDarkLight[forcepower] && uiForceSide != uiForcePowerDarkLight[forcepower])
+		/*if (uiForcePowerDarkLight[forcepower] && uiForceSide != uiForcePowerDarkLight[forcepower])
 		{
 			return qtrue;
 		}
-		else if (forcepower == FP_SABER_DEFENSE || forcepower == FP_SABERTHROW)
+		else*/ if (forcepower == FP_SABER_DEFENSE || forcepower == FP_SABERTHROW)
 		{	// Saberdefend and saberthrow can't be bought if there is no saberattack
 			if (uiForcePowersRank[FP_SABER_OFFENSE] < 1)
 			{
@@ -1321,10 +1321,10 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 			continue;  // skip this power
 		}
 
-		if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide)
+		/*if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide)
 		{ //Apparently the user has crafted a force config that has powers that don't fit with the config's side.
 			continue;  // skip this power
-		}
+		}*/
 
 		// Accrue cost for each assigned rank for this power.
 		for (currank=FORCE_LEVEL_1;currank<=forcePowerRank;currank++)
