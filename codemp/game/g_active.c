@@ -821,13 +821,13 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			client->ps.stats[STAT_ARMOR]--;
 		}
 
-		//gradually increase health back to max
-		if ( ent->health < client->ps.stats[STAT_MAX_HEALTH] ) {
+		//gradually increase health back to max/4
+		if ( ent->health < ( client->ps.stats[STAT_MAX_HEALTH] / 4 ) ) {
 			ent->health++;
 		}
 
-		//gradually increase armor back to max
-		if ( client->ps.stats[STAT_ARMOR] < client->ps.stats[STAT_MAX_HEALTH] ) {
+		//gradually increase armor back to max/2
+		if ( client->ps.stats[STAT_ARMOR] < ( client->ps.stats[STAT_MAX_HEALTH] / 2 ) ) {
 			client->ps.stats[STAT_ARMOR]++;
 		}
 	}
