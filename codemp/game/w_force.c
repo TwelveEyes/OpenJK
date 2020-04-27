@@ -5429,11 +5429,13 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 				if ( self->client->ps.powerups[PW_FORCE_BOON] )
 					WP_ForcePowerRegenerate( self, 6 );
 				else if ( self->client->ps.isJediMaster && level.gametype == GT_JEDIMASTER )
-					WP_ForcePowerRegenerate( self, 4 ); //jedi master regenerates 4 times as fast
-				else if ( BG_RestAnim( self->client->ps.legsAnim ) )
-					WP_ForcePowerRegenerate( self, 10 ); //regen much faster when crouched
+					WP_ForcePowerRegenerate( self, 4 );		//jedi master regenerates 4 times as fast
+				else if ( BG_RestAnim( self->client->ps.legsAnim ) ) {
+					if ( self->health < self->client->ps.stats[STAT_MAX_HEALTH] ) {
+						self->health++; }					//regen health to max
+					WP_ForcePowerRegenerate( self, 4 ); }	//regen force very fast when meditating
 				else if ( BG_CrouchAnim( self->client->ps.legsAnim ) )
-					WP_ForcePowerRegenerate( self, 8 ); //regen much faster when crouched
+					WP_ForcePowerRegenerate( self, 2 );		//regen force much faster when crouched
 				else
 					WP_ForcePowerRegenerate( self, 0 );
 			}
