@@ -14377,8 +14377,8 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 			WP_ForcePowerRegenerate( self, self->client->ps.forcePowerRegenAmount );
 			self->client->ps.forcePowerRegenDebounceTime = level.time + 200; //self->client->ps.forcePowerRegenDebounceTime = level.time + self->client->ps.forcePowerRegenRate;
 			if ( PM_RestAnim( self->client->ps.legsAnim ) )
-			{//regen health to max & regen force very fast when meditating
-				if ( self->health < self->client->ps.stats[STAT_MAX_HEALTH] )
+			{//regen health to max when force is max & regen force very fast when meditating
+				if ( ( self->health < self->client->ps.stats[STAT_MAX_HEALTH] ) && ( self->client->ps.forcePower == self->client->ps.forcePowerMax ) )
 				{
 					self->health++;
 					self->client->ps.stats[STAT_HEALTH] = self->health;

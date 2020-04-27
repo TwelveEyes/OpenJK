@@ -5431,8 +5431,8 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 				else if ( self->client->ps.isJediMaster && level.gametype == GT_JEDIMASTER )
 					WP_ForcePowerRegenerate( self, 4 );		//jedi master regenerates 4 times as fast
 				else if ( BG_RestAnim( self->client->ps.legsAnim ) ) {
-					if ( self->health < self->client->ps.stats[STAT_MAX_HEALTH] ) {
-						self->health++; }					//regen health to max
+					if ( ( self->health < self->client->ps.stats[STAT_MAX_HEALTH] ) && ( self->client->ps.fd.forcePower == self->client->ps.fd.forcePowerMax ) ) {
+						self->health++; }					//regen health to max when force is max
 					WP_ForcePowerRegenerate( self, 4 ); }	//regen force very fast when meditating
 				else if ( BG_CrouchAnim( self->client->ps.legsAnim ) )
 					WP_ForcePowerRegenerate( self, 2 );		//regen force much faster when crouched
