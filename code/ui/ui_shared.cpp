@@ -5487,10 +5487,12 @@ static const char *g_bindCommands[] = {
 	"+strafe",
 	"+use",
 	"+useforce",
+	"bow",					//add bow
 	"centerview",
 	"cg_thirdperson !",
 	"datapad",
 	"exitview",
+	"flourish",				//add flourish
 #ifndef JK2_MODE
 	"force_absorb",
 #endif
@@ -5508,6 +5510,7 @@ static const char *g_bindCommands[] = {
 	"force_throw",
 	"forcenext",
 	"forceprev",
+	"gloat",				//add gloat
 	"invnext",
 	"invprev",
 	"invuse",
@@ -5517,6 +5520,7 @@ static const char *g_bindCommands[] = {
 #else
 	"load quick",
 #endif
+	"meditate",				//add meditate
 	"saberAttackCycle",
 #ifdef JK2_MODE
 	"save quik*",
