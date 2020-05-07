@@ -830,10 +830,10 @@ extern bool WP_DoingMoronicForcedAnimationForForcePowers(gentity_t *ent);
 					blockChance = 10;
 					break;
 				case FORCE_LEVEL_2:
-					blockChance = 6;//3;
+					blockChance = 3;
 					break;
 				case FORCE_LEVEL_1:
-					blockChance = 4;//1;
+					blockChance = 1;
 					break;
 				}
 				if ( blockChance && (other->owner->client->ps.forcePowersActive&(1<<FP_SPEED)) )
