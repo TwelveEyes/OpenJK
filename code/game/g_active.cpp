@@ -1726,7 +1726,7 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 				ent->flags &= ~FL_OVERCHARGED_HEALTH;
 			}
 		}
-		if ( ( ent->health < ( ent->client->ps.stats[STAT_MAX_HEALTH] / 4 ) ) && ( self->client->ps.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_1 ) )
+		if ( ( ent->health < ( ent->client->ps.stats[STAT_MAX_HEALTH] / 4 ) ) && ( ent->client->ps.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_1 ) )
 		{//gradually increase health back to max/4 if force sight >= 1
 			ent->health++;
 			ent->client->ps.stats[STAT_HEALTH] = ent->health;
