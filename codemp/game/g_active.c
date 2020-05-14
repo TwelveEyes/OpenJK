@@ -821,8 +821,8 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			client->ps.stats[STAT_ARMOR]--;
 		}
 
-		//gradually increase health back to max/4
-		if ( ent->health < ( client->ps.stats[STAT_MAX_HEALTH] / 4 ) ) {
+		//gradually increase health back to max/4 if force sight >= 1
+		if ( ( ent->health < ( client->ps.stats[STAT_MAX_HEALTH] / 4 ) ) && ( self->client->ps.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_1 ) ) {
 			ent->health++;
 		}
 
