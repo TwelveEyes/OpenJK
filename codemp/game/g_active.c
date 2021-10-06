@@ -825,11 +825,6 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 		if ( ( ent->health < ( client->ps.stats[STAT_MAX_HEALTH] / 4 ) ) && ( client->ps.fd.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_1 ) ) {
 			ent->health++;
 		}
-
-		//gradually increase armor back to max/4
-		if ( client->ps.stats[STAT_ARMOR] < ( client->ps.stats[STAT_MAX_HEALTH] / 4 ) ) {
-			client->ps.stats[STAT_ARMOR]++;
-		}
 	}
 }
 
