@@ -1421,6 +1421,7 @@ static void CG_DrawATSTHud( centity_t *cent )
 	vec4_t	color;
 	qhandle_t	background;
 	float	health;
+	float	hudRatio = cg_hudRatio.integer ? cgs.widthRatioCoef : 1.0f;
 
 	if ( !cg.snap
 		||!g_entities[cg.snap->ps.viewEntity].activator )
@@ -1481,7 +1482,7 @@ static void CG_DrawATSTHud( centity_t *cent )
 	{
 		cgi_R_SetColor( color );
 
-		CG_DrawPic( xPos, yPos, width, height, background );
+		CG_DrawPic( xPos * hudRatio, yPos, width * hudRatio, height, background );
 	}
 
 	if (cgi_UI_GetMenuItemInfo(
@@ -1495,7 +1496,7 @@ static void CG_DrawATSTHud( centity_t *cent )
 		&background))
 	{
 		cgi_R_SetColor( color );
-		CG_DrawPic( xPos, yPos, width, height, background );
+		CG_DrawPic( xPos * hudRatio, yPos, width * hudRatio, height, background );
 	}
 
 	if (cgi_UI_GetMenuItemInfo(
@@ -1510,7 +1511,7 @@ static void CG_DrawATSTHud( centity_t *cent )
 	{
 		cgi_R_SetColor( color );
 
-		CG_DrawPic( xPos, yPos, width, height, background );
+		CG_DrawPic( xPos * hudRatio, yPos, width * hudRatio, height, background );
 	}
 }
 

@@ -2517,7 +2517,7 @@ veh_damage_t vehDamageData[4] =
 };
 
 // Draw health graphic for given part of vehicle
-void CG_DrawVehicleDamage(const centity_t *veh,int brokenLimbs,const menuDef_t	*menuHUD,float alpha,int index)
+void CG_DrawVehicleDamage(const centity_t *veh,int brokenLimbs,const menuDef_t	*menuHUD,float alpha,int index,float hudRatio,int isEnemyVehicleHUD)
 {
 	itemDef_t		*item;
 	int				colorI;
@@ -2567,9 +2567,9 @@ void CG_DrawVehicleDamage(const centity_t *veh,int brokenLimbs,const menuDef_t	*
 		if (graphicHandle)
 		{
 			CG_DrawPic(
-				item->window.rect.x,
+				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * hudRatio : item->window.rect.x * hudRatio,
 				item->window.rect.y,
-				item->window.rect.w,
+				item->window.rect.w * hudRatio,
 				item->window.rect.h,
 				graphicHandle );
 		}
@@ -2583,6 +2583,8 @@ void CG_DrawVehicleDamageHUD(const centity_t *veh,int brokenLimbs,float percShie
 	menuDef_t		*menuHUD;
 	itemDef_t		*item;
 	vec4_t			color;
+	float 			hudRatio = cg_hudRatio.integer ? cgs.widthRatioCoef : 1.0f;
+	int 			isEnemyVehicleHUD = !Q_stricmp("enemyvehicledamagehud", menuName);
 
 	menuHUD = Menus_FindByName(menuName);
 
@@ -2620,9 +2622,9 @@ void CG_DrawVehicleDamageHUD(const centity_t *veh,int brokenLimbs,float percShie
 			}
 
 			CG_DrawPic(
-				item->window.rect.x,
+				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * hudRatio : item->window.rect.x * hudRatio,
 				item->window.rect.y,
-				item->window.rect.w,
+				item->window.rect.w * hudRatio,
 				item->window.rect.h,
 				veh->m_pVehicle->m_pVehicleInfo->dmgIndicBackgroundHandle );
 		}
@@ -2635,9 +2637,9 @@ void CG_DrawVehicleDamageHUD(const centity_t *veh,int brokenLimbs,float percShie
 		{
 			trap->R_SetColor( item->window.foreColor );
 			CG_DrawPic(
-				item->window.rect.x,
+				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * hudRatio : item->window.rect.x * hudRatio,
 				item->window.rect.y,
-				item->window.rect.w,
+				item->window.rect.w * hudRatio,
 				item->window.rect.h,
 				veh->m_pVehicle->m_pVehicleInfo->dmgIndicFrameHandle );
 		}
@@ -2652,9 +2654,9 @@ void CG_DrawVehicleDamageHUD(const centity_t *veh,int brokenLimbs,float percShie
 			color[3] = percShields;
 			trap->R_SetColor( color );
 			CG_DrawPic(
-				item->window.rect.x,
+				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * hudRatio : item->window.rect.x * hudRatio,
 				item->window.rect.y,
-				item->window.rect.w,
+				item->window.rect.w * hudRatio,
 				item->window.rect.h,
 				veh->m_pVehicle->m_pVehicleInfo->dmgIndicShieldHandle );
 		}
@@ -2662,10 +2664,10 @@ void CG_DrawVehicleDamageHUD(const centity_t *veh,int brokenLimbs,float percShie
 
 	//TODO: if we check nextState.brokenLimbs & prevState.brokenLimbs, we can tell when a damage flag has been added and flash that part of the ship
 	//FIXME: when ship explodes, either stop drawing ship or draw all parts black
-	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_FRONT);
-	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_BACK);
-	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_LEFT);
-	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_RIGHT);
+	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_FRONT,hudRatio,isEnemyVehicleHUD);
+	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_BACK,hudRatio,isEnemyVehicleHUD);
+	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_LEFT,hudRatio,isEnemyVehicleHUD);
+	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_RIGHT,hudRatio,isEnemyVehicleHUD);
 }
 
 qboolean CG_DrawVehicleHud( const centity_t *cent )
@@ -3463,7 +3465,7 @@ float CG_DrawRadar ( float y )
 						float  x;
 						float  ly;
 
-						x = (float)RADAR_X + (float)RADAR_RADIUS + (float)sin (angle) * distance;
+						x = (float)RADAR_X + (float)RADAR_RADIUS_X + (float)sin (angle) * distance * cgs.widthRatioCoef;
 						ly = y + (float)RADAR_RADIUS + (float)cos (angle) * distance;
 
 						arrowBaseScale = 9.0f;
@@ -3565,7 +3567,7 @@ float CG_DrawRadar ( float y )
 						}
 						distance = (actualDist/RADAR_ASTEROID_RANGE)*RADAR_RADIUS;
 
-						x = (float)RADAR_X + (float)RADAR_RADIUS + (float)sin (angle) * distance;
+						x = (float)RADAR_X + (float)RADAR_RADIUS_X + (float)sin (angle) * distance * cgs.widthRatioCoef;
 						ly = y + (float)RADAR_RADIUS + (float)cos (angle) * distance;
 
 						if ( asteroidScale > 3.0f )
@@ -3628,7 +3630,7 @@ float CG_DrawRadar ( float y )
 					float  x;
 					float  ly;
 
-					x = (float)RADAR_X + (float)RADAR_RADIUS + (float)sin (angle) * distance;
+					x = (float)RADAR_X + (float)RADAR_RADIUS_X + (float)sin (angle) * distance * cgs.widthRatioCoef;
 					ly = y + (float)RADAR_RADIUS + (float)cos (angle) * distance;
 
 					arrowBaseScale = 3.0f;
