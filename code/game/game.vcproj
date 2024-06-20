@@ -451,6 +451,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI_GalakBoss.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AI_GalakMech.cpp"
 				>
 			</File>

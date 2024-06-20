@@ -2201,7 +2201,7 @@ static qboolean PM_CheckJump( void )
 				vec3_t	idealNormal={0}, wallNormal={0};
 				trace_t	trace;
 				qboolean doTrace = qfalse;
-				int contents = MASK_SOLID;//MASK_PLAYERSOLID;
+				int contents = MASK_PLAYERSOLID;//MASK_SOLID;//MASK_PLAYERSOLID;
 
 				VectorSet(mins, pm->mins[0],pm->mins[1],0);
 				VectorSet(maxs, pm->maxs[0],pm->maxs[1],24);
@@ -2271,7 +2271,6 @@ static qboolean PM_CheckJump( void )
 							VectorMA( pm->ps->velocity, -150, fwd, pm->ps->velocity );
 						}
 
-						/*
 						if ( doTrace && anim != BOTH_WALL_RUN_LEFT && anim != BOTH_WALL_RUN_RIGHT )
 						{
 							if (trace.entityNum < MAX_CLIENTS)
@@ -2279,7 +2278,6 @@ static qboolean PM_CheckJump( void )
 								pm->ps->forceKickFlip = trace.entityNum+1; //let the server know that this person gets kicked by this client
 							}
 						}
-						*/
 
 						//up
 						if ( vertPush )
@@ -2496,21 +2494,22 @@ static qboolean PM_CheckJump( void )
 					//FIXME: have to be moving... make sure it's opposite the wall... or at least forward?
 					int wallWalkAnim = BOTH_WALL_FLIP_BACK1;
 					int parts = SETANIM_LEGS;
-					int contents = MASK_SOLID;//MASK_PLAYERSOLID;//CONTENTS_SOLID;
-					//qboolean kick = qtrue;
-					if ( pm->ps->fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_2 )
-					{
-						wallWalkAnim = BOTH_FORCEWALLRUNFLIP_START;
-						parts = SETANIM_BOTH;
-						//kick = qfalse;
-					}
-					else
-					{
+					int contents = MASK_PLAYERSOLID;//MASK_SOLID;//MASK_PLAYERSOLID;//CONTENTS_SOLID;
+					qboolean kick = qtrue;
+					int highJump = pm->ps->fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_2;
+					// if ( highJump )
+					// {
+					// 	wallWalkAnim = BOTH_FORCEWALLRUNFLIP_START;
+					// 	parts = SETANIM_BOTH;
+					// 	kick = qfalse;
+					// }
+					// else
+					// {
 						if ( !pm->ps->weaponTime )
 						{
 							parts = SETANIM_BOTH;
 						}
-					}
+					// }
 					//if ( PM_HasAnimation( pm->gent, wallWalkAnim ) )
 					if (1) //sure, we have it! Because I SAID SO.
 					{
@@ -2535,6 +2534,12 @@ static qboolean PM_CheckJump( void )
 							&&((trace.entityNum<ENTITYNUM_WORLD&&traceEnt&&traceEnt->s.solid!=SOLID_BMODEL)||DotProduct(trace.plane.normal,idealNormal)>0.7) )
 						{//there is a wall there
 							pm->ps->velocity[0] = pm->ps->velocity[1] = 0;
+							if ( highJump && kick && traceEnt && !(traceEnt->s.eType == ET_PLAYER || traceEnt->s.eType == ET_NPC) )
+							{
+								wallWalkAnim = BOTH_FORCEWALLRUNFLIP_START;
+								parts = SETANIM_BOTH;
+								kick = qfalse;
+							}
 							if ( wallWalkAnim == BOTH_FORCEWALLRUNFLIP_START )
 							{
 								pm->ps->velocity[2] = forceJumpStrength[FORCE_LEVEL_3]/2.0f;
@@ -2556,12 +2561,10 @@ static qboolean PM_CheckJump( void )
 							BG_ForcePowerDrain( pm->ps, FP_LEVITATION, 5 );
 
 							//kick if jumping off an ent
-							/*
 							if ( kick && traceEnt && (traceEnt->s.eType == ET_PLAYER || traceEnt->s.eType == ET_NPC) )
 							{ //kick that thang!
 								pm->ps->forceKickFlip = traceEnt->s.number+1;
 							}
-							*/
 							pm->cmd.rightmove = pm->cmd.forwardmove= 0;
 						}
 					}
@@ -5319,7 +5322,7 @@ static void PM_Footsteps( void ) {
 
 		bobmove = 0.5;	// ducked characters bob much faster
 
-		if ( ( (PM_RunningAnim( pm->ps->legsAnim )&&VectorLengthSquared(pm->ps->velocity)>=40000/*200*200*/) || PM_CanRollFromSoulCal( pm->ps ) ) &&
+		if ( ( (PM_RunningAnim( pm->ps->legsAnim )/*&&VectorLengthSquared(pm->ps->velocity)>=40000/*200*200*/) || PM_CanRollFromSoulCal( pm->ps ) ) &&
 			!BG_InRoll(pm->ps, pm->ps->legsAnim) )
 		{//roll!
 			rolled = PM_TryRoll();
@@ -10352,7 +10355,7 @@ void PmoveSingle (pmove_t *pmove) {
 			{
 				if ( pm->ps->torsoTimer < 100 )
 				{
-					pm->ps->legsTimer = 100;
+					pm->ps->torsoTimer = 100;
 				}
 				pm->ps->forceHandExtend = HANDEXTEND_TAUNT;
 				pm->ps->forceHandExtendTime = pm->cmd.serverTime + 100;

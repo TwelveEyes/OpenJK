@@ -103,6 +103,7 @@ extern saberMoveName_t PM_BrokenParryForAttack( int move );
 extern saberMoveName_t PM_KnockawayForParry( int move );
 extern qboolean PM_FlippingAnim( int anim );
 extern qboolean PM_RollingAnim( int anim );
+extern qboolean PM_RestAnim( int anim );
 extern qboolean PM_CrouchAnim( int anim );
 extern qboolean PM_SaberInIdle( int move );
 extern qboolean PM_SaberInReflect( int move );
@@ -281,15 +282,15 @@ float forceSpeedRangeMod[NUM_FORCE_POWER_LEVELS] =
 float forceSpeedFOVMod[NUM_FORCE_POWER_LEVELS] =
 {
 	0.0f,//none
-	20.0f,
-	30.0f,
-	40.0f
+	0.0f,//20.0f,
+	0.0f,//30.0f,
+	0.0f//40.0f
 };
 
 int forceGripDamage[NUM_FORCE_POWER_LEVELS] =
 {
 	0,//none
-	0,
+	3,//0,
 	6,
 	9
 };
@@ -936,18 +937,18 @@ int WP_SaberInitBladeData( gentity_t *ent )
 					}
 
 
-					if (ent->client->ps.saberStylesKnown & (1<<SS_FAST))
-					{
-						ent->client->ps.saberAnimLevel = SS_FAST;
-					}
-					else if (ent->client->ps.saberStylesKnown & (1<<SS_STRONG))
-					{
-						ent->client->ps.saberAnimLevel = SS_STRONG;
-					}
-					else
-					{
+					// if (ent->client->ps.saberStylesKnown & (1<<SS_FAST))
+					// {
+					// 	ent->client->ps.saberAnimLevel = SS_FAST;
+					// }
+					// else if (ent->client->ps.saberStylesKnown & (1<<SS_STRONG))
+					// {
+					// 	ent->client->ps.saberAnimLevel = SS_STRONG;
+					// }
+					// else
+					// {
 						ent->client->ps.saberAnimLevel = SS_MEDIUM;
-					}
+					// }
 
 				}
 				else
@@ -2915,7 +2916,7 @@ qboolean WP_SaberDamageForTrace( int ignore, vec3_t start, vec3_t end, float dmg
 						}
 					}
 
-					if ( !g_saberNoEffects && hitEffect != 0 )
+					if ( !g_saberNoEffects && hitEffect != 0 && !(hitEnt->flags&FL_DISINTEGRATED) && hitEnt->contents != CONTENTS_NONE )//don't play hit effects if hit entity was disintegrated
 					{
 						G_PlayEffect( hitEffect, tr.endpos, dir );//"saber_cut"
 					}
@@ -2924,7 +2925,8 @@ qboolean WP_SaberDamageForTrace( int ignore, vec3_t start, vec3_t end, float dmg
 				{//we were doing a ghoul trace
 					if ( !attacker
 						|| !attacker->client
-						|| attacker->client->ps.saberLockTime < level.time )
+						|| attacker->client->ps.saberLockTime < level.time
+						&& !(hitEnt->flags&FL_DISINTEGRATED) && hitEnt->contents != CONTENTS_NONE )//don't play hit effects if hit entity was disintegrated
 					{
 						if ( !WP_SaberDamageEffects( &tr, start, len, dmg, dir, bladeVec, attacker->client->enemyTeam, saberType, &attacker->client->ps.saber[saberNum], bladeNum ) )
 						{//didn't hit a ghoul ent
@@ -7041,6 +7043,8 @@ void WP_SaberThrow( gentity_t *self, usercmd_t *ucmd )
 				}
 				//need to recalc this because we just moved it
 				VectorSubtract( self->client->renderInfo.handRPoint, saberent->currentOrigin, saberDiff );
+				//remember when it launched so it can return automagically
+				saberent->aimDebounceTime = level.time;
 			}
 			else
 			{//couldn't throw it
@@ -7071,6 +7075,12 @@ void WP_SaberThrow( gentity_t *self, usercmd_t *ucmd )
 				}
 				return;
 			}
+			if ( (!self->s.number && level.time - saberent->aimDebounceTime > 15000)
+				|| (self->s.number && level.time - saberent->aimDebounceTime > 5000) )
+			{//(only for player) been missing for 15 seconds, automagicially return
+				WP_SaberCatch( self, saberent, qfalse );
+				return;
+			}
 		}
 
 		if ( saberent->s.pos.trType != TR_STATIONARY )
@@ -7086,6 +7096,12 @@ void WP_SaberThrow( gentity_t *self, usercmd_t *ucmd )
 					self->client->ps.saberEntityNum = ENTITYNUM_NONE;
 					return;
 				}
+			}
+			if ( (!self->s.number && level.time - saberent->aimDebounceTime > 15000)
+				|| (self->s.number && level.time - saberent->aimDebounceTime > 5000) )
+			{//(only for player) been missing for 15 seconds, automagicially return
+				WP_SaberCatch( self, saberent, qfalse );
+				return;
 			}
 			WP_RunSaber( self, saberent );
 		}
@@ -10237,7 +10253,7 @@ void ForceHeal( gentity_t *self )
 		//start health going up
 		//NPC_SetAnim( self, SETANIM_TORSO, ?, SETANIM_FLAG_OVERRIDE );
 		WP_ForcePowerStart( self, FP_HEAL, 0 );
-		if ( self->client->ps.forcePowerLevel[FP_HEAL] < FORCE_LEVEL_2 )
+		if ( self->client->ps.forcePowerLevel[FP_HEAL] < FORCE_LEVEL_2 && !PM_RestAnim( self->client->ps.legsAnim ) )
 		{//must meditate
 			//FIXME: holster weapon (select WP_NONE?)
 			//FIXME: BOTH_FORCEHEAL_START
@@ -11029,7 +11045,31 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, flo
 			}
 			else
 			{
-				dmg = Q_irand( 1, 3 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];
+				//dmg = Q_irand( 1, 3 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];
+				dmg = 1;
+				if ( self->client->NPC_class == CLASS_REBORN
+					&& self->client->ps.weapon == WP_NONE )
+				{//Cultist: looks fancy, but does less damage
+				}
+				else
+				{
+					if ( dist < 50 )
+					{
+						dmg += 2;
+					}
+					else if ( dist < 100 )
+					{
+						dmg += 1;
+					}
+					if ( dot > 0.95f )
+					{
+						dmg += 2;
+					}
+					else if ( dot > 0.75f )
+					{
+						dmg += 1;
+					}
+				}
 			}
 
 			if ( traceEnt->client
@@ -12580,6 +12620,11 @@ int WP_AbsorbConversion(gentity_t *attacked, int atdAbsLevel, gentity_t *attacke
 
 	if (!(attacked->client->ps.forcePowersActive & (1 << FP_ABSORB)))
 	{ //absorb is not active
+		return -1;
+	}
+
+	if (Q_irand( 0, atPowerLevel ) > Q_irand( 1, atdAbsLevel ))
+	{ //chance of attacker's high level power breaking through entirely
 		return -1;
 	}
 
@@ -14375,6 +14420,16 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 		{
 			WP_ForcePowerRegenerate( self, self->client->ps.forcePowerRegenAmount );
 			self->client->ps.forcePowerRegenDebounceTime = level.time + self->client->ps.forcePowerRegenRate;
+
+			if ( PM_CrouchAnim( self->client->ps.legsAnim ) )
+			{//regen force much faster when crouched
+				WP_ForcePowerRegenerate( self, 2 );
+			}
+			else if ( PM_RestAnim( self->client->ps.legsAnim ) )
+			{//regen force extremly fast when meditating
+				WP_ForcePowerRegenerate( self, 4 );
+			}
+			
 			if ( self->client->ps.forceRageRecoveryTime >= level.time )
 			{//regen half as fast
 				self->client->ps.forcePowerRegenDebounceTime += self->client->ps.forcePowerRegenRate;
