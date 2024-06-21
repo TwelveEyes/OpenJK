@@ -2520,6 +2520,7 @@ void SP_misc_panel_turret( gentity_t *self )
 	self->s.weapon = WP_TURRET;
 
 	RegisterItem( FindItemForWeapon( WP_EMPLACED_GUN ));
+	RegisterItem( FindItemForWeapon( WP_TIE_FIGHTER )); //also register TIE blaster shot
 	gi.linkentity( self );
 
 	self->e_UseFunc = useF_panel_turret_use;
