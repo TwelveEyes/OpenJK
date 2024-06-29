@@ -911,7 +911,7 @@ void G_FreeEntity( gentity_t *ed ) {
 		if(ed->client->clientInfo.customJediSoundDir) {
 			gi.Free(ed->client->clientInfo.customJediSoundDir);
 		}
-		if(ed->client->ps.saber[0].name && gi.bIsFromZone(ed->client->ps.saber[0].name, TAG_G_ALLOC) ) {
+		/* if(ed->client->ps.saber[0].name && gi.bIsFromZone(ed->client->ps.saber[0].name, TAG_G_ALLOC) ) {
 			gi.Free(ed->client->ps.saber[0].name);
 		}
 		if(ed->client->ps.saber[0].model && gi.bIsFromZone(ed->client->ps.saber[0].model, TAG_G_ALLOC) ) {
@@ -922,7 +922,7 @@ void G_FreeEntity( gentity_t *ed ) {
 		}
 		if(ed->client->ps.saber[1].model && gi.bIsFromZone(ed->client->ps.saber[1].model, TAG_G_ALLOC) ) {
  			gi.Free(ed->client->ps.saber[1].model);
-		}
+		} */
 
 		gi.Free(ed->client);
 	}
