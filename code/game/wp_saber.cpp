@@ -12684,10 +12684,10 @@ void WP_ForcePowerRegenerate( gentity_t *self, int overrideAmt )
 
 void WP_ForcePowerDrain( gentity_t *self, forcePowers_t forcePower, int overrideAmt )
 {
-	if ( self->NPC )
+	/* if ( self->NPC )
 	{//For now, NPCs have infinite force power
 		return;
-	}
+	} */
 	//take away the power
 	int	drain = overrideAmt;
 	if ( !drain )
