@@ -11164,10 +11164,10 @@ qboolean PM_SaberThrowable( void )
 qboolean PM_CheckAltKickAttack( void )
 {
 	if ( (pm->cmd.buttons&BUTTON_ALT_ATTACK)
-		&& (!(pm->ps->pm_flags&PMF_ALT_ATTACK_HELD) || (pm->ps->pm_flags&PMF_FORCE_FOCUS_HELD) || PM_SaberInReturn(pm->ps->saberMove))
+		&& (!(pm->ps->pm_flags&PMF_ALT_ATTACK_HELD) ||PM_SaberInReturn(pm->ps->saberMove))
 		&& (!PM_FlippingAnim(pm->ps->legsAnim)||pm->ps->legsAnimTimer<=250)
-		// && (!PM_SaberThrowable())
-		&& pm->ps->SaberActive()
+		&& (!PM_SaberThrowable()||(pm->ps->pm_flags&PMF_FORCE_FOCUS_HELD))
+		// && pm->ps->SaberActive()
 		&& !(pm->ps->saber[0].saberFlags&SFL_NO_KICKS)//okay to do kicks with this saber
 		&& (!pm->ps->dualSabers || !(pm->ps->saber[1].saberFlags&SFL_NO_KICKS) )//okay to do kicks with this saber
 		)
