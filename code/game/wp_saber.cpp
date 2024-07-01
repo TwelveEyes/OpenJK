@@ -4359,7 +4359,7 @@ qboolean G_EnoughPowerForSpecialMove( int forcePower, int cost, qboolean kataMov
 		}
 		else
 		{
-			cg.forceHUDTotalFlashTime = level.time + 1000;
+			// cg.forceHUDTotalFlashTime = level.time + 1000;
 			return qfalse;
 		}
 	}
