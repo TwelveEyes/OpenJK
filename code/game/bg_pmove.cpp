@@ -11128,10 +11128,10 @@ qboolean PM_PickAutoMultiKick( qboolean allowSingles )
 qboolean PM_SaberThrowable( void )
 {
 	//ugh, hard-coding this is bad...
-	if ( pm->ps->saberAnimLevel == SS_STAFF )
+	/* if ( pm->ps->saberAnimLevel == SS_STAFF )
 	{
 		return qfalse;
-	}
+	} */
 
 	if ( !(pm->ps->saber[0].saberFlags&SFL_NOT_THROWABLE) )
 	{//yes, this saber is always throwable
