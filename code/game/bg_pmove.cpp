@@ -13712,7 +13712,7 @@ static void PM_Weapon( void )
 					{
 						int anim = -1;
 						if ( (pm->ps->clientNum < MAX_CLIENTS ||PM_ControlledByPlayer())
-							&& g_debugMelee->integer )
+							&& (g_debugMelee->integer || pm->ps->forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1) )
 						{
 							if ( (pm->cmd.buttons&BUTTON_ALT_ATTACK) )
 							{
