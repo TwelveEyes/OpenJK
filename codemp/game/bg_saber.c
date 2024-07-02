@@ -2972,7 +2972,7 @@ void PM_WeaponLightsaber(void)
 		{ //kick instead of doing a throw
 			//if in a saber attack return anim, can interrupt it with a kick
 			if ( pm->ps->weaponTime > 0//can't fire yet
-				&& PM_SaberInReturn( pm->ps->saberMove )//in a saber return move - FIXME: what about transitions?
+				// && PM_SaberInReturn( pm->ps->saberMove )//in a saber return move - FIXME: what about transitions?
 				//&& pm->ps->weaponTime <= 250//should be able to fire soon
 				//&& pm->ps->torsoTimer <= 250//torso almost done
 				&& pm->ps->saberBlocked == BLOCKED_NONE//not interacting with any other saber
