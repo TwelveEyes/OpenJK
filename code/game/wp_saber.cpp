@@ -7003,6 +7003,13 @@ void WP_SaberThrow( gentity_t *self, usercmd_t *ucmd )
 		return;
 	}
 
+	if ( (ucmd->buttons&BUTTON_ALT_ATTACK)
+		&& (ucmd->buttons&BUTTON_WALKING)
+		&& !(self->client->ps.pm_flags&PMF_ALT_ATTACK_HELD) )
+	{//don't throw when trying to kick
+		return;
+	}
+
 	if ( !g_saberNewControlScheme->integer )
 	{
 		if ( PM_SaberInKata( (saberMoveName_t)self->client->ps.saberMove ) )
@@ -7033,7 +7040,7 @@ void WP_SaberThrow( gentity_t *self, usercmd_t *ucmd )
 		{//don't even have it out
 			return;
 		}
-		else if ( (ucmd->buttons&BUTTON_ALT_ATTACK) && !(self->client->ps.pm_flags&PMF_ALT_ATTACK_HELD) && !(self->client->ps.pm_flags&PMF_FORCE_FOCUS_HELD) )
+		else if ( (ucmd->buttons&BUTTON_ALT_ATTACK) && !(self->client->ps.pm_flags&PMF_ALT_ATTACK_HELD) )
 		{//still holding it, not still holding attack from a previous throw, so throw it.
 			if ( !(self->client->ps.saberEventFlags&SEF_INWATER) && WP_SaberLaunch( self, saberent, qtrue ) )
 			{

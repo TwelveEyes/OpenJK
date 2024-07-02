@@ -2708,7 +2708,8 @@ qboolean PM_CheckAltKickAttack( void )
 	if ( (pm->cmd.buttons&BUTTON_ALT_ATTACK)
 		//&& (!(pm->ps->pm_flags&PMF_ALT_ATTACK_HELD)||PM_SaberInReturn(pm->ps->saberMove))
 		&& (!BG_FlippingAnim(pm->ps->legsAnim)||pm->ps->legsTimer<=250)
-		&& (pm->ps->fd.saberAnimLevel == SS_STAFF/*||!pm->ps->saber[0].throwable*/) && !pm->ps->saberHolstered )
+		// && (pm->ps->fd.saberAnimLevel == SS_STAFF/*||!pm->ps->saber[0].throwable*/) && !pm->ps->saberHolstered
+		)
 	{
 		return qtrue;
 	}
@@ -2967,11 +2968,11 @@ void PM_WeaponLightsaber(void)
 
 	if ( (pm->cmd.buttons & BUTTON_ALT_ATTACK) )
 	{ //might as well just check for a saber throw right here
-		if (pm->ps->fd.saberAnimLevel == SS_STAFF)
+		if ( (pm->cmd.buttons & BUTTON_WALKING) /* pm->ps->fd.saberAnimLevel == SS_STAFF */)
 		{ //kick instead of doing a throw
 			//if in a saber attack return anim, can interrupt it with a kick
 			if ( pm->ps->weaponTime > 0//can't fire yet
-				&& PM_SaberInReturn( pm->ps->saberMove )//in a saber return move - FIXME: what about transitions?
+				// && PM_SaberInReturn( pm->ps->saberMove )//in a saber return move - FIXME: what about transitions?
 				//&& pm->ps->weaponTime <= 250//should be able to fire soon
 				//&& pm->ps->torsoTimer <= 250//torso almost done
 				&& pm->ps->saberBlocked == BLOCKED_NONE//not interacting with any other saber

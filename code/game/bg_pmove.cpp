@@ -11164,9 +11164,10 @@ qboolean PM_SaberThrowable( void )
 qboolean PM_CheckAltKickAttack( void )
 {
 	if ( (pm->cmd.buttons&BUTTON_ALT_ATTACK)
-		&& (!(pm->ps->pm_flags&PMF_ALT_ATTACK_HELD) ||PM_SaberInReturn(pm->ps->saberMove))
+		&& (pm->cmd.buttons&BUTTON_WALKING)
+		&& (!(pm->ps->pm_flags&PMF_ALT_ATTACK_HELD) /* ||PM_SaberInReturn(pm->ps->saberMove) */)
 		&& (!PM_FlippingAnim(pm->ps->legsAnim)||pm->ps->legsAnimTimer<=250)
-		&& (!PM_SaberThrowable()||(pm->ps->pm_flags&PMF_FORCE_FOCUS_HELD))
+		// && (!PM_SaberThrowable())
 		// && pm->ps->SaberActive()
 		&& !(pm->ps->saber[0].saberFlags&SFL_NO_KICKS)//okay to do kicks with this saber
 		&& (!pm->ps->dualSabers || !(pm->ps->saber[1].saberFlags&SFL_NO_KICKS) )//okay to do kicks with this saber
@@ -12266,7 +12267,7 @@ void PM_WeaponLightsaber(void)
 		//OR:	Make it so that attacks don't start until 100ms after you
 		//		press the attack button...???
 		if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) //player
-			&& PM_SaberInReturn( pm->ps->saberMove )//in a saber return move - FIXME: what about transitions?
+			// && PM_SaberInReturn( pm->ps->saberMove )//in a saber return move - FIXME: what about transitions?
 			//&& pm->ps->torsoAnimTimer<=250//towards the end of a saber return anim
 			&& pm->ps->saberBlocked == BLOCKED_NONE//not interacting with any other saber
 			&& !(pm->cmd.buttons&BUTTON_ATTACK)//not trying to swing the saber
