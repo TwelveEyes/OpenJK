@@ -353,6 +353,8 @@ vmCvar_t	cg_scaleVehicleSensitivity;
 // vmCvar_t		cg_trueflip;
 // vmCvar_t		cg_truespin;
 
+vmCvar_t		cg_allowFirstPersonSpecialMove;
+
 vmCvar_t		cg_hudRatio;
 
 typedef struct {
@@ -478,6 +480,8 @@ static cvarTable_t cvarTable[] = {
 	// { &cg_trueroll,	"cg_trueroll",	"0", CVAR_ARCHIVE },
 	// { &cg_trueflip,	"cg_trueflip",	"0", CVAR_ARCHIVE },
 	// { &cg_truespin,	"cg_truespin",	"0", CVAR_ARCHIVE },
+
+	{ &cg_allowFirstPersonSpecialMove, "cg_allowFirstPersonSpecialMove", "0", CVAR_ARCHIVE },
 
 	{ &cg_hudRatio, "cg_hudRatio", "1", CVAR_ARCHIVE },
 };
