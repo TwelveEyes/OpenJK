@@ -5186,6 +5186,7 @@ void WP_SaberDamageTrace( gentity_t *ent, int saberNum, int bladeNum )
 					{
 						entPowerLevel += ent->client->ps.saber[saberNum].breakParryBonus2;
 					}
+					entPowerLevel += ent->client->ps.forcePowerLevel[FP_SABER_OFFENSE]+Q_irand(0,g_spskill->integer)+(ent->s.number>=MAX_CLIENTS)?0:Q_irand(0,1);
 				}
 				else if ( entDefending )
 				{//add twoHanded bonus and dualSaber bonus and parryBonus to entPowerLevel here
@@ -5195,7 +5196,7 @@ void WP_SaberDamageTrace( gentity_t *ent, int saberNum, int bladeNum )
 						entPowerLevel++;
 					}
 					//FIXME: what about second saber if dualSabers?
-					entPowerLevel += ent->client->ps.SaberParryBonus();
+					entPowerLevel += ent->client->ps.SaberParryBonus()+Q_irand(0,g_spskill->integer)+(ent->s.number>=MAX_CLIENTS)?0:Q_irand(0,1);
 				}
 
 				if ( PM_SaberInAttack( hitOwner->client->ps.saberMove ) || PM_SaberInSpecialAttack( hitOwner->client->ps.torsoAnim ) )
@@ -5232,6 +5233,7 @@ void WP_SaberDamageTrace( gentity_t *ent, int saberNum, int bladeNum )
 					{//FIXME: assumes both sabers are hitting at same time...?
 						hitOwnerPowerLevel += 1 + hitOwner->client->ps.saber[1].breakParryBonus;
 					}
+					hitOwnerPowerLevel += hitOwner->client->ps.forcePowerLevel[FP_SABER_OFFENSE]+Q_irand(0,g_spskill->integer)+(ent->s.number>=MAX_CLIENTS)?0:Q_irand(0,1);
 				}
 				else if ( hitOwnerDefending )
 				{//add twoHanded bonus and dualSaber bonus and parryBonus to entPowerLevel here
@@ -5240,10 +5242,10 @@ void WP_SaberDamageTrace( gentity_t *ent, int saberNum, int bladeNum )
 					{
 						hitOwnerPowerLevel++;
 					}
-					hitOwnerPowerLevel += hitOwner->client->ps.SaberParryBonus();
+					hitOwnerPowerLevel += hitOwner->client->ps.SaberParryBonus()+Q_irand(0,g_spskill->integer)+(ent->s.number>=MAX_CLIENTS)?0:Q_irand(0,1);
 					/* if ( hitOwner->client->ps.dualSabers && Q_irand( 0, 1 ) )
 					{//FIXME: assumes both sabers are defending at same time...?
-						hitOwnerPowerLevel += 1 + hitOwner->client->ps.SaberParryBonus();
+						hitOwnerPowerLevel += 1 + hitOwner->client->ps.SaberParryBonus()+Q_irand(0,g_spskill->integer)+(ent->s.number>=MAX_CLIENTS)?0:Q_irand(0,1);
 					} */
 				}
 
