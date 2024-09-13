@@ -4805,14 +4805,14 @@ static qboolean S_UpdateBackgroundTrack_Actual( MusicInfo_t *pMusicInfo, qboolea
 				//	or if it's a dynamic music specifier (which can't literally exist), in which case it should set
 				//	a return flag then exit...
 				//
-				char sTestName[MAX_QPATH*2];// *2 so COM_DefaultExtension doesn't do an ERR_DROP if there was no space
+				char sTestName[MAX_QPATH/**2*/];// *2 so COM_DefaultExtension doesn't do an ERR_DROP if there was no space
 											//	for an extension, since this is a "soft" test
-				Q_strncpyz( sTestName, sMusic_BackgroundLoop, sizeof(sTestName));
+				Q_strncpyz( sTestName, sMusic_BackgroundLoop, sizeof(sTestName) - 4 );
 				COM_DefaultExtension(sTestName, sizeof(sTestName), ".mp3");
 
 				if (S_FileExists( sTestName ))
 				{
-					S_StartBackgroundTrack_Actual( pMusicInfo, qfalse, sMusic_BackgroundLoop, sMusic_BackgroundLoop );
+					S_StartBackgroundTrack_Actual( pMusicInfo, qfalse, sTestName, sTestName );
 				}
 				else
 				{
