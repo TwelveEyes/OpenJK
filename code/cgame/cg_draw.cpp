@@ -2544,8 +2544,8 @@ void CG_DrawHealthBars( void )
 			pos[2] += cent->gent->maxs[2]+HEALTH_BAR_HEIGHT+8;
 			if ( CG_WorldCoordToScreenCoordFloat( pos, &chX, &chY ) )
 			{//on screen
-				CG_DrawHealthBar( cent, chX, chY, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT );
-				CG_DrawForceBar( cent, chX, chY+8, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT );
+				CG_DrawHealthBar( cent, chX, chY-8, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT );
+				CG_DrawForceBar( cent, chX, chY, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT );
 			}
 		}
 	}
