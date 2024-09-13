@@ -4202,7 +4202,7 @@ void CG_DrawDataPadForceSelect( void )
 {
 	int		i;
 	int		count;
-	int		holdX;
+	float	holdX;
 	int		sideLeftIconCnt,sideRightIconCnt;
 	int		holdCount,iconCnt;
 	char	text[1024]={0};
@@ -4251,10 +4251,10 @@ void CG_DrawDataPadForceSelect( void )
 	}
 
 
-	const int smallIconSize = 40;
-	const int bigIconSize = 70;
-	const int bigPad = 64;
-	const int pad = 32;
+	const float smallIconSize_x = 40 * cgs.widthRatioCoef, smallIconSize_y = 40;
+	const float bigIconSize_x = 70 * cgs.widthRatioCoef, bigIconSize_y = 70;
+	const float bigPad = 64 * cgs.widthRatioCoef;
+	const float pad = 32 * cgs.widthRatioCoef;
 
 	const int centerXPos = 320;
 	const int graphicYPos = 340;
@@ -4269,7 +4269,7 @@ void CG_DrawDataPadForceSelect( void )
 
 	cgi_R_SetColor(colorTable[CT_WHITE]);
 	// Work backwards from current icon
-	holdX = centerXPos - ((bigIconSize/2) + bigPad + smallIconSize);
+	holdX = centerXPos - ((bigIconSize_x/2) + bigPad + smallIconSize_x);
 	for (iconCnt=1;iconCnt<(sideLeftIconCnt+1);i--)
 	{
 		if (i < 0)
@@ -4286,7 +4286,7 @@ void CG_DrawDataPadForceSelect( void )
 
 		if (force_icons[showDataPadPowers[i]])
 		{
-			CG_DrawPic( holdX, graphicYPos, smallIconSize, smallIconSize, force_icons[showDataPadPowers[i]] );
+			CG_DrawPic( holdX, graphicYPos, smallIconSize_x, smallIconSize_y, force_icons[showDataPadPowers[i]] );
 		}
 
 		// A new force power
@@ -4294,12 +4294,12 @@ void CG_DrawDataPadForceSelect( void )
 			((cg_updatedDataPadForcePower2.integer - 1) == showDataPadPowers[i]) ||
 			((cg_updatedDataPadForcePower3.integer - 1) == showDataPadPowers[i]))
 		{
-			CG_DrawPic( holdX, graphicYPos, smallIconSize, smallIconSize, cgs.media.DPForcePowerOverlay );
+			CG_DrawPic( holdX, graphicYPos, smallIconSize_x, smallIconSize_y, cgs.media.DPForcePowerOverlay );
 		}
 
 		if (force_icons[showDataPadPowers[i]])
 		{
-			holdX -= (smallIconSize+pad);
+			holdX -= (smallIconSize_x+pad);
 		}
 	}
 
@@ -4308,14 +4308,14 @@ void CG_DrawDataPadForceSelect( void )
 	{
 
 		cgi_R_SetColor(colorTable[CT_WHITE]);
-		CG_DrawPic( centerXPos-(bigIconSize/2), (graphicYPos-((bigIconSize-smallIconSize)/2)), bigIconSize, bigIconSize, force_icons[showDataPadPowers[cg.DataPadforcepowerSelect]] );
+		CG_DrawPic( centerXPos-(bigIconSize_x/2), (graphicYPos-((bigIconSize_y-smallIconSize_y)/2)), bigIconSize_x, bigIconSize_y, force_icons[showDataPadPowers[cg.DataPadforcepowerSelect]] );
 
 		// New force power
 		if (((cg_updatedDataPadForcePower1.integer - 1) == showDataPadPowers[cg.DataPadforcepowerSelect]) ||
 			((cg_updatedDataPadForcePower2.integer - 1) == showDataPadPowers[cg.DataPadforcepowerSelect]) ||
 			((cg_updatedDataPadForcePower3.integer - 1) == showDataPadPowers[cg.DataPadforcepowerSelect]))
 		{
-			CG_DrawPic( centerXPos-(bigIconSize/2), (graphicYPos-((bigIconSize-smallIconSize)/2)), bigIconSize, bigIconSize, cgs.media.DPForcePowerOverlay );
+			CG_DrawPic( centerXPos-(bigIconSize_x/2), (graphicYPos-((bigIconSize_y-smallIconSize_y)/2)), bigIconSize_x, bigIconSize_y, cgs.media.DPForcePowerOverlay );
 		}
 	}
 
@@ -4329,7 +4329,7 @@ void CG_DrawDataPadForceSelect( void )
 	cgi_R_SetColor(colorTable[CT_WHITE]);
 
 	// Work forwards from current icon
-	holdX = centerXPos + (bigIconSize/2) + bigPad;
+	holdX = centerXPos + (bigIconSize_x/2) + bigPad;
 	for (iconCnt=1;iconCnt<(sideRightIconCnt+1);i++)
 	{
 		if (i>=MAX_DPSHOWPOWERS)
@@ -4346,7 +4346,7 @@ void CG_DrawDataPadForceSelect( void )
 
 		if (force_icons[showDataPadPowers[i]])
 		{
-			CG_DrawPic( holdX, graphicYPos, smallIconSize, smallIconSize, force_icons[showDataPadPowers[i]] );
+			CG_DrawPic( holdX, graphicYPos, smallIconSize_x, smallIconSize_y, force_icons[showDataPadPowers[i]] );
 		}
 
 		// A new force power
@@ -4354,12 +4354,12 @@ void CG_DrawDataPadForceSelect( void )
 			((cg_updatedDataPadForcePower2.integer - 1) == showDataPadPowers[i]) ||
 			((cg_updatedDataPadForcePower3.integer - 1) == showDataPadPowers[i]))
 		{
-			CG_DrawPic( holdX, graphicYPos, smallIconSize, smallIconSize, cgs.media.DPForcePowerOverlay );
+			CG_DrawPic( holdX, graphicYPos, smallIconSize_x, smallIconSize_y, cgs.media.DPForcePowerOverlay );
 		}
 
 		if (force_icons[showDataPadPowers[i]])
 		{
-			holdX += (smallIconSize+pad);
+			holdX += (smallIconSize_x+pad);
 		}
 	}
 
