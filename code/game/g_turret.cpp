@@ -2307,7 +2307,7 @@ void panel_turret_shoot( gentity_t *self, vec3_t org, vec3_t dir)
 	missile->classname = "b_proj";
 	missile->s.weapon = WP_TIE_FIGHTER;
 
-	VectorSet( missile->maxs, 9, 9, 9 );
+	VectorSet( missile->maxs, 7, 7, 7 );
 	VectorScale( missile->maxs, -1, missile->mins );
 
 	missile->bounceCount = 0;
@@ -2320,7 +2320,7 @@ void panel_turret_shoot( gentity_t *self, vec3_t org, vec3_t dir)
 	G_SoundOnEnt( self, CHAN_AUTO, "sound/movers/objects/ladygun_fire" );
 
 	VectorMA( org, 32, dir, org );
-	org[2] -= 4;
+	org[2] -= 5;
 	G_PlayEffect( "ships/imp_blastermuzzleflash", org, dir );
 }
 
@@ -2520,7 +2520,7 @@ void SP_misc_panel_turret( gentity_t *self )
 	self->s.weapon = WP_TURRET;
 
 	RegisterItem( FindItemForWeapon( WP_EMPLACED_GUN ));
-	RegisterItem( FindItemForWeapon( WP_TIE_FIGHTER )); //also register TIE blaster shot
+	RegisterItem( FindItemForWeapon( WP_TIE_FIGHTER )); //also register TIE blaster shot (why did Raven change the projectile from WP_EMPLACED_GUN to WP_TIE_FIGHTER?)
 	gi.linkentity( self );
 
 	self->e_UseFunc = useF_panel_turret_use;
