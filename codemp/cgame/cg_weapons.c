@@ -1091,8 +1091,10 @@ void CG_DrawWeaponSelect( void ) {
 	int				i;
 	int				bits;
 	int				count;
-	int				smallIconSize,bigIconSize;
-	int				holdX,x,y,pad;
+	float			smallIconSize_x,bigIconSize_x;
+	float			smallIconSize_y,bigIconSize_y;
+	float			holdX,pad;
+	int				x,y;
 	int				sideLeftIconCnt,sideRightIconCnt;
 	int				sideMax,holdCount,iconCnt;
 //	int				height;
@@ -1180,9 +1182,11 @@ void CG_DrawWeaponSelect( void ) {
 		i = LAST_USEABLE_WEAPON;
 	}
 
-	smallIconSize = 40;
-	bigIconSize = 80;
-	pad = 12;
+	smallIconSize_x = 40 * cgs.widthRatioCoef;
+	smallIconSize_y = 40;
+	bigIconSize_x = 80 * cgs.widthRatioCoef;
+	bigIconSize_y = 80;
+	pad = 12 * cgs.widthRatioCoef;
 
 	x = 320;
 	y = 410;
@@ -1195,7 +1199,7 @@ void CG_DrawWeaponSelect( void ) {
 	// Left side ICONS
 	trap->R_SetColor(colorTable[CT_WHITE]);
 	// Work backwards from current icon
-	holdX = x - ((bigIconSize/2) + pad + smallIconSize);
+	holdX = x - ((bigIconSize_x/2) + pad + smallIconSize_x);
 //	height = smallIconSize * 1;//cg.iconHUDPercent;
 	drewConc = qfalse;
 
@@ -1243,14 +1247,14 @@ void CG_DrawWeaponSelect( void ) {
 			trap->R_SetColor(colorTable[CT_WHITE]);
 			if (!CG_WeaponCheck(i))
 			{
-				CG_DrawPic( holdX, y+10+yOffset, smallIconSize, smallIconSize, /*weaponInfo->weaponIconNoAmmo*/cgs.media.weaponIcons_NA[i] );
+				CG_DrawPic( holdX, y+10+yOffset, smallIconSize_x, smallIconSize_y, /*weaponInfo->weaponIconNoAmmo*/cgs.media.weaponIcons_NA[i] );
 			}
 			else
 			{
-				CG_DrawPic( holdX, y+10+yOffset, smallIconSize, smallIconSize, /*weaponInfo->weaponIcon*/cgs.media.weaponIcons[i] );
+				CG_DrawPic( holdX, y+10+yOffset, smallIconSize_x, smallIconSize_y, /*weaponInfo->weaponIcon*/cgs.media.weaponIcons[i] );
 			}
 
-			holdX -= (smallIconSize+pad);
+			holdX -= (smallIconSize_x+pad);
 		}
 		if ( i == WP_CONCUSSION )
 		{
@@ -1270,11 +1274,11 @@ void CG_DrawWeaponSelect( void ) {
 		trap->R_SetColor( colorTable[CT_WHITE]);
 		if (!CG_WeaponCheck(cg.weaponSelect))
 		{
-			CG_DrawPic( x-(bigIconSize/2), (y-((bigIconSize-smallIconSize)/2))+10+yOffset, bigIconSize, bigIconSize, cgs.media.weaponIcons_NA[cg.weaponSelect] );
+			CG_DrawPic( x-(bigIconSize_x/2), (y-((bigIconSize_y-smallIconSize_y)/2))+10+yOffset, bigIconSize_x, bigIconSize_y, cgs.media.weaponIcons_NA[cg.weaponSelect] );
 		}
 		else
 		{
-			CG_DrawPic( x-(bigIconSize/2), (y-((bigIconSize-smallIconSize)/2))+10+yOffset, bigIconSize, bigIconSize, cgs.media.weaponIcons[cg.weaponSelect] );
+			CG_DrawPic( x-(bigIconSize_x/2), (y-((bigIconSize_y-smallIconSize_y)/2))+10+yOffset, bigIconSize_x, bigIconSize_y, cgs.media.weaponIcons[cg.weaponSelect] );
 		}
 	}
 
@@ -1293,7 +1297,7 @@ void CG_DrawWeaponSelect( void ) {
 
 	// Right side ICONS
 	// Work forwards from current icon
-	holdX = x + (bigIconSize/2) + pad;
+	holdX = x + (bigIconSize_x/2) + pad;
 //	height = smallIconSize * cg.iconHUDPercent;
 	for (iconCnt=1;iconCnt<(sideRightIconCnt+1);i++)
 	{
@@ -1337,15 +1341,15 @@ void CG_DrawWeaponSelect( void ) {
 			trap->R_SetColor( colorTable[CT_WHITE]);
 			if (!CG_WeaponCheck(i))
 			{
-				CG_DrawPic( holdX, y+10+yOffset, smallIconSize, smallIconSize, cgs.media.weaponIcons_NA[i] );
+				CG_DrawPic( holdX, y+10+yOffset, smallIconSize_x, smallIconSize_y, cgs.media.weaponIcons_NA[i] );
 			}
 			else
 			{
-				CG_DrawPic( holdX, y+10+yOffset, smallIconSize, smallIconSize, cgs.media.weaponIcons[i] );
+				CG_DrawPic( holdX, y+10+yOffset, smallIconSize_x, smallIconSize_y, cgs.media.weaponIcons[i] );
 			}
 
 
-			holdX += (smallIconSize+pad);
+			holdX += (smallIconSize_x+pad);
 		}
 		if ( i == WP_CONCUSSION )
 		{

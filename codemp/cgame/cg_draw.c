@@ -1536,8 +1536,9 @@ void CG_DrawForceSelect( void )
 {
 	int		i;
 	int		count;
-	int		smallIconSize,bigIconSize;
-	int		holdX, x, y, pad;
+	float	smallIconSize_x,smallIconSize_y,bigIconSize_x,bigIconSize_y;
+	float	holdX,pad;
+	int		x,y;
 	int		sideLeftIconCnt,sideRightIconCnt;
 	int		sideMax,holdCount,iconCnt;
 	int		yOffset = 0;
@@ -1595,8 +1596,8 @@ void CG_DrawForceSelect( void )
 		sideRightIconCnt = holdCount - sideLeftIconCnt;
 	}
 
-	smallIconSize = 30;
-	bigIconSize = 60;
+	smallIconSize_x = 30 * cgs.widthRatioCoef, smallIconSize_y = 30;
+	bigIconSize_x = 60 * cgs.widthRatioCoef, bigIconSize_y = 60;
 	pad = 12;
 
 	x = 320;
@@ -1610,7 +1611,7 @@ void CG_DrawForceSelect( void )
 
 	trap->R_SetColor(NULL);
 	// Work backwards from current icon
-	holdX = x - ((bigIconSize/2) + pad + smallIconSize);
+	holdX = x - ((bigIconSize_x/2) + pad + smallIconSize_x);
 	for (iconCnt=1;iconCnt<(sideLeftIconCnt+1);i--)
 	{
 		if (i < 0)
@@ -1627,8 +1628,8 @@ void CG_DrawForceSelect( void )
 
 		if (cgs.media.forcePowerIcons[forcePowerSorted[i]])
 		{
-			CG_DrawPic( holdX, y + yOffset, smallIconSize, smallIconSize, cgs.media.forcePowerIcons[forcePowerSorted[i]] );
-			holdX -= (smallIconSize+pad);
+			CG_DrawPic( holdX, y + yOffset, smallIconSize_x, smallIconSize_y, cgs.media.forcePowerIcons[forcePowerSorted[i]] );
+			holdX -= (smallIconSize_x+pad);
 		}
 	}
 
@@ -1637,7 +1638,7 @@ void CG_DrawForceSelect( void )
 		// Current Center Icon
 		if (cgs.media.forcePowerIcons[cg.forceSelect])
 		{
-			CG_DrawPic( x-(bigIconSize/2), (y-((bigIconSize-smallIconSize)/2)) + yOffset, bigIconSize, bigIconSize, cgs.media.forcePowerIcons[cg.forceSelect] ); //only cache the icon for display
+			CG_DrawPic( x-(bigIconSize_x/2), (y-((bigIconSize_y-smallIconSize_y)/2)) + yOffset, bigIconSize_x, bigIconSize_y, cgs.media.forcePowerIcons[cg.forceSelect] ); //only cache the icon for display
 		}
 	}
 
@@ -1648,7 +1649,7 @@ void CG_DrawForceSelect( void )
 	}
 
 	// Work forwards from current icon
-	holdX = x + (bigIconSize/2) + pad;
+	holdX = x + (bigIconSize_x/2) + pad;
 	for (iconCnt=1;iconCnt<(sideRightIconCnt+1);i++)
 	{
 		if (i>=MAX_SHOWPOWERS)
@@ -1665,8 +1666,8 @@ void CG_DrawForceSelect( void )
 
 		if (cgs.media.forcePowerIcons[forcePowerSorted[i]])
 		{
-			CG_DrawPic( holdX, y + yOffset, smallIconSize, smallIconSize, cgs.media.forcePowerIcons[forcePowerSorted[i]] ); //only cache the icon for display
-			holdX += (smallIconSize+pad);
+			CG_DrawPic( holdX, y + yOffset, smallIconSize_x, smallIconSize_y, cgs.media.forcePowerIcons[forcePowerSorted[i]] ); //only cache the icon for display
+			holdX += (smallIconSize_x+pad);
 		}
 	}
 
@@ -1685,10 +1686,11 @@ void CG_DrawInvenSelect( void )
 {
 	int				i;
 	int				sideMax,holdCount,iconCnt;
-	int				smallIconSize,bigIconSize;
+	float			smallIconSize_x,smallIconSize_y,bigIconSize_x,bigIconSize_y;
 	int				sideLeftIconCnt,sideRightIconCnt;
 	int				count;
-	int				holdX, x, y, y2, pad;
+	int				x, y, y2;
+	float			holdX, pad;
 //	float			addX;
 
 	// don't display if dead
@@ -1758,16 +1760,16 @@ void CG_DrawInvenSelect( void )
 		i = HI_NUM_HOLDABLE-1;
 	}
 
-	smallIconSize = 40;
-	bigIconSize = 80;
-	pad = 16;
+	smallIconSize_x = 40 * cgs.widthRatioCoef, smallIconSize_y = 40;
+	bigIconSize_x = 80 * cgs.widthRatioCoef, bigIconSize_y = 80;
+	pad = 16 * cgs.widthRatioCoef;
 
 	x = 320;
 	y = 410;
 
 	// Left side ICONS
 	// Work backwards from current icon
-	holdX = x - ((bigIconSize/2) + pad + smallIconSize);
+	holdX = x - ((bigIconSize_x/2) + pad + smallIconSize_x);
 //	addX = (float) smallIconSize * .75;
 
 	for (iconCnt=0;iconCnt<sideLeftIconCnt;i--)
@@ -1792,14 +1794,14 @@ void CG_DrawInvenSelect( void )
 		if (cgs.media.invenIcons[i])
 		{
 			trap->R_SetColor(NULL);
-			CG_DrawPic( holdX, y+10, smallIconSize, smallIconSize, cgs.media.invenIcons[i] );
+			CG_DrawPic( holdX, y+10, smallIconSize_x, smallIconSize_y, cgs.media.invenIcons[i] );
 
 			trap->R_SetColor(colorTable[CT_ICON_BLUE]);
 			/*CG_DrawNumField (holdX + addX, y + smallIconSize, 2, cg.snap->ps.inventory[i], 6, 12,
 				NUM_FONT_SMALL,qfalse);
 				*/
 
-			holdX -= (smallIconSize+pad);
+			holdX -= (smallIconSize_x+pad);
 		}
 	}
 
@@ -1808,7 +1810,7 @@ void CG_DrawInvenSelect( void )
 	{
 		int itemNdex;
 		trap->R_SetColor(NULL);
-		CG_DrawPic( x-(bigIconSize/2), (y-((bigIconSize-smallIconSize)/2))+10, bigIconSize, bigIconSize, cgs.media.invenIcons[cg.itemSelect] );
+		CG_DrawPic( x-(bigIconSize_x/2), (y-((bigIconSize_y-smallIconSize_y)/2))+10, bigIconSize_x, bigIconSize_y, cgs.media.invenIcons[cg.itemSelect] );
 	//	addX = (float) bigIconSize * .75;
 		trap->R_SetColor(colorTable[CT_ICON_BLUE]);
 		/*CG_DrawNumField ((x-(bigIconSize/2)) + addX, y, 2, cg.snap->ps.inventory[cg.inventorySelect], 6, 12,
@@ -1842,7 +1844,7 @@ void CG_DrawInvenSelect( void )
 
 	// Right side ICONS
 	// Work forwards from current icon
-	holdX = x + (bigIconSize/2) + pad;
+	holdX = x + (bigIconSize_x/2) + pad;
 //	addX = (float) smallIconSize * .75;
 	for (iconCnt=0;iconCnt<sideRightIconCnt;i++)
 	{
@@ -1866,13 +1868,13 @@ void CG_DrawInvenSelect( void )
 		if (cgs.media.invenIcons[i])
 		{
 			trap->R_SetColor(NULL);
-			CG_DrawPic( holdX, y+10, smallIconSize, smallIconSize, cgs.media.invenIcons[i] );
+			CG_DrawPic( holdX, y+10, smallIconSize_x, smallIconSize_y, cgs.media.invenIcons[i] );
 
 			trap->R_SetColor(colorTable[CT_ICON_BLUE]);
 			/*CG_DrawNumField (holdX + addX, y + smallIconSize, 2, cg.snap->ps.inventory[i], 6, 12,
 				NUM_FONT_SMALL,qfalse);*/
 
-			holdX += (smallIconSize+pad);
+			holdX += (smallIconSize_x+pad);
 		}
 	}
 }
