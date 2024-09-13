@@ -1783,6 +1783,10 @@ public:
                             disarmBonus += 1 + saber[1].disarmBonus;
 						}
 					}
+					if ( forcePowerLevel[FP_SABER_OFFENSE] > 1 )
+					{//bonus for saber offense above 1
+						disarmBonus += forcePowerLevel[FP_SABER_OFFENSE] - 1;
+					}
 					return disarmBonus;
 				};
 	int			SaberParryBonus( void )
@@ -1795,6 +1799,10 @@ public:
 					if ( dualSabers && saber[1].Active() )
 					{//bonus for having 2 sabers
 						parryBonus += 1 + saber[1].parryBonus;
+					}
+					if ( forcePowerLevel[FP_SABER_DEFENSE] > 1 )
+					{//bonus for saber defense above 1
+						parryBonus += forcePowerLevel[FP_SABER_DEFENSE] - 1;
 					}
 					return parryBonus;
 				};
