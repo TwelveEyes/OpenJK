@@ -536,6 +536,13 @@ void fx_rain_think( gentity_t *ent )
 
 void SP_CreateRain( gentity_t *ent )
 {
+	if ( ent->spawnflags == 0 )
+	{//JK2 style defaults
+		G_FindConfigstringIndex("lightrain", CS_WORLD_FX, MAX_WORLD_FX, qtrue);
+		G_FindConfigstringIndex("wind", CS_WORLD_FX, MAX_WORLD_FX, qtrue);
+		return;
+	}
+
 	// Different Types Of Rain
 	//-------------------------
 	if (ent->spawnflags & 1)
