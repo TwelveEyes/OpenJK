@@ -199,8 +199,6 @@ void R_BindVBO(VBO_t * vbo)
 		glState.vertexAttribsInterpolation = 0;
 		glState.vertexAttribsOldFrame = 0;
 		glState.vertexAttribsNewFrame = 0;
-		glState.vertexAttribsTexCoordOffset[0] = 0;
-		glState.vertexAttribsTexCoordOffset[1] = 1;
 		glState.vertexAnimation = qfalse;
 		glState.skeletalAnimation = qfalse;
 
@@ -406,6 +404,7 @@ void AddVertexArray(
 	size_t size,
 	int stride,
 	int offset,
+	int stepRate,
 	void *stream,
 	int streamStride)
 {
@@ -415,7 +414,8 @@ void AddVertexArray(
 	properties->sizes[attributeIndex]                           = size;
 	properties->strides[attributeIndex]                         = stride;
 	properties->streams[attributeIndex]                         = stream;
-	properties->streamStrides[attributeIndex]					= streamStride;
+	properties->streamStrides[attributeIndex]                   = streamStride;
+	properties->stepRates[attributeIndex]                       = stepRate;
 
 	properties->numVertexArrays++;
 }
@@ -446,6 +446,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.xyz[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.xyz,
 				sizeof(tess.xyz[0]));
 
@@ -456,6 +457,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][0],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 
@@ -466,6 +468,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][1]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][1],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 
@@ -476,6 +479,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][2]) * 2,
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][2],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 ;
@@ -487,6 +491,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][3]) * 2,
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][3],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 
@@ -498,6 +503,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][4]) * 2,
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][4],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 
@@ -508,6 +514,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.normal[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.normal,
 				sizeof(tess.normal[0]));
 
@@ -518,6 +525,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.tangent[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.tangent,
 				sizeof(tess.tangent[0]));
 
@@ -528,6 +536,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.vertexColors[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.vertexColors,
 				sizeof(tess.vertexColors[0]));
 
@@ -538,6 +547,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.lightdir[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.lightdir,
 				sizeof(tess.lightdir[0]));
 	}
@@ -565,6 +575,7 @@ void CalculateVertexArraysFromVBO(
 				vbo->sizes[i],
 				vbo->strides[i],
 				vbo->offsets[i],
+				vbo->stepRates[i],
 				NULL,
 				0);
 	}

@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // tr_image.c
 #include "tr_local.h"
 #include "glext.h"
+#include "tr_smaa.h"
 
 static byte			 s_intensitytable[256];
 static unsigned char s_gammatable[256];
@@ -1962,6 +1963,14 @@ static void RawImage_UploadTexture( byte *data, int x, int y, int width, int hei
 		dataFormat = GL_DEPTH_COMPONENT;
 		dataType = GL_UNSIGNED_BYTE;
 		break;
+	case GL_R8:
+		dataFormat = GL_RED;
+		dataType = GL_UNSIGNED_BYTE;
+		break;
+	case GL_RG8:
+		dataFormat = GL_RG;
+		dataType = GL_UNSIGNED_BYTE;
+		break;
 	case GL_RG16F:
 		dataFormat = GL_RG;
 		dataType = GL_HALF_FLOAT;
@@ -3316,6 +3325,29 @@ static void R_CreateDefaultImage( void ) {
 		IMGTYPE_COLORALPHA, IMGFLAG_MIPMAP, GL_RGBA8);
 }
 
+static void R_CreateSMAAImages(void) {
+
+	if (!r_smaa->integer)
+		return;
+	
+	tr.smaaAreaImage = R_CreateImage(
+		"*smaaAreaTex", (byte *)areaTexBytes, AREATEX_WIDTH, AREATEX_HEIGHT,
+		IMGTYPE_COLORALPHA, IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE, GL_RG8);
+	tr.smaaSearchImage = R_CreateImage(
+		"*smaaSearchTex", (byte *)searchTexBytes, SEARCHTEX_WIDTH, SEARCHTEX_HEIGHT,
+		IMGTYPE_COLORALPHA, IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE, GL_R8);
+
+	int width = glConfig.vidWidth;
+	int height = glConfig.vidHeight;
+
+	tr.smaaEdgeImage = R_CreateImage(
+		"smaaEdgeTex", NULL, width, height, IMGTYPE_COLORALPHA,
+		IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE, GL_RG8);
+	tr.smaaBlendImage = R_CreateImage(
+		"smaaBlendTex", NULL, width, height, IMGTYPE_COLORALPHA,
+		IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE, GL_RGBA8);
+}
+
 /*
 ==================
 R_CreateBuiltinImages
@@ -3372,6 +3404,7 @@ void R_CreateBuiltinImages( void ) {
 	R_CreateDlightImage();
 	R_CreateFogImage();
 	R_CreateEnvBrdfLUT();
+	R_CreateSMAAImages();
 
 	int width = glConfig.vidWidth;
 	int height = glConfig.vidHeight;
@@ -3415,6 +3448,36 @@ void R_CreateBuiltinImages( void ) {
 		"*texturedepth", NULL, PSHADOW_MAP_SIZE, PSHADOW_MAP_SIZE,
 		IMGTYPE_COLORALPHA, IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE,
 		GL_DEPTH_COMPONENT24);
+
+	bool needVelocityBuffer = (
+		r_smaa->integer == 2
+		// || r_smaa->integer == 4
+		// || r_ssr->integer
+		// || r_motionBlur->integer
+		// || r_taa->integer
+		);
+	if (needVelocityBuffer)
+	{
+		tr.velocityImage = R_CreateImage(
+			"*velocity", NULL, width, height,
+			IMGTYPE_COLORALPHA, IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE,
+			GL_RG16F);
+	}
+	if (r_smaa->integer == 2)
+	{
+		tr.smaaResolveImage = R_CreateImage(
+			"*smaaResolve", NULL, width, height,
+			IMGTYPE_COLORALPHA, IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE,
+			hdrFormat);
+		tr.temporalResolveImage = R_CreateImage(
+			"*temporalResolve", NULL, width, height,
+			IMGTYPE_COLORALPHA, IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE,
+			hdrFormat);
+		tr.historyImage = R_CreateImage(
+			"*history", NULL, width, height,
+			IMGTYPE_COLORALPHA, IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE,
+			hdrFormat);
+	}
 
 	{
 		unsigned short sdata[4];
@@ -3467,7 +3530,7 @@ void R_CreateBuiltinImages( void ) {
 	{
 		tr.screenSsaoImage = R_CreateImage(
 			"*screenSsao", NULL, width / 2, height / 2, IMGTYPE_COLORALPHA,
-			IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE, GL_RGBA8);
+			IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE, GL_R8);
 		tr.hdrDepthImage = R_CreateImage(
 			"*hdrDepth", NULL, width, height, IMGTYPE_COLORALPHA,
 			IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE, GL_R32F);
@@ -3497,10 +3560,6 @@ void R_CreateBuiltinImages( void ) {
 			IMGTYPE_COLORALPHA,
 			IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE | IMGLFAG_SHADOWCOMP | IMGFLAG_MUTABLE,
 			GL_DEPTH_COMPONENT16);
-
-		tr.screenShadowImage = R_CreateImage(
-			"*screenShadow", NULL, width, height, IMGTYPE_COLORALPHA,
-			IMGFLAG_NO_COMPRESSION | IMGFLAG_CLAMPTOEDGE, GL_R8);
 	}
 
 	if (r_cubeMapping->integer)
