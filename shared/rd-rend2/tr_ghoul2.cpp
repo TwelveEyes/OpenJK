@@ -3671,9 +3671,16 @@ void RB_SurfaceGhoul( CRenderableSurface *surf )
 #ifdef _G2_GORE
 	if (surf->alternateTex)
 	{
-		R_BindVBO(tr.goreVBO);
-		R_BindIBO(tr.goreIBO);
-		tess.externalIBO = tr.goreIBO;
+		if (!surf->alternateTex->cachedInFrame[backEndData->realFrameNumber % MAX_FRAMES])
+		{
+			RB_UpdateGoreVertexData(backEndData->currentFrame, surf->alternateTex, false);
+		}
+		else
+		{
+			R_BindVBO(backEndData->currentFrame->goreVBO);
+			R_BindIBO(backEndData->currentFrame->goreIBO);
+		}
+		tess.externalIBO = backEndData->currentFrame->goreIBO;
 
 		numIndexes = surf->alternateTex->numIndexes;
 		numVertexes = surf->alternateTex->numVerts;
@@ -4619,8 +4626,8 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 		{
 			modelName = mdxm->name;
 		}
-		VBO_t *vbo = R_CreateVBO (data, dataSize, VBO_USAGE_STATIC);
-		IBO_t *ibo = R_CreateIBO((byte *)indices, sizeof(glIndex_t) * numTriangles * 3, VBO_USAGE_STATIC);
+		VBO_t *vbo = R_CreateVBO (data, dataSize, VBO_USAGE_STATIC, mod_name);
+		IBO_t *ibo = R_CreateIBO((byte *)indices, sizeof(glIndex_t) * numTriangles * 3, VBO_USAGE_STATIC, mod_name);
 
 		Hunk_FreeTempMemory (data);
 		Hunk_FreeTempMemory (tangentsf);
