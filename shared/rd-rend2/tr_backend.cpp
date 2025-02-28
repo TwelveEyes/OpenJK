@@ -3223,8 +3223,8 @@ const void *RB_PostProcess(const void *data)
 			FBO_FastBlitFromTexture(srcFbo->colorImage[0], NULL, dstBox, color, 0);
 		}
 
-		// Copy depth buffer to the backbuffer for depth culling refractive surfaces
-		FBO_FastBlit(tr.renderFbo, srcBox, NULL, dstBox, GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		// Copy depth buffer to the backbuffer for depth culling refractive surfaces, or don't. It's slow
+		//FBO_FastBlit(srcFbo, srcBox, NULL, dstBox, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	}
 
 	if (r_drawSunRays->integer)
@@ -3305,6 +3305,8 @@ const void *RB_PostProcess(const void *data)
 		backEnd.refdef.drawSurfs + backEnd.refdef.fistDrawSurf,
 		backEnd.refdef.numDrawSurfs - tr.refdef.fistDrawSurf);
 	backEnd.refractionFill = qfalse;
+	GL_State(GLS_DEFAULT);
+	glClear(GL_DEPTH_BUFFER_BIT);
 
 	return (const void *)(cmd + 1);
 }
