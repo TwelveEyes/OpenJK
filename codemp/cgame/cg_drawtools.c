@@ -153,8 +153,9 @@ A width of 0 will draw with the original image width
 rotates around the upper right corner of the passed in point
 =================
 */
-void CG_DrawRotatePic( float x, float y, float width, float height,float angle, qhandle_t hShader ) {
-	trap->R_DrawRotatePic( x, y, width, height, 0, 0, 1, 1, angle, hShader );
+void CG_DrawRotatePic( float x, float y, float width, float height,float angle, qhandle_t hShader, float aspectCorrection ) {
+	aspectCorrection = !!aspectCorrection ? aspectCorrection : 1.0f;
+	trap->R_DrawRotatePic( x, y, width, height, 0, 0, 1, 1, angle, hShader, aspectCorrection );
 }
 
 /*
@@ -166,8 +167,9 @@ A width of 0 will draw with the original image width
 Actually rotates around the center point of the passed in coordinates
 =================
 */
-void CG_DrawRotatePic2( float x, float y, float width, float height,float angle, qhandle_t hShader ) {
-	trap->R_DrawRotatePic2( x, y, width, height, 0, 0, 1, 1, angle, hShader );
+void CG_DrawRotatePic2( float x, float y, float width, float height,float angle, qhandle_t hShader, float aspectCorrection ) {
+	aspectCorrection = !!aspectCorrection ? aspectCorrection : 1.0f;
+	trap->R_DrawRotatePic2( x, y, width, height, 0, 0, 1, 1, angle, hShader, aspectCorrection );
 }
 
 /*
