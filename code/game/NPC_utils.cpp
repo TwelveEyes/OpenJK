@@ -272,7 +272,8 @@ qboolean NPC_UpdateAngles ( qboolean doPitch, qboolean doYaw )
 	if (!NPC_IsTrooper(NPC)
 		&& NPC->enemy
 		&& !G_IsRidingVehicle( NPC )
-		&& NPC->client->NPC_class != CLASS_VEHICLE )
+		&& NPC->client->NPC_class != CLASS_VEHICLE
+		&& NPC->client->NPC_class != CLASS_GALAKMECH )
 	{
 		if (NPC->s.weapon==WP_BLASTER_PISTOL ||
 			NPC->s.weapon==WP_BLASTER ||
