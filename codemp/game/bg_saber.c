@@ -2258,9 +2258,9 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			&& (pm->cmd.buttons&BUTTON_ATTACK)//hitting attack
 			&& PM_GroundDistance() < 70.0f //not too high above ground
 			&& ( pm->cmd.upmove > 0 || (pm->ps->pm_flags & PMF_JUMP_HELD) )//focus-holding player
-			&& BG_EnoughForcePowerForMove( SABER_ALT_ATTACK_POWER_LR ) )//have enough power
+			/* && BG_EnoughForcePowerForMove( SABER_ALT_ATTACK_POWER_LR ) */ )//have enough power
 		{//cartwheel right
-			BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_LR);
+			// BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_LR);
 			if ( overrideJumpRightAttackMove != LS_INVALID )
 			{//overridden with another move
 				return overrideJumpRightAttackMove;
@@ -2319,9 +2319,9 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			&& (pm->cmd.buttons&BUTTON_ATTACK)//hitting attack
 			&& PM_GroundDistance() < 70.0f //not too high above ground
 			&& ( pm->cmd.upmove > 0 || (pm->ps->pm_flags & PMF_JUMP_HELD) )//focus-holding player
-			&& BG_EnoughForcePowerForMove( SABER_ALT_ATTACK_POWER_LR ) )//have enough power
+			/* && BG_EnoughForcePowerForMove( SABER_ALT_ATTACK_POWER_LR ) */ )//have enough power
 		{//cartwheel left
-			BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_LR);
+			// BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_LR);
 
 			if ( overrideJumpLeftAttackMove != LS_INVALID )
 			{//overridden with another move
@@ -2387,14 +2387,14 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 				!BG_SaberInAttack(pm->ps->saberMove) &&
 				pm->ps->weaponTime <= 0 &&
 				pm->ps->forceHandExtend == HANDEXTEND_NONE &&
-				(pm->cmd.buttons & BUTTON_ATTACK)&&
-				BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB) )
+				(pm->cmd.buttons & BUTTON_ATTACK)/* &&
+				BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB) */ )
 			{ //DUAL/STAFF JUMP ATTACK
 				newmove = PM_SaberJumpAttackMove2();
 				if ( newmove != LS_A_T2B
 					&& newmove != LS_NONE )
 				{
-					BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
+					// BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
 				}
 			}
 			else if (!noSpecials&&
@@ -2402,8 +2402,8 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 				pm->ps->velocity[2] > 100 &&
 				PM_GroundDistance() < 32 &&
 				!BG_InSpecialJump(pm->ps->legsAnim) &&
-				!BG_SaberInSpecialAttack(pm->ps->torsoAnim)&&
-				BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB))
+				!BG_SaberInSpecialAttack(pm->ps->torsoAnim)/* &&
+				BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB) */)
 			{ //FLIP AND DOWNWARD ATTACK
 				//trace_t tr;
 
@@ -2413,7 +2413,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 					if ( newmove != LS_A_T2B
 						&& newmove != LS_NONE )
 					{
-						BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
+						// BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
 					}
 				}
 			}
@@ -2422,8 +2422,8 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 				pm->ps->velocity[2] > 100 &&
 				PM_GroundDistance() < 32 &&
 				!BG_InSpecialJump(pm->ps->legsAnim) &&
-				!BG_SaberInSpecialAttack(pm->ps->torsoAnim)&&
-				BG_EnoughForcePowerForMove( SABER_ALT_ATTACK_POWER_FB ))
+				!BG_SaberInSpecialAttack(pm->ps->torsoAnim)/* &&
+				BG_EnoughForcePowerForMove( SABER_ALT_ATTACK_POWER_FB ) */)
 			{ //DFA
 				//trace_t tr;
 
@@ -2433,7 +2433,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 					if ( newmove != LS_A_T2B
 						&& newmove != LS_NONE )
 					{
-						BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
+						// BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
 					}
 				}
 			}
@@ -2441,24 +2441,24 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 				pm->ps->groundEntityNum != ENTITYNUM_NONE &&
 				(pm->ps->pm_flags & PMF_DUCKED) &&
 				pm->ps->weaponTime <= 0 &&
-				!BG_SaberInSpecialAttack(pm->ps->torsoAnim)&&
-				BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB))
+				!BG_SaberInSpecialAttack(pm->ps->torsoAnim)/* &&
+				BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB) */)
 			{ //LUNGE (weak)
 				newmove = PM_SaberLungeAttackMove( noSpecials );
 				if ( newmove != LS_A_T2B
 					&& newmove != LS_NONE )
 				{
-					BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
+					// BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
 				}
 			}
 			else if ( !noSpecials )
 			{
 				saberMoveName_t stabDownMove = PM_CheckStabDown();
 				if (stabDownMove != LS_NONE
-					&& BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB) )
+					/* && BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB) */ )
 				{
 					newmove = stabDownMove;
-					BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
+					// BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
 				}
 				else
 				{
@@ -2797,7 +2797,7 @@ void PM_WeaponLightsaber(void)
 		{
 			if ( (pm->cmd.buttons&BUTTON_ATTACK) )
 			{
-				if ( BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB) && !pm->ps->saberInFlight )
+				if ( /* BG_EnoughForcePowerForMove(SABER_ALT_ATTACK_POWER_FB) && */ !pm->ps->saberInFlight )
 				{
 					if ( PM_CanDoRollStab() )
 					{
@@ -2808,7 +2808,7 @@ void PM_WeaponLightsaber(void)
 							PM_AddEvent(EV_SABER_UNHOLSTER);
 						}
 						PM_SetSaberMove( LS_ROLL_STAB );
-						BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
+						// BG_ForcePowerDrain(pm->ps, FP_GRIP, SABER_ALT_ATTACK_POWER_FB);
 					}
 				}
 			}
