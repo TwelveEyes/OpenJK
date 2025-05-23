@@ -934,7 +934,7 @@ void CG_DrawIconBackground(void)
 		return;
 	}
 
-	x2 = 30;
+	x2 = 30 + ( 232 * (1 - cgs.widthRatioCoef) );
 	y2 = SCREEN_HEIGHT-70;
 
 	//prongLeftX =x2+37;
@@ -974,8 +974,8 @@ void CG_DrawIconBackground(void)
 		//	xAdd = (int) 8*cg.iconHUDPercent;
 
 			height = (int) (60.0f*cg.iconHUDPercent);
-			CG_DrawPic( x2+60, y2+30+yOffset, 460, -height, drawType);	// Top half
-			CG_DrawPic( x2+60, y2+30-2+yOffset, 460, height, drawType);	// Bottom half
+			CG_DrawPic( x2+60, y2+30+yOffset, 460 * cgs.widthRatioCoef, -height, drawType);	// Top half
+			CG_DrawPic( x2+60, y2+30-2+yOffset, 460 * cgs.widthRatioCoef, height, drawType);	// Bottom half
 
 		}
 		else
@@ -1011,8 +1011,8 @@ void CG_DrawIconBackground(void)
 
 	trap->R_SetColor( colorTable[CT_WHITE] );
 	height = (int) (60.0f*cg.iconHUDPercent);
-	CG_DrawPic( x2+60, y2+30+yOffset, 460, -height, drawType);	// Top half
-	CG_DrawPic( x2+60, y2+30-2+yOffset, 460, height, drawType);	// Bottom half
+	CG_DrawPic( x2+60, y2+30+yOffset, 460 * cgs.widthRatioCoef, -height, drawType);	// Top half
+	CG_DrawPic( x2+60, y2+30-2+yOffset, 460 * cgs.widthRatioCoef, height, drawType);	// Bottom half
 
 	// And now for the prongs
 	if (inTime>cg.time)
