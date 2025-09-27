@@ -1815,7 +1815,7 @@ typedef struct rotatePicCommand_s {
 	float	w, h;
 	float	s1, t1;
 	float	s2, t2;
-	float	a;
+	float	a, ratio;
 } rotatePicCommand_t;
 
 typedef struct drawSurfsCommand_s {
@@ -1878,9 +1878,9 @@ void RE_SetColor( const float *rgba );
 void RE_StretchPic ( float x, float y, float w, float h,
 					  float s1, float t1, float s2, float t2, qhandle_t hShader );
 void RE_RotatePic ( float x, float y, float w, float h,
-					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader );
+					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader, float aspectCorrection );
 void RE_RotatePic2 ( float x, float y, float w, float h,
-					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader );
+					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader, float aspectCorrection );
 void RE_BeginFrame( stereoFrame_t stereoFrame );
 void RE_EndFrame( int *frontEndMsec, int *backEndMsec );
 void RE_TakeVideoFrame( int width, int height, byte *captureBuffer, byte *encodeBuffer, qboolean motionJpeg );
