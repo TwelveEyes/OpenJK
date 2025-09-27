@@ -73,6 +73,15 @@ jobs:
         shell: bash
         run: cmake --build . --config ${{ matrix.build_type }} -j $NUMBER_OF_PROCESSORS
 
+      - name: Copy PK3s
+        if: ${{ matrix.build_type == 'Release' }}
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          mkdir -p ./build/bin/JediAcademy/base/
+          cp ./pk3/jacutscenefixes.pk3 ./build/bin/JediAcademy/base/
+          cp ./pk3/jk2binds.pk3 ./build/bin/JediAcademy/base/
+
       - name: Install
         if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ github.workspace }}/build
@@ -159,6 +168,14 @@ jobs:
         shell: bash
         run: cmake --install .
 
+      - name: Copy PK3s
+        if: ${{ matrix.build_type == 'Release' }}
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          cp ./pk3/jacutscenefixes.pk3 ./install/JediAcademy/base/
+          cp ./pk3/jk2binds.pk3 ./install/JediAcademy/base/
+
       - name: Create OpenJK binary archive
         if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ github.workspace }}/install/JediAcademy
@@ -242,6 +259,15 @@ jobs:
         working-directory: ${{ github.workspace }}/build
         shell: bash
         run: cmake --install .
+
+      - name: Copy PK3s
+        if: ${{ matrix.build_type == 'Release' }}
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          mkdir -p ./install/JediAcademy/openjk_sp.${{ matrix.arch }}.app/Contents/MacOS/base/
+          cp ./pk3/jacutscenefixes.pk3 ./install/JediAcademy/openjk_sp.${{ matrix.arch }}.app/Contents/MacOS/base/
+          cp ./pk3/jk2binds.pk3 ./install/JediAcademy/openjk_sp.${{ matrix.arch }}.app/Contents/MacOS/base/
 
       - name: Create OpenJK binary archive
         if: ${{ matrix.build_type == 'Release' }}

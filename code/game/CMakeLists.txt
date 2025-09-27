@@ -42,6 +42,7 @@ set(SPGameGameFiles
 	"${SPDir}/game/AI_Civilian.cpp"
 	"${SPDir}/game/AI_Default.cpp"
 	"${SPDir}/game/AI_Droid.cpp"
+	"${SPDir}/game/AI_GalakBoss.cpp"
 	"${SPDir}/game/AI_GalakMech.cpp"
 	"${SPDir}/game/AI_Grenadier.cpp"
 	"${SPDir}/game/AI_HazardTrooper.cpp"

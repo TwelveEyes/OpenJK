@@ -915,13 +915,13 @@ WEAPON SELECTION
 
 void CG_DrawIconBackground(void)
 {
-	int				/*height, xAdd, x2, y2,*/ t;
+	int				height, /*xAdd,*/ x2, y2, t;
 //	int				prongLeftX,prongRightX;
 	float			inTime = cg.invenSelectTime+WEAPON_SELECT_TIME;
 	float			wpTime = cg.weaponSelectTime+WEAPON_SELECT_TIME;
 	float			fpTime = cg.forceSelectTime+WEAPON_SELECT_TIME;
-//	int				drawType = cgs.media.weaponIconBackground;
-//	int				yOffset = 0;
+	int				drawType = cgs.media.weaponIconBackground;
+	int				yOffset = 0;
 
 	// don't display if dead
 	if ( cg.snap->ps.stats[STAT_HEALTH] <= 0 )
@@ -934,26 +934,26 @@ void CG_DrawIconBackground(void)
 		return;
 	}
 
-//	x2 = 30;
-//	y2 = SCREEN_HEIGHT-70;
+	x2 = 30;
+	y2 = SCREEN_HEIGHT-70;
 
 	//prongLeftX =x2+37;
 	//prongRightX =x2+544;
 
 	if (inTime > wpTime)
 	{
-//		drawType = cgs.media.inventoryIconBackground;
+		drawType = cgs.media.inventoryIconBackground;
 		cg.iconSelectTime = cg.invenSelectTime;
 	}
 	else
 	{
-//		drawType = cgs.media.weaponIconBackground;
+		drawType = cgs.media.weaponIconBackground;
 		cg.iconSelectTime = cg.weaponSelectTime;
 	}
 
 	if (fpTime > inTime && fpTime > wpTime)
 	{
-//		drawType = cgs.media.forceIconBackground;
+		drawType = cgs.media.forceIconBackground;
 		cg.iconSelectTime = cg.forceSelectTime;
 	}
 
@@ -973,9 +973,9 @@ void CG_DrawIconBackground(void)
 
 		//	xAdd = (int) 8*cg.iconHUDPercent;
 
-		//	height = (int) (60.0f*cg.iconHUDPercent);
-			//CG_DrawPic( x2+60, y2+30+yOffset, 460, -height, drawType);	// Top half
-			//CG_DrawPic( x2+60, y2+30-2+yOffset, 460, height, drawType);	// Bottom half
+			height = (int) (60.0f*cg.iconHUDPercent);
+			CG_DrawPic( x2+60, y2+30+yOffset, 460, -height, drawType);	// Top half
+			CG_DrawPic( x2+60, y2+30-2+yOffset, 460, height, drawType);	// Bottom half
 
 		}
 		else
@@ -1009,27 +1009,27 @@ void CG_DrawIconBackground(void)
 		cg.iconHUDPercent=1;
 	}
 
-	//trap->R_SetColor( colorTable[CT_WHITE] );
-	//height = (int) (60.0f*cg.iconHUDPercent);
-	//CG_DrawPic( x2+60, y2+30+yOffset, 460, -height, drawType);	// Top half
-	//CG_DrawPic( x2+60, y2+30-2+yOffset, 460, height, drawType);	// Bottom half
+	trap->R_SetColor( colorTable[CT_WHITE] );
+	height = (int) (60.0f*cg.iconHUDPercent);
+	CG_DrawPic( x2+60, y2+30+yOffset, 460, -height, drawType);	// Top half
+	CG_DrawPic( x2+60, y2+30-2+yOffset, 460, height, drawType);	// Bottom half
 
 	// And now for the prongs
-/*	if ((cg.inventorySelectTime+WEAPON_SELECT_TIME)>cg.time)
+	if (inTime>cg.time)
 	{
 		cgs.media.currentBackground = ICON_INVENTORY;
-		background = &cgs.media.inventoryProngsOn;
+		// background = &cgs.media.inventoryProngsOn;
 	}
-	else if ((cg.weaponSelectTime+WEAPON_SELECT_TIME)>cg.time)
+	else if (wpTime>cg.time)
 	{
 		cgs.media.currentBackground = ICON_WEAPONS;
 	}
 	else
 	{
 		cgs.media.currentBackground = ICON_FORCE;
-		background = &cgs.media.forceProngsOn;
+		// background = &cgs.media.forceProngsOn;
 	}
-*/
+
 	// Side Prongs
 //	trap->R_SetColor( colorTable[CT_WHITE]);
 //	xAdd = (int) 8*cg.iconHUDPercent;
