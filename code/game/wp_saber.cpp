@@ -4371,7 +4371,7 @@ qboolean G_EnoughPowerForSpecialMove( int forcePower, int cost, qboolean kataMov
 
 void G_DrainPowerForSpecialMove( gentity_t *self, forcePowers_t fp, int cost, qboolean kataMove )
 {
-	if ( !self || !self->client || self->s.number >= MAX_CLIENTS )
+	if ( !self || !self->client /* || self->s.number >= MAX_CLIENTS */ )
 	{
 		return;
 	}
