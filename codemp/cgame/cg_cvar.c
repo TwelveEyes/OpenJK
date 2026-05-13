@@ -53,6 +53,16 @@ static void CG_TeamOverlayChange( void ) {
 		trap->Cvar_Set( "teamoverlay", "0" );
 }
 
+static void CG_Set2DRatio(void) {
+	if (cg_hudRatio.integer)
+	{
+		trap->GetGlconfig( &cgs.glconfig );
+		cgs.widthRatioCoef = (float)(SCREEN_WIDTH * cgs.glconfig.vidHeight) / (float)(SCREEN_HEIGHT * cgs.glconfig.vidWidth);
+	}
+	else
+		cgs.widthRatioCoef = 1.0f;
+}
+
 
 //
 // Cvar table

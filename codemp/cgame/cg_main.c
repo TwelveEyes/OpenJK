@@ -2558,6 +2558,12 @@ Ghoul2 Insert End
 	cgs.screenXScale = cgs.glconfig.vidWidth / 640.0;
 	cgs.screenYScale = cgs.glconfig.vidHeight / 480.0;
 
+	// set hud ratio
+	if (cg_hudRatio.integer)
+		cgs.widthRatioCoef = (float)(SCREEN_WIDTH * cgs.glconfig.vidHeight) / (float)(SCREEN_HEIGHT * cgs.glconfig.vidWidth);
+	else
+		cgs.widthRatioCoef = 1.0f;
+
 	// get the gamestate from the client system
 	trap->GetGameState( &cgs.gameState );
 
