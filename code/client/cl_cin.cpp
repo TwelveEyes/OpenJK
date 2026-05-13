@@ -1879,6 +1879,9 @@ static void PlayCinematic(const char *arg, const char *s, qboolean qbInGame)
 		qboolean	bIsForeign	= (qboolean)(s_language && Q_stricmp(s_language->string,"english") && Q_stricmp(s_language->string,""));
 		const char *psAudioFile	= NULL;
 		qhandle_t	hCrawl = 0;
+		// find the current mapname
+		const char *info = cl.gameState.stringData + cl.gameState.stringOffsets[ CS_SERVERINFO ];
+		const char *mapname = Info_ValueForKey( info, "mapname" );
 		if (!Q_stricmp(arg,"video/jk0101_sw.roq"))
 		{
 			psAudioFile = "music/cinematic_1";
@@ -1890,7 +1893,19 @@ static void PlayCinematic(const char *arg, const char *s, qboolean qbInGame)
 				hCrawl = re.RegisterShaderNoMip( "menu/video/tc_0" );
 			}
 #else
-			hCrawl = re.RegisterShaderNoMip( va("menu/video/tc_%s",se_language->string) );
+			hCrawl = re.RegisterShaderNoMip( va("menu/video/tc_%s_%s",mapname,se_language->string) );
+			if (!hCrawl)
+			{
+				hCrawl = re.RegisterShaderNoMip( va("menu/video/tc_%s_english",mapname) );//failed, so go back to mapname + english
+			}
+			if (!hCrawl)
+			{
+				hCrawl = re.RegisterShaderNoMip( va("menu/video/tc_%s",mapname) );//failed, so go back to mapname
+			}
+			if (!hCrawl)
+			{
+				hCrawl = re.RegisterShaderNoMip( va("menu/video/tc_%s",se_language->string) );//failed, so go back to set language
+			}
 			if (!hCrawl)
 			{
 				hCrawl = re.RegisterShaderNoMip( "menu/video/tc_english" );//failed, so go back to english

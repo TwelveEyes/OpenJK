@@ -463,7 +463,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		VectorMA(cameraIdealTarget, -(cg_thirdPersonRange.value), camerafwd, cameraIdealLoc);
 	}
 
-	if ( cg.renderingThirdPerson && (cg.snap->ps.forcePowersActive&(1<<FP_SPEED)) && player->client->ps.forcePowerDuration[FP_SPEED] )
+	/*if ( cg.renderingThirdPerson && (cg.snap->ps.forcePowersActive&(1<<FP_SPEED)) && player->client->ps.forcePowerDuration[FP_SPEED] )
 	{
 		float timeLeft = player->client->ps.forcePowerDuration[FP_SPEED] - cg.time;
 		float length = FORCE_SPEED_DURATION*forceSpeedValue[player->client->ps.forcePowerLevel[FP_SPEED]];
@@ -480,7 +480,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		{
 			VectorMA(cameraIdealLoc, amt, camerafwd, cameraIdealLoc);
 		}
-	}
+	}*/
 }
 
 
@@ -1665,7 +1665,7 @@ static qboolean CG_CalcViewValues( void ) {
 		}
 	}
 
-	if ( (cg.renderingThirdPerson||cg.snap->ps.weapon == WP_SABER||cg.snap->ps.weapon == WP_MELEE)
+	if ( (cg.renderingThirdPerson/* ||cg.snap->ps.weapon == WP_SABER||cg.snap->ps.weapon == WP_MELEE */)
 		&& !cg.zoomMode
 		&& !viewEntIsCam )
 	{
@@ -1677,7 +1677,7 @@ static qboolean CG_CalcViewValues( void ) {
 //		else
 //		{
 		// First person saber
-		if ( !cg.renderingThirdPerson )
+		/* if ( !cg.renderingThirdPerson )
 		{
 			if ( cg.snap->ps.weapon == WP_SABER||cg.snap->ps.weapon == WP_MELEE )
 			{
@@ -1687,7 +1687,7 @@ static qboolean CG_CalcViewValues( void ) {
 				AngleVectors( cg.refdefViewAngles, dir, NULL, NULL );
 				VectorMA( cg.refdef.vieworg, -2, dir, cg.refdef.vieworg );
 			}
-		}
+		} */
 		CG_OffsetThirdPersonView();
 //		}
 	}
@@ -2092,7 +2092,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView ) {
 		|| (cg.snap->ps.stats[STAT_HEALTH] <= 0)
 		|| (cg.snap->ps.eFlags&EF_HELD_BY_SAND_CREATURE)
 		|| ((g_entities[0].client&&g_entities[0].client->NPC_class==CLASS_ATST)
-		|| (cg.snap->ps.weapon == WP_SABER || cg.snap->ps.weapon == WP_MELEE) ));
+		/* || (cg.snap->ps.weapon == WP_SABER || cg.snap->ps.weapon == WP_MELEE) */ ));
 
 	if ( cg.zoomMode )
 	{
@@ -2264,3 +2264,15 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView ) {
 	*/
 }
 
+//Checks to see if the current camera position is valid based on the last known safe location.  If it's not safe, place
+//the camera at the last position safe location
+void CheckCameraLocation( vec3_t OldeyeOrigin )
+{
+	trace_t			trace;
+	
+	CG_Trace(&trace, OldeyeOrigin, cameramins, cameramaxs, cg.refdef.vieworg, cg.snap->ps.clientNum, MASK_CAMERACLIP);
+	if (trace.fraction <= 1.0)
+	{
+		VectorCopy(trace.endpos, cg.refdef.vieworg);
+	}
+}

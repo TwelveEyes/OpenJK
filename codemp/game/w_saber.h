@@ -49,11 +49,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	SABER_REFLECT_MISSILE_CONE	0.2f
 
 #define	FORCE_POWER_MAX	100
-#define MAX_GRIP_DISTANCE 256
+#define MAX_GRIP_DISTANCE 512//256
 #define MAX_TRICK_DISTANCE 512
 #define FORCE_JUMP_CHARGE_TIME 6400//3000.0f
 #define GRIP_DRAIN_AMOUNT 30
-#define FORCE_LIGHTNING_RADIUS 300
+#define FORCE_LIGHTNING_RADIUS 512//300
 #define MAX_DRAIN_DISTANCE 512
 
 typedef enum forceJump_e

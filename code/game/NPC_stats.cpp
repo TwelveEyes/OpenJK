@@ -1418,6 +1418,7 @@ extern void NPC_ATST_Precache(void);
 extern void NPC_Sentry_Precache(void);
 extern void NPC_Mark1_Precache(void);
 extern void NPC_Mark2_Precache(void);
+extern void NPC_GalakMech_Precache( void );
 extern void NPC_Protocol_Precache( void );
 extern void Boba_Precache( void );
 extern void RT_Precache( void );
@@ -1524,6 +1525,10 @@ void NPC_PrecacheByClassName( const char* type )
 	else if ( !Q_stricmp( "protocol", type ))
 	{
 		NPC_Protocol_Precache();
+	}
+	else if ( !Q_stricmp( "galak_mech", type ))
+	{
+		NPC_GalakMech_Precache();
 	}
 	else if ( !Q_stricmp( "boba_fett", type ))
 	{

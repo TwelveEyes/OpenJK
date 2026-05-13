@@ -35,6 +35,8 @@ extern void NPC_UseResponse( gentity_t *self, gentity_t *user, qboolean useWhenD
 extern void Jedi_Decloak( gentity_t *self );
 
 extern qboolean BG_FullBodyTauntAnim( int anim );
+extern qboolean BG_RestAnim( int anim );
+extern qboolean BG_CrouchAnim( int anim );
 
 extern bot_state_t *botstates[MAX_CLIENTS];
 
@@ -813,6 +815,11 @@ int WP_AbsorbConversion(gentity_t *attacked, int atdAbsLevel, gentity_t *attacke
 		return -1;
 	}
 
+	if (Q_irand( 0, atPowerLevel ) > Q_irand( 1, atdAbsLevel ))
+	{ //chance of attacker's high level power breaking through entirely
+		return -1;
+	}
+
 	//Subtract absorb power level from the offensive force power
 	getLevel = atPowerLevel;
 	getLevel -= atdAbsLevel;
@@ -1103,7 +1110,7 @@ void ForceHeal( gentity_t *self )
 
 	if (self->client->ps.fd.forcePowerLevel[FP_HEAL] == FORCE_LEVEL_3)
 	{
-		self->health += 25; //This was 50, but that angered the Balance God.
+		self->health += 50; //This was 50, but that angered the Balance God.	//25;
 
 		if (self->health > self->client->ps.stats[STAT_MAX_HEALTH])
 		{
@@ -1113,7 +1120,7 @@ void ForceHeal( gentity_t *self )
 	}
 	else if (self->client->ps.fd.forcePowerLevel[FP_HEAL] == FORCE_LEVEL_2)
 	{
-		self->health += 10;
+		self->health += 30; //10;
 
 		if (self->health > self->client->ps.stats[STAT_MAX_HEALTH])
 		{
@@ -1123,7 +1130,7 @@ void ForceHeal( gentity_t *self )
 	}
 	else
 	{
-		self->health += 5;
+		self->health += 15; //5;
 
 		if (self->health > self->client->ps.stats[STAT_MAX_HEALTH])
 		{
@@ -1691,7 +1698,7 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec
 			}
 			if (ForcePowerUsableOn(self, traceEnt, FP_LIGHTNING))
 			{
-				int	dmg = Q_irand(1,2); //Q_irand( 1, 3 );
+				int	dmg = Q_irand( 1, 3 ); //Q_irand( 1, 2 );
 
 				int modPowerLevel = -1;
 
@@ -1714,7 +1721,7 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec
 					}
 					else if (modPowerLevel == 2)
 					{
-						dmg = 1;
+						dmg = 2;
 						traceEnt->client->noLightningTime = level.time + 100;
 					}
 				}
@@ -1965,7 +1972,6 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 						dmg = 2;
 					}
 				}
-				//G_Damage( traceEnt, self, self, dir, impactPoint, dmg, 0, MOD_FORCE_DARK );
 
 				if (dmg)
 				{
@@ -1974,6 +1980,11 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				if (traceEnt->client->ps.fd.forcePower < 0)
 				{
 					traceEnt->client->ps.fd.forcePower = 0;
+
+					if (dmg)
+					{
+						G_Damage( traceEnt, self, self, dir, impactPoint, dmg, 0, MOD_FORCE_DARK );
+					}
 				}
 
 				if (self->client->ps.stats[STAT_HEALTH] < self->client->ps.stats[STAT_MAX_HEALTH] &&
@@ -2014,11 +2025,11 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				{
 					if ( !Q_irand( 0, 2 ) )
 					{
-						//G_Sound( traceEnt, CHAN_BODY, G_SoundIndex( "sound/weapons/force/lightninghit.wav" ) );
+						//G_Sound( traceEnt, CHAN_BODY, G_SoundIndex( va("sound/weapons/force/lightninghit%i", Q_irand(1, 3) )) );
 					}
-				//	traceEnt->s.powerups |= ( 1 << PW_DISINT_1 );
+					//	traceEnt->s.powerups |= ( 1 << PW_DISINT_1 );
 
-				//	traceEnt->client->ps.powerups[PW_DISINT_1] = level.time + 500;
+					//	traceEnt->client->ps.powerups[PW_DISINT_1] = level.time + 500;
 				}
 				*/
 
@@ -2161,7 +2172,7 @@ int ForceShootDrain( gentity_t *self )
 
 	self->client->ps.activeForcePass = self->client->ps.fd.forcePowerLevel[FP_DRAIN] + FORCE_LEVEL_3;
 
-	BG_ForcePowerDrain( &self->client->ps, FP_DRAIN, 5 ); //used to be 1, but this did, too, anger the God of Balance.
+	BG_ForcePowerDrain( &self->client->ps, FP_DRAIN, 1 ); //used to be 1, but this did, too, anger the God of Balance.	//5
 
 	self->client->ps.fd.forcePowerRegenDebounceTime = level.time + 500;
 
@@ -5427,7 +5438,11 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 				if ( self->client->ps.powerups[PW_FORCE_BOON] )
 					WP_ForcePowerRegenerate( self, 6 );
 				else if ( self->client->ps.isJediMaster && level.gametype == GT_JEDIMASTER )
-					WP_ForcePowerRegenerate( self, 4 ); //jedi master regenerates 4 times as fast
+					WP_ForcePowerRegenerate( self, 4 );		//jedi master regenerates 4 times as fast
+				else if ( BG_CrouchAnim( self->client->ps.legsAnim ) )
+					WP_ForcePowerRegenerate( self, 2 );		//regen force much faster when crouched
+				else if ( BG_RestAnim( self->client->ps.legsAnim ) )
+					WP_ForcePowerRegenerate( self, 4 );		//regen force extremly fast when meditating
 				else
 					WP_ForcePowerRegenerate( self, 0 );
 			}

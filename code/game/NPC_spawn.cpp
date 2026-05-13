@@ -43,6 +43,8 @@ extern void Q3_SetParm (int entID, int parmNum, const char *parmValue);
 extern void PM_SetTorsoAnimTimer( gentity_t *ent, int *torsoAnimTimer, int time );
 extern void PM_SetLegsAnimTimer( gentity_t *ent, int *legsAnimTimer, int time );
 
+extern void NPC_GalakMech_Init( gentity_t *ent );
+
 extern int WP_SaberInitBladeData( gentity_t *ent );
 extern void ST_ClearTimers( gentity_t *ent );
 extern void Jedi_ClearTimers( gentity_t *ent );
@@ -616,6 +618,10 @@ void NPC_SetMiscDefaultData( gentity_t *ent )
 						//ent->NPC->scriptFlags |= SCF_ALT_FIRE;
 					}
 					break;
+				}
+				if ( !Q_stricmp( "galak_mech", ent->NPC_type ) )
+				{//starts with armor
+					NPC_GalakMech_Init( ent );
 				}
 			}
 		}
@@ -2349,6 +2355,16 @@ SHY - Spawner is shy
 */
 void SP_NPC_Galak( gentity_t *self)
 {
+	if ( self->spawnflags & 1 )
+	{
+		self->NPC_type = "Galak_Mech";
+	}
+	else
+	{
+		self->NPC_type = "Galak";
+	}
+
+	SP_NPC_spawner( self );
 }
 
 /*QUAKED NPC_Desann(1 0 0) (-16 -16 -24) (16 16 40) x x x x CEILING CINEMATIC NOTSOLID STARTINSOLID SHY
