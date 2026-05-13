@@ -3048,26 +3048,23 @@ static void CG_ScanForCrosshairEntity( qboolean scanAll )
 				VectorCopy( cg_entities[pVeh->m_pParentEntity->s.number].lerpOrigin, start );
 				AngleVectors( cg_entities[pVeh->m_pParentEntity->s.number].lerpAngles, d_f, d_rt, d_up );
 			}
-			else if ( cg.snap->ps.weapon == WP_NONE || cg.snap->ps.weapon == WP_SABER || cg.snap->ps.weapon == WP_STUN_BATON )
-			{
-				if ( cg.snap->ps.viewEntity > 0 && cg.snap->ps.viewEntity < ENTITYNUM_WORLD )
-				{//in camera ent view
-					ignoreEnt = cg.snap->ps.viewEntity;
-					if ( g_entities[cg.snap->ps.viewEntity].client )
-					{
-						VectorCopy( g_entities[cg.snap->ps.viewEntity].client->renderInfo.eyePoint, start );
-					}
-					else
-					{
-						VectorCopy( cg_entities[cg.snap->ps.viewEntity].lerpOrigin, start );
-					}
-					AngleVectors( cg_entities[cg.snap->ps.viewEntity].lerpAngles, d_f, d_rt, d_up );
+			else if ( cg.snap->ps.viewEntity > 0 && cg.snap->ps.viewEntity < ENTITYNUM_WORLD )
+			{//in camera ent view
+				ignoreEnt = cg.snap->ps.viewEntity;
+				if ( g_entities[cg.snap->ps.viewEntity].client )
+				{
+					VectorCopy( g_entities[cg.snap->ps.viewEntity].client->renderInfo.eyePoint, start );
 				}
 				else
 				{
-					VectorCopy( g_entities[0].client->renderInfo.eyePoint, start );
-					AngleVectors( cg_entities[0].lerpAngles, d_f, d_rt, d_up );
+					VectorCopy( cg_entities[cg.snap->ps.viewEntity].lerpOrigin, start );
 				}
+				AngleVectors( cg_entities[cg.snap->ps.viewEntity].lerpAngles, d_f, d_rt, d_up );
+			}
+			else if ( cg.snap->ps.weapon == WP_NONE || cg.snap->ps.weapon == WP_SABER || cg.snap->ps.weapon == WP_STUN_BATON )
+			{
+				VectorCopy( g_entities[0].client->renderInfo.eyePoint, start );
+				AngleVectors( cg_entities[0].lerpAngles, d_f, d_rt, d_up );
 			}
 			else
 			{
