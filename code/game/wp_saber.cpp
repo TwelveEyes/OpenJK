@@ -7075,8 +7075,9 @@ void WP_SaberThrow( gentity_t *self, usercmd_t *ucmd )
 				}
 				return;
 			}
-			if ( (!self->s.number && level.time - saberent->aimDebounceTime > 15000)
-				|| (self->s.number && level.time - saberent->aimDebounceTime > 5000) )
+			if ( self->health > 0 &&
+				( (!self->s.number && level.time - saberent->aimDebounceTime > 15000)
+				 || (self->s.number && level.time - saberent->aimDebounceTime > 5000) ) )
 			{//(only for player) been missing for 15 seconds, automagicially return
 				WP_SaberCatch( self, saberent, qfalse );
 				return;
@@ -7097,8 +7098,9 @@ void WP_SaberThrow( gentity_t *self, usercmd_t *ucmd )
 					return;
 				}
 			}
-			if ( (!self->s.number && level.time - saberent->aimDebounceTime > 15000)
-				|| (self->s.number && level.time - saberent->aimDebounceTime > 5000) )
+			if ( self->health > 0 &&
+				( (!self->s.number && level.time - saberent->aimDebounceTime > 15000)
+				 || (self->s.number && level.time - saberent->aimDebounceTime > 5000) ) )
 			{//(only for player) been missing for 15 seconds, automagicially return
 				WP_SaberCatch( self, saberent, qfalse );
 				return;
@@ -7119,8 +7121,9 @@ void WP_SaberThrow( gentity_t *self, usercmd_t *ucmd )
 				self->client->ps.saberEntityNum = ENTITYNUM_NONE;
 				return;
 			}
-			if ( (!self->s.number && level.time - saberent->aimDebounceTime > 15000)
-				|| (self->s.number && level.time - saberent->aimDebounceTime > 5000) )
+			if ( self->health > 0 &&
+				( (!self->s.number && level.time - saberent->aimDebounceTime > 15000)
+				 || (self->s.number && level.time - saberent->aimDebounceTime > 5000) ) )
 			{//(only for player) been missing for 15 seconds, automagicially return
 				WP_SaberCatch( self, saberent, qfalse );
 				return;
