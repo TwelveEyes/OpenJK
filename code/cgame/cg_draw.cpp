@@ -2274,7 +2274,7 @@ static void CG_DrawZoomMask( void )
 				max = 1.0f;
 			}
 
-			CG_DrawPic2( 257, 435, 134 * max, 34, 0,0,max,1,cgi_R_RegisterShaderNoMip( "gfx/2d/crop_charge" ));
+			CG_DrawPic2( 257 + ( 64 * (1 - cgs.widthRatioCoef) ), 435, 134 * max * cgs.widthRatioCoef, 34, 0,0,max,1,cgi_R_RegisterShaderNoMip( "gfx/2d/crop_charge" ));
 		}
 	}
 	//-----------

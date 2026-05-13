@@ -417,7 +417,7 @@ static void CG_DrawZoomMask( void )
 				max = 1.0f;
 			}
 
-			trap->R_DrawStretchPic(257, 435, 134*max, 34, 0, 0, max, 1, cgs.media.disruptorChargeShader);
+			trap->R_DrawStretchPic(257+(64*(1-cgs.widthRatioCoef)), 435, 134*max*cgs.widthRatioCoef, 34, 0, 0, max, 1, cgs.media.disruptorChargeShader);
 		}
 //		trap->R_SetColor( colorTable[CT_WHITE] );
 //		CG_DrawPic( 0, 0, 640, 480, cgs.media.disruptorMask );
