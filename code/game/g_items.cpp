@@ -1250,6 +1250,14 @@ void FinishSpawningItem( gentity_t *ent ) {
 		ent->nextthink = level.time + 30000;
 	}
 
+	if ( g_saberPickuppableDroppedSabers->integer
+		&& ent->item->giType == IT_WEAPON
+		&& ent->item->giTag == WP_SABER )
+	{//pickuppable dropped sabers never go away
+		ent->e_ThinkFunc = thinkF_NULL;
+		ent->nextthink = -1;
+	}
+
 	gi.linkentity (ent);
 }
 
