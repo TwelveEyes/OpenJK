@@ -108,13 +108,13 @@ void NPC_GalakMech_Init( gentity_t *ent )
 	}
 	else
 	{
-//		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "helmet", TURN_OFF );
+		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "helmet", TURN_OFF );
 		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_shield_off", TURN_OFF );
-		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galakface_off", TURN_ON );
-		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galakhead_off", TURN_ON );
-		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_eyes_mouth_off", TURN_ON );
-		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_collar_off", TURN_ON );
-		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galaktorso_off", TURN_ON );
+		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galakface_off", TURN_ON );
+		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galakhead_off", TURN_ON );
+		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_eyes_mouth_off", TURN_ON );
+		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_collar_off", TURN_ON );
+		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galaktorso_off", TURN_ON );
 	}
 
 }
@@ -276,7 +276,7 @@ void NPC_GM_Pain( gentity_t *self, gentity_t *inflictor, gentity_t *other, const
 			self->client->ps.stats[STAT_ARMOR] = 0;//no more armor
 			self->NPC->investigateDebounceTime = 0;//stop recharging
 
-			// NPC_SetAnim( self, SETANIM_BOTH, BOTH_ALERT1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+			NPC_SetAnim( self, SETANIM_BOTH, BOTH_PAIN1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD ); //NPC_SetAnim( self, SETANIM_BOTH, BOTH_ALERT1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 			TIMER_Set( self, "attackDelay", self->client->ps.torsoAnimTimer );
 			G_AddEvent( self, Q_irand( EV_DEATH1, EV_DEATH3 ), self->health );
 		}
@@ -1085,7 +1085,7 @@ void NPC_BSGM_Attack( void )
 	if ( AImove && !NPC->lockCount )
 	{//move toward goal
 		if ( NPCInfo->goalEntity
-			// && NPC->client->ps.legsAnim != BOTH_ALERT1
+			&& NPC->client->ps.legsAnim != BOTH_PAIN1 //&& NPC->client->ps.legsAnim != BOTH_ALERT1
 			&& NPC->client->ps.legsAnim != BOTH_ATTACK2
 			&& NPC->client->ps.legsAnim != BOTH_ATTACK4
 			&& NPC->client->ps.legsAnim != BOTH_ATTACK5
