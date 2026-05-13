@@ -5516,13 +5516,13 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 		return qfalse;
 	}
 
-	if (g_forceDodge.integer != 2)
+	/* if (g_forceDodge.integer != 2)
 	{
 		if (!(self->client->ps.fd.forcePowersActive & (1 << FP_SEE)))
 		{
 			return qfalse;
 		}
-	}
+	} */
 
 	if ( self->client->ps.groundEntityNum == ENTITYNUM_NONE )
 	{//can't dodge in mid-air
