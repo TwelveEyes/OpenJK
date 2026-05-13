@@ -128,7 +128,7 @@ Draw the force power graphics (tics) and the force power numeric amount. Any tic
 be alphaed out.
 ================
 */
-static void CG_DrawForcePower(const centity_t *cent,const int xPos,const int yPos,const float hudRatio)
+static void CG_DrawForcePower(const centity_t *cent,const int xPos,const int yPos)
 {
 	int			i;
 	qboolean	flash=qfalse;
@@ -220,9 +220,9 @@ static void CG_DrawForcePower(const centity_t *cent,const int xPos,const int yPo
 		}
 
 		cgi_R_SetColor( calcColor);
-		CG_DrawPic( SCREEN_WIDTH - (SCREEN_WIDTH - forceTics[i].xPos) * hudRatio,
+		CG_DrawPic( SCREEN_WIDTH - (SCREEN_WIDTH - forceTics[i].xPos) * cgs.widthRatioCoef,
 			forceTics[i].yPos,
-			forceTics[i].width * hudRatio,
+			forceTics[i].width * cgs.widthRatioCoef,
 			forceTics[i].height,
 			forceTics[i].background );
 
@@ -240,11 +240,11 @@ static void CG_DrawForcePower(const centity_t *cent,const int xPos,const int yPo
 
 	// Print force numeric amount
 	CG_DrawNumField (
-		SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[OHB_FORCEAMOUNT].xPos) * hudRatio,
+		SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[OHB_FORCEAMOUNT].xPos) * cgs.widthRatioCoef,
 		otherHUDBits[OHB_FORCEAMOUNT].yPos,
 		3,
 		cent->gent->client->ps.forcePower,
-		otherHUDBits[OHB_FORCEAMOUNT].width * hudRatio,
+		otherHUDBits[OHB_FORCEAMOUNT].width * cgs.widthRatioCoef,
 		otherHUDBits[OHB_FORCEAMOUNT].height,
 		NUM_FONT_SMALL,
 		qfalse);
@@ -258,7 +258,7 @@ If the weapon is a light saber (which needs no ammo) then draw a graphic showing
 the saber style (fast, medium, strong)
 ================
 */
-static void CG_DrawSaberStyle(const centity_t	*cent,const int xPos,const int yPos,const float hudRatio)
+static void CG_DrawSaberStyle(const centity_t	*cent,const int xPos,const int yPos)
 {
 	int index;
 
@@ -299,9 +299,9 @@ static void CG_DrawSaberStyle(const centity_t	*cent,const int xPos,const int yPo
 	cgi_R_SetColor( otherHUDBits[index].color);
 
 	CG_DrawPic(
-		SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[index].xPos) * hudRatio,
+		SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[index].xPos) * cgs.widthRatioCoef,
 		otherHUDBits[index].yPos,
-		otherHUDBits[index].width * hudRatio,
+		otherHUDBits[index].width * cgs.widthRatioCoef,
 		otherHUDBits[index].height,
 		otherHUDBits[index].background
 		);
@@ -316,7 +316,7 @@ Draw the ammo graphics (tics) and the ammo numeric amount. Any tics that are par
 be alphaed out.
 ================
 */
-static void CG_DrawAmmo(const centity_t	*cent,const int xPos,const int yPos,const float hudRatio)
+static void CG_DrawAmmo(const centity_t	*cent,const int xPos,const int yPos)
 {
 	playerState_t	*ps;
 	int			i;
@@ -385,11 +385,11 @@ static void CG_DrawAmmo(const centity_t	*cent,const int xPos,const int yPos,cons
 	cgi_R_SetColor( calcColor );
 
 	CG_DrawNumField (
-		SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[OHB_AMMOAMOUNT].xPos) * hudRatio,
+		SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[OHB_AMMOAMOUNT].xPos) * cgs.widthRatioCoef,
 		otherHUDBits[OHB_AMMOAMOUNT].yPos,
 		3,
 		ps->ammo[weaponData[cent->currentState.weapon].ammoIndex],
-		otherHUDBits[OHB_AMMOAMOUNT].width * hudRatio,
+		otherHUDBits[OHB_AMMOAMOUNT].width * cgs.widthRatioCoef,
 		otherHUDBits[OHB_AMMOAMOUNT].height,
 		NUM_FONT_SMALL,
 		qfalse);
@@ -415,9 +415,9 @@ static void CG_DrawAmmo(const centity_t	*cent,const int xPos,const int yPos,cons
 		}
 
 		cgi_R_SetColor( calcColor);
-		CG_DrawPic( SCREEN_WIDTH - (SCREEN_WIDTH - ammoTics[i].xPos) * hudRatio,
+		CG_DrawPic( SCREEN_WIDTH - (SCREEN_WIDTH - ammoTics[i].xPos) * cgs.widthRatioCoef,
 			ammoTics[i].yPos,
-			ammoTics[i].width * hudRatio,
+			ammoTics[i].width * cgs.widthRatioCoef,
 			ammoTics[i].height,
 			ammoTics[i].background );
 
@@ -432,7 +432,7 @@ static void CG_DrawAmmo(const centity_t	*cent,const int xPos,const int yPos,cons
 CG_DrawHealth
 ================
 */
-static void CG_DrawHealth(const int x,const int y,const int w,const int h,const float hudRatio)
+static void CG_DrawHealth(const int x,const int y,const int w,const int h)
 {
 	vec4_t			calcColor;
 	playerState_t	*ps = &cg.snap->ps;
@@ -461,9 +461,9 @@ static void CG_DrawHealth(const int x,const int y,const int w,const int h,const 
 		cgi_R_SetColor( calcColor);
 
 		CG_DrawPic(
-			healthTics[i].xPos * hudRatio,
+			healthTics[i].xPos * cgs.widthRatioCoef,
 			healthTics[i].yPos,
-			healthTics[i].width * hudRatio,
+			healthTics[i].width * cgs.widthRatioCoef,
 			healthTics[i].height,
 			healthTics[i].background
 			);
@@ -476,11 +476,11 @@ static void CG_DrawHealth(const int x,const int y,const int w,const int h,const 
 	cgi_R_SetColor( otherHUDBits[OHB_HEALTHAMOUNT].color );
 
 	CG_DrawNumField (
-		otherHUDBits[OHB_HEALTHAMOUNT].xPos * hudRatio,
+		otherHUDBits[OHB_HEALTHAMOUNT].xPos * cgs.widthRatioCoef,
 		otherHUDBits[OHB_HEALTHAMOUNT].yPos,
 		3,
 		ps->stats[STAT_HEALTH],
-		otherHUDBits[OHB_HEALTHAMOUNT].width * hudRatio,
+		otherHUDBits[OHB_HEALTHAMOUNT].width * cgs.widthRatioCoef,
 		otherHUDBits[OHB_HEALTHAMOUNT].height,
 		NUM_FONT_SMALL,
 		qfalse);
@@ -495,7 +495,7 @@ Draw the armor graphics (tics) and the armor numeric amount. Any tics that are p
 be alphaed out.
 ================
 */
-static void CG_DrawArmor(const int x,const int y,const int w,const int h,const float hudRatio)
+static void CG_DrawArmor(const int x,const int y,const int w,const int h)
 {
 	vec4_t			calcColor;
 	playerState_t	*ps = &cg.snap->ps;
@@ -530,9 +530,9 @@ static void CG_DrawArmor(const int x,const int y,const int w,const int h,const f
 			if (cg.HUDArmorFlag)
 			{
 				CG_DrawPic(
-					armorTics[i].xPos * hudRatio,
+					armorTics[i].xPos * cgs.widthRatioCoef,
 					armorTics[i].yPos,
-					armorTics[i].width * hudRatio,
+					armorTics[i].width * cgs.widthRatioCoef,
 					armorTics[i].height,
 					armorTics[i].background
 					);
@@ -541,9 +541,9 @@ static void CG_DrawArmor(const int x,const int y,const int w,const int h,const f
 		else
 		{
 			CG_DrawPic(
-				armorTics[i].xPos * hudRatio,
+				armorTics[i].xPos * cgs.widthRatioCoef,
 				armorTics[i].yPos,
-				armorTics[i].width * hudRatio,
+				armorTics[i].width * cgs.widthRatioCoef,
 				armorTics[i].height,
 				armorTics[i].background
 				);
@@ -556,11 +556,11 @@ static void CG_DrawArmor(const int x,const int y,const int w,const int h,const f
 	cgi_R_SetColor( otherHUDBits[OHB_ARMORAMOUNT].color );
 
 	CG_DrawNumField (
-		otherHUDBits[OHB_ARMORAMOUNT].xPos * hudRatio,
+		otherHUDBits[OHB_ARMORAMOUNT].xPos * cgs.widthRatioCoef,
 		otherHUDBits[OHB_ARMORAMOUNT].yPos,
 		3,
 		ps->stats[STAT_ARMOR],
-		otherHUDBits[OHB_ARMORAMOUNT].width * hudRatio,
+		otherHUDBits[OHB_ARMORAMOUNT].width * cgs.widthRatioCoef,
 		otherHUDBits[OHB_ARMORAMOUNT].height,
 		NUM_FONT_SMALL,
 		qfalse);
@@ -1421,7 +1421,6 @@ static void CG_DrawATSTHud( centity_t *cent )
 	vec4_t	color;
 	qhandle_t	background;
 	float	health;
-	float	hudRatio = cg_hudRatio.integer ? cgs.widthRatioCoef : 1.0f;
 
 	if ( !cg.snap
 		||!g_entities[cg.snap->ps.viewEntity].activator )
@@ -1482,7 +1481,7 @@ static void CG_DrawATSTHud( centity_t *cent )
 	{
 		cgi_R_SetColor( color );
 
-		CG_DrawPic( xPos * hudRatio, yPos, width * hudRatio, height, background );
+		CG_DrawPic( xPos * cgs.widthRatioCoef, yPos, width * cgs.widthRatioCoef, height, background );
 	}
 
 	if (cgi_UI_GetMenuItemInfo(
@@ -1496,7 +1495,7 @@ static void CG_DrawATSTHud( centity_t *cent )
 		&background))
 	{
 		cgi_R_SetColor( color );
-		CG_DrawPic( xPos * hudRatio, yPos, width * hudRatio, height, background );
+		CG_DrawPic( xPos * cgs.widthRatioCoef, yPos, width * cgs.widthRatioCoef, height, background );
 	}
 
 	if (cgi_UI_GetMenuItemInfo(
@@ -1511,7 +1510,7 @@ static void CG_DrawATSTHud( centity_t *cent )
 	{
 		cgi_R_SetColor( color );
 
-		CG_DrawPic( xPos * hudRatio, yPos, width * hudRatio, height, background );
+		CG_DrawPic( xPos * cgs.widthRatioCoef, yPos, width * cgs.widthRatioCoef, height, background );
 	}
 }
 
@@ -1827,7 +1826,6 @@ static void CG_DrawHUD( centity_t *cent )
 {
 	int value;
 	int	sectionXPos,sectionYPos,sectionWidth,sectionHeight;
-	float hudRatio = cg_hudRatio.integer ? cgs.widthRatioCoef : 1.0f;
 
 	if ( cg_hudFiles.integer )
 	{
@@ -1865,9 +1863,9 @@ static void CG_DrawHUD( centity_t *cent )
 		cgi_R_SetColor( otherHUDBits[OHB_SCANLINE_LEFT].color);
 
 		CG_DrawPic(
-			otherHUDBits[OHB_SCANLINE_LEFT].xPos * hudRatio,
+			otherHUDBits[OHB_SCANLINE_LEFT].xPos * cgs.widthRatioCoef,
 			otherHUDBits[OHB_SCANLINE_LEFT].yPos,
-			otherHUDBits[OHB_SCANLINE_LEFT].width * hudRatio,
+			otherHUDBits[OHB_SCANLINE_LEFT].width * cgs.widthRatioCoef,
 			otherHUDBits[OHB_SCANLINE_LEFT].height,
 			otherHUDBits[OHB_SCANLINE_LEFT].background
 			);
@@ -1875,16 +1873,16 @@ static void CG_DrawHUD( centity_t *cent )
 		// Print frame
 		cgi_R_SetColor( otherHUDBits[OHB_FRAME_LEFT].color);
 		CG_DrawPic(
-			otherHUDBits[OHB_FRAME_LEFT].xPos * hudRatio,
+			otherHUDBits[OHB_FRAME_LEFT].xPos * cgs.widthRatioCoef,
 			otherHUDBits[OHB_FRAME_LEFT].yPos,
-			otherHUDBits[OHB_FRAME_LEFT].width * hudRatio,
+			otherHUDBits[OHB_FRAME_LEFT].width * cgs.widthRatioCoef,
 			otherHUDBits[OHB_FRAME_LEFT].height,
 			otherHUDBits[OHB_FRAME_LEFT].background
 			);
 
-		CG_DrawArmor(sectionXPos,sectionYPos,sectionWidth,sectionHeight,hudRatio);
+		CG_DrawArmor(sectionXPos,sectionYPos,sectionWidth,sectionHeight);
 
-		CG_DrawHealth(sectionXPos,sectionYPos,sectionWidth,sectionHeight,hudRatio);
+		CG_DrawHealth(sectionXPos,sectionYPos,sectionWidth,sectionHeight);
 	}
 
 
@@ -1909,9 +1907,9 @@ static void CG_DrawHUD( centity_t *cent )
 		cgi_R_SetColor( otherHUDBits[OHB_SCANLINE_RIGHT].color);
 
 		CG_DrawPic(
-			SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[OHB_SCANLINE_RIGHT].xPos) * hudRatio,
+			SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[OHB_SCANLINE_RIGHT].xPos) * cgs.widthRatioCoef,
 			otherHUDBits[OHB_SCANLINE_RIGHT].yPos,
-			otherHUDBits[OHB_SCANLINE_RIGHT].width * hudRatio,
+			otherHUDBits[OHB_SCANLINE_RIGHT].width * cgs.widthRatioCoef,
 			otherHUDBits[OHB_SCANLINE_RIGHT].height,
 			otherHUDBits[OHB_SCANLINE_RIGHT].background
 			);
@@ -1920,23 +1918,23 @@ static void CG_DrawHUD( centity_t *cent )
 		// Print frame
 		cgi_R_SetColor( otherHUDBits[OHB_FRAME_RIGHT].color);
 		CG_DrawPic(
-			SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[OHB_FRAME_RIGHT].xPos) * hudRatio,
+			SCREEN_WIDTH - (SCREEN_WIDTH - otherHUDBits[OHB_FRAME_RIGHT].xPos) * cgs.widthRatioCoef,
 			otherHUDBits[OHB_FRAME_RIGHT].yPos,
-			otherHUDBits[OHB_FRAME_RIGHT].width * hudRatio,
+			otherHUDBits[OHB_FRAME_RIGHT].width * cgs.widthRatioCoef,
 			otherHUDBits[OHB_FRAME_RIGHT].height,
 			otherHUDBits[OHB_FRAME_RIGHT].background
 			);
 
-		CG_DrawForcePower(cent,sectionXPos,sectionYPos,hudRatio);
+		CG_DrawForcePower(cent,sectionXPos,sectionYPos);
 
 		// Draw ammo tics or saber style
 		if ( cent->currentState.weapon == WP_SABER )
 		{
-			CG_DrawSaberStyle(cent,sectionXPos,sectionYPos,hudRatio);
+			CG_DrawSaberStyle(cent,sectionXPos,sectionYPos);
 		}
 		else
 		{
-			CG_DrawAmmo(cent,sectionXPos,sectionYPos,hudRatio);
+			CG_DrawAmmo(cent,sectionXPos,sectionYPos);
 		}
 //		CG_DrawMessageLit(cent,x,y);
 	}
@@ -1972,7 +1970,7 @@ void CG_DrawDataPadHUD( centity_t *cent )
 	x = 34;
 	y = 286;
 
-	CG_DrawHealth(x,y,80,80,1.0f);
+	CG_DrawHealth(x,y,80,80);
 
 	x = 526;
 
@@ -2000,8 +1998,8 @@ void CG_DrawDataPadHUD( centity_t *cent )
 //		CG_ClearDataPadCvars();
 	}
 
-	CG_DrawForcePower(cent,x,y,1.0f);
-	CG_DrawAmmo(cent,x,y,1.0f);
+	CG_DrawForcePower(cent,x,y);
+	CG_DrawAmmo(cent,x,y);
 	CG_DrawMessageLit(cent,x,y);
 
 	cgi_R_SetColor( colorTable[CT_WHITE]);
@@ -2400,7 +2398,7 @@ static void CG_DrawPickupItem( void ) {
 		{
 			CG_RegisterItemVisuals( value );
 			cgi_R_SetColor( fadeColor );
-			CG_DrawPic( 573, 320, ICON_SIZE, ICON_SIZE, cg_items[ value ].icon );
+			CG_DrawPic( 573, 320, ICON_SIZE * cgs.widthRatioCoef, ICON_SIZE, cg_items[ value ].icon );
 			//CG_DrawBigString( ICON_SIZE + 16, 398, bg_itemlist[ value ].classname, fadeColor[0] );
 			//CG_DrawProportionalString( ICON_SIZE + 16, 398,
 			//	bg_itemlist[ value ].classname, CG_SMALLFONT,fadeColor );
@@ -3212,7 +3210,7 @@ static void CG_DrawActivePowers(void)
 	int startx = icon_size*2+16;
 	int starty = SCREEN_HEIGHT - icon_size*2;
 
-	int endx = icon_size;
+	int endx = icon_size * cgs.widthRatioCoef;
 	int endy = icon_size;
 
 	if (cg.zoomMode)
@@ -3560,7 +3558,7 @@ static void CG_UseIcon()
 	if (cg_usingInFrontOf)
 	{
 		cgi_R_SetColor( NULL );
-		CG_DrawPic( 50, 285, 64, 64, cgs.media.useableHint );
+		CG_DrawPic( 50, 285, 64 * cgs.widthRatioCoef, 64, cgs.media.useableHint );
 	}
 }
 
