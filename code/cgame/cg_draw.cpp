@@ -4174,8 +4174,8 @@ void CG_DrawIconBackground(void)
 
 			float holdFloat = (float) backgroundHeight;
 			backgroundHeight = (int) (holdFloat*cg.iconHUDPercent);
-			CG_DrawPic( backgroundXPos, backgroundYPos, backgroundWidth, -backgroundHeight, background);	// Top half
-			CG_DrawPic( backgroundXPos, backgroundYPos-2,backgroundWidth, backgroundHeight, background);	// Bottom half
+			CG_DrawPic( backgroundXPos + ( 232 * (1 - cgs.widthRatioCoef) ), backgroundYPos, backgroundWidth * cgs.widthRatioCoef, -backgroundHeight, background);	// Top half
+			CG_DrawPic( backgroundXPos + ( 232 * (1 - cgs.widthRatioCoef) ), backgroundYPos-2,backgroundWidth * cgs.widthRatioCoef, backgroundHeight, background);	// Bottom half
 		}
 		return;
 	}
@@ -4207,8 +4207,8 @@ void CG_DrawIconBackground(void)
 		cgi_R_SetColor( colorTable[CT_WHITE] );
 		float holdFloat = (float) backgroundHeight;
 		backgroundHeight = (int) (holdFloat*cg.iconHUDPercent);
-		CG_DrawPic( backgroundXPos, backgroundYPos, backgroundWidth, -backgroundHeight, background);	// Top half
-		CG_DrawPic( backgroundXPos, backgroundYPos-2,backgroundWidth, backgroundHeight, background);	// Bottom half
+		CG_DrawPic( backgroundXPos + ( 232 * (1 - cgs.widthRatioCoef) ), backgroundYPos, backgroundWidth * cgs.widthRatioCoef, -backgroundHeight, background);	// Top half
+		CG_DrawPic( backgroundXPos + ( 232 * (1 - cgs.widthRatioCoef) ), backgroundYPos-2,backgroundWidth * cgs.widthRatioCoef, backgroundHeight, background);	// Bottom half
 	}
 	if ((cg.inventorySelectTime+WEAPON_SELECT_TIME)>cg.time)
 	{
