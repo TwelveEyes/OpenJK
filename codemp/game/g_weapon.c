@@ -3184,11 +3184,11 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 			break;
 		}
 
-		if ( traceEnt->s.weapon == WP_SABER )//&& traceEnt->NPC
-		{//FIXME: need a more reliable way to know we hit a jedi?
+		// if ( traceEnt->s.weapon == WP_SABER )//&& traceEnt->NPC
+		// {//FIXME: need a more reliable way to know we hit a jedi?
 			hitDodged = Jedi_DodgeEvasion( traceEnt, ent, &tr, HL_NONE );
 			//acts like we didn't even hit him
-		}
+		// }
 		if ( !hitDodged )
 		{
 			if ( render_impact )
