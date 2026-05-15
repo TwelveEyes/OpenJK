@@ -1630,6 +1630,8 @@ void G_SetTauntAnim( gentity_t *ent, int taunt )
 
 	// fix: rocket lock bug
 	BG_ClearRocketLock(&ent->client->ps);
+	
+	trap->Cvar_Set("cg_thirdperson", "1");
 
 	if ( ent->client->ps.torsoTimer < 1
 		&& ent->client->ps.forceHandExtend == HANDEXTEND_NONE
