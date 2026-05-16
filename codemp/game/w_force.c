@@ -1698,7 +1698,7 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec
 			}
 			if (ForcePowerUsableOn(self, traceEnt, FP_LIGHTNING))
 			{
-				int	dmg = Q_irand( 1, 3 ); //Q_irand( 1, 2 );
+				int	dmg = Q_irand( 3, 5 ); //Q_irand( 1, 2 );
 
 				int modPowerLevel = -1;
 
