@@ -2198,7 +2198,7 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 		}
 		else
 		{
-			G_LoadAnimFileSet( ent, ent->model, ent->NPC_type );
+			G_LoadAnimFileSet( ent, ent->NPC_type );
 			G_SetSkin( ent );
 		}
 
@@ -2410,7 +2410,7 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 			}
 			else
 			{
-				G_LoadAnimFileSet( ent, ent->model, ent->NPC_type );
+				G_LoadAnimFileSet( ent, ent->NPC_type );
 				G_SetSkin( ent );
 			}
 			G_ReloadSaberData( ent );

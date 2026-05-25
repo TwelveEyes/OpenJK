@@ -1179,7 +1179,7 @@ int		G_ParseAnimFileSet(const char *skeletonName, const char *modelName=0, const
 		// Quick Search To See If We've Already Loaded This Model
 		//--------------------------------------------------------
 		int			curModel=0;
-		hstring		curModelName(modelName);
+		hstring		curModelName(!npcType ? modelName : npcType);
 		while (curModel<MAX_MODELS_PER_LEVEL && !modelsAlreadyDone[curModel].empty())
 		{
 			if (modelsAlreadyDone[curModel]==curModelName)
