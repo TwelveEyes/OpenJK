@@ -1176,10 +1176,18 @@ int		G_ParseAnimFileSet(const char *skeletonName, const char *modelName=0, const
 	//--------------------------------------
 	if (modelName)
 	{
+		char		npcTypeLwr[MAX_QPATH];
+
+		if (npcType)
+		{
+			Q_strncpyz(npcTypeLwr, npcType, sizeof(npcTypeLwr));
+			Q_strlwr(npcTypeLwr);
+		}
+
 		// Quick Search To See If We've Already Loaded This Model
 		//--------------------------------------------------------
 		int			curModel=0;
-		hstring		curModelName(!npcType ? modelName : npcType);
+		hstring		curModelName(!npcTypeLwr ? modelName : npcTypeLwr);
 		while (curModel<MAX_MODELS_PER_LEVEL && !modelsAlreadyDone[curModel].empty())
 		{
 			if (modelsAlreadyDone[curModel]==curModelName)
@@ -1204,7 +1212,7 @@ int		G_ParseAnimFileSet(const char *skeletonName, const char *modelName=0, const
 		{
 			const int iGLAIndexToCheckForSkip = (Q_stricmp(skeletonName, "_humanoid")?-1:gi.G2API_PrecacheGhoul2Model("models/players/_humanoid/_humanoid.gla")); // ;-)
 
-			G_ParseAnimationEvtFile(0, modelName, fileIndex, iGLAIndexToCheckForSkip, true, npcType);
+			G_ParseAnimationEvtFile(0, modelName, fileIndex, iGLAIndexToCheckForSkip, true, npcTypeLwr);
 		}
 	}
 
