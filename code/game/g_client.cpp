@@ -1111,7 +1111,7 @@ void G_BoneOrientationsForClass( int NPC_class, const char *boneName, Eorientati
 	}
 }
 
-extern void G_LoadAnimFileSet( gentity_t *ent, const char *modelName );
+extern void G_LoadAnimFileSet( gentity_t *ent, const char *modelName, const char *npcType=0 );
 qboolean G_SetG2PlayerModelInfo( gentity_t *ent, const char *modelName, const char *customSkin, const char *surfOff, const char *surfOn )
 {
 	if ( ent->playerModel != -1 )
@@ -2198,7 +2198,7 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 		}
 		else
 		{
-			G_LoadAnimFileSet( ent, ent->NPC_type );
+			G_LoadAnimFileSet( ent, ent->model, ent->NPC_type );
 			G_SetSkin( ent );
 		}
 
@@ -2410,7 +2410,7 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 			}
 			else
 			{
-				G_LoadAnimFileSet( ent, ent->NPC_type );
+				G_LoadAnimFileSet( ent, ent->model, ent->NPC_type );
 				G_SetSkin( ent );
 			}
 			G_ReloadSaberData( ent );
