@@ -12672,16 +12672,6 @@ void WP_ForcePowerDrain( gentity_t *self, forcePowers_t forcePower, int override
 	{
 		drain = forcePowerNeeded[forcePower];
 	}
-	switch ( forcePower )
-	{
-		case FP_LIGHTNING:
-		case FP_DRAIN:
-			if (level.time % 250 != 0)
-			{
-				drain = 0;
-			}
-			break;
-	}
 	if ( !drain )
 	{
 		return;
@@ -13896,16 +13886,20 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 		}
 		else
 		{
-			ForceShootLightning( self );
-			if ( self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING
-				|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_START
-				|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_HOLD
-				|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_RELEASE )
-			{//jackin' 'em up, Palpatine-style
-				//extra cost
+			while ( self->client->ps.forceLightningDebounce < level.time )
+			{
+				ForceShootLightning( self );
+				if ( self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING
+					|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_START
+					|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_HOLD
+					|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_RELEASE )
+				{//jackin' 'em up, Palpatine-style
+					//extra cost
+					WP_ForcePowerDrain( self, forcePower, 0 );
+				}
 				WP_ForcePowerDrain( self, forcePower, 0 );
+				self->client->ps.forceLightningDebounce += 50;
 			}
-			WP_ForcePowerDrain( self, forcePower, 0 );
 		}
 		break;
 	//new Jedi Academy force powers
@@ -14178,7 +14172,11 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 			}
 			else
 			{
-				ForceShootDrain( self );
+				while ( self->client->ps.forceDrainDebounce < level.time )
+				{
+					ForceShootDrain( self );
+					self->client->ps.forceDrainDebounce += 50;
+				}
 			}
 		}
 		break;
@@ -14427,6 +14425,11 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 			}
 		}
 	}
+
+	if ( !(self->client->ps.forcePowersActive & (1<<FP_DRAIN)) )
+		self->client->ps.forceDrainDebounce = level.time;
+	if ( !(self->client->ps.forcePowersActive & (1<<FP_LIGHTNING)) )
+		self->client->ps.forceLightningDebounce = level.time;
 }
 
 void WP_InitForcePowers( gentity_t *ent )
