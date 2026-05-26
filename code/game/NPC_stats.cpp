@@ -792,11 +792,6 @@ This file's presence is not required
 static
 void G_ParseAnimationEvtFile(int glaIndex, const char* eventsDirectory, int fileIndex, int iRealGLAIndex = -1, bool modelSpecific = false, const char* npcType=0)
 {
-	if (!Q_stricmp(eventsDirectory, "stormtrooper") || !Q_stricmp(eventsDirectory, "stormtrooper2") || !Q_stricmp(npcType, "stormtrooper") || !Q_stricmp(npcType, "stormtrooper2"))
-	{
-		Com_Printf("G_ParseAnimationEvtFile(glaIndex: %i, eventsDirectory: %s, fileIndex: %i, iRealGLAIndex: %i, modelSpecific: %i, npcType: %s)\n", glaIndex, eventsDirectory, fileIndex, iRealGLAIndex, modelSpecific, npcType);
-	}
-
 	int				len;
 	const char*		token;
 	char			text[80000];
@@ -844,11 +839,6 @@ void G_ParseAnimationEvtFile(int glaIndex, const char* eventsDirectory, int file
 	{
 		hstring		modelName(!npcType ? eventsDirectory : npcType);
 		modelIndex = modelName.handle();
-		if (!Q_stricmp(eventsDirectory, "stormtrooper") || !Q_stricmp(eventsDirectory, "stormtrooper2") || !Q_stricmp(npcType, "stormtrooper") || !Q_stricmp(npcType, "stormtrooper2"))
-		{
-			Com_Printf("modelSpecific: 1; eventsDirectory: %s; npcType: %s; modelIndex: %i;\n", eventsDirectory, npcType, modelIndex);
-			Com_Printf("eventsPath: %s\n", eventsPath);
-		}
 	}
 
 
@@ -1049,11 +1039,6 @@ qboolean G_ParseAnimationFile(int glaIndex, const char *skeletonName, int fileIn
 ////////////////////////////////////////////////////////////////////////
 int		G_ParseAnimFileSet(const char *skeletonName, const char *modelName=0, const char *npcType=0)
 {
-	if (!Q_stricmp(modelName, "stormtrooper") || !Q_stricmp(modelName, "stormtrooper2") || !Q_stricmp(npcType, "stormtrooper") || !Q_stricmp(npcType, "stormtrooper2"))
-	{
-		Com_Printf("G_ParseAnimFileSet(skeletonName: %s, modelName: %s, npcType: %s)\n", skeletonName, modelName, npcType);
-	}
-
 	int			fileIndex=0;
 
 
@@ -1223,11 +1208,6 @@ extern cvar_t	*g_char_model;
 void G_LoadAnimFileSet( gentity_t *ent, const char *pModelName, const char *npcType=0 )
 {
 //load its animation config
-	if (!Q_stricmp(pModelName, "stormtrooper") || !Q_stricmp(pModelName, "stormtrooper2") || !Q_stricmp(npcType, "stormtrooper") || !Q_stricmp(npcType, "stormtrooper2"))
-	{
-		Com_Printf("G_LoadAnimFileSet(ent: %s, pModelName: %s, npcType: %s)\n", ent->NPC_type, pModelName, npcType);
-	}
-
 	char	animName[MAX_QPATH];
 	char	*GLAName, *modelName;
 	char	*slash = NULL;
