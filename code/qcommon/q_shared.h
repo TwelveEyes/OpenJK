@@ -2073,11 +2073,6 @@ public:
 		saved_game.write<int32_t>(brokenLimbs);
 		saved_game.write<int32_t>(electrifyTime);
 #endif // !JK2_MODE
-
-#ifndef JK2_MODE
-		saved_game.write<int32_t>(forceDrainDebounce);
-#endif // !JK2_MODE
-		saved_game.write<int32_t>(forceLightningDebounce);
 	}
 
 	void sg_import(
@@ -2247,11 +2242,6 @@ public:
 		saved_game.read<int32_t>(brokenLimbs);
 		saved_game.read<int32_t>(electrifyTime);
 #endif // !JK2_MODE
-
-#ifndef JK2_MODE
-		saved_game.read<int32_t>(forceDrainDebounce);
-#endif // !JK2_MODE
-		saved_game.read<int32_t>(forceLightningDebounce);
 	}
 }; // PlayerStateBase
 
