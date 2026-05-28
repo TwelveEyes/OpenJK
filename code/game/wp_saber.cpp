@@ -11757,7 +11757,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				int maxHealth = self->client->ps.stats[STAT_MAX_HEALTH];
 				if ( self->client->ps.forcePowerLevel[FP_DRAIN] > FORCE_LEVEL_2 )
 				{//overcharge health
-					maxHealth = floor( (float)self->client->ps.stats[STAT_MAX_HEALTH] * 1.25f );
+					maxHealth = floor( (float)self->client->ps.stats[STAT_MAX_HEALTH] * 2.00f );
 				}
 				if (self->client->ps.stats[STAT_HEALTH] < maxHealth &&
 					self->health > 0 && self->client->ps.stats[STAT_HEALTH] > 0)
@@ -11798,6 +11798,12 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				if ( !Q_irand( 0, 2 ) )
 				{
 					G_Sound( traceEnt, G_SoundIndex( "sound/weapons/force/drained.mp3" ) );
+				}
+
+				if ( self->client->ps.forceDrainEntityNum >= ENTITYNUM_WORLD )
+				{//play the effect on distant drain victims
+					traceEnt->s.powerups |= ( 1 << PW_DRAINED );
+					traceEnt->client->ps.powerups[PW_DRAINED] = level.time + Q_irand( 1000, 4000 );
 				}
 
 				traceEnt->client->ps.forcePowerRegenDebounceTime = level.time + 800; //don't let the client being drained get force power back right away
