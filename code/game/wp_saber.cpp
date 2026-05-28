@@ -12666,6 +12666,30 @@ void WP_ForcePowerDrain( gentity_t *self, forcePowers_t forcePower, int override
 	{//For now, NPCs have infinite force power
 		return;
 	} */
+	switch ( forcePower )
+	{
+		case FP_LIGHTNING:
+			if ( self->client->ps.forceLightningDebounce < level.time )
+			{
+				self->client->ps.forceLightningDebounce += 50;
+			}
+			else
+			{
+				return;
+			}
+			break;
+
+		case FP_DRAIN:
+			if ( self->client->ps.forceDrainDebounce < level.time )
+			{
+				self->client->ps.forceDrainDebounce += 50;
+			}
+			else
+			{
+				return;
+			}
+			break;
+	}
 	//take away the power
 	int	drain = overrideAmt;
 	if ( !drain )
@@ -13886,19 +13910,18 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 		}
 		else
 		{
-			while ( self->client->ps.forceLightningDebounce < level.time )
+			ForceShootLightning( self );
+			if ( self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING
+				|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_START
+				|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_HOLD
+				|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_RELEASE )
+			{//jackin' 'em up, Palpatine-style
+				//extra cost
+				WP_ForcePowerDrain( self, forcePower, 4 );
+			}
+			else
 			{
-				ForceShootLightning( self );
-				if ( self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING
-					|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_START
-					|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_HOLD
-					|| self->client->ps.torsoAnim == BOTH_FORCE_2HANDEDLIGHTNING_RELEASE )
-				{//jackin' 'em up, Palpatine-style
-					//extra cost
-					WP_ForcePowerDrain( self, forcePower, 0 );
-				}
 				WP_ForcePowerDrain( self, forcePower, 0 );
-				self->client->ps.forceLightningDebounce += 50;
 			}
 		}
 		break;
@@ -14172,11 +14195,7 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 			}
 			else
 			{
-				while ( self->client->ps.forceDrainDebounce < level.time )
-				{
-					ForceShootDrain( self );
-					self->client->ps.forceDrainDebounce += 50;
-				}
+				ForceShootDrain( self );
 			}
 		}
 		break;
