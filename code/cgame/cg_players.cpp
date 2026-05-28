@@ -5045,24 +5045,37 @@ void CG_AddRefEntityWithPowerups( refEntity_t *ent, int powerups, centity_t *cen
 	}
 
 	//temp stuff for drain
-	if ( ( (cent->gent->client->ps.eFlags&EF_FORCE_DRAINED) || cent->gent->client->ps.forcePowersActive&(1<<FP_DRAIN) ) &&
+	if ( (powerups&(1<<PW_DRAINED) || (cent->gent->client->ps.eFlags&EF_FORCE_DRAINED) || cent->gent->client->ps.forcePowersActive&(1<<FP_DRAIN) ) &&
 		(cg.renderingThirdPerson || cent->currentState.number != cg.snap->ps.clientNum))
 	{//draining or being drained
-		ent->renderfx |= RF_RGB_TINT;
-		ent->shaderRGBA[0] = 255;
-		ent->shaderRGBA[1] = ent->shaderRGBA[2] = 0;
-		ent->shaderRGBA[3] = 255;
+		int	dif = gent->client->ps.powerups[PW_DRAINED] - cg.time;
 
-		if ( rand() & 1 )
+		if ( dif > 0 || (cent->gent->client->ps.eFlags&EF_FORCE_DRAINED) || cent->gent->client->ps.forcePowersActive&(1<<FP_DRAIN) )
 		{
-			ent->customShader = cgs.media.electricBodyShader;
-		}
-		else
-		{
-			ent->customShader = cgs.media.electricBody2Shader;
-		}
+			// fade out over the last 500 ms
+			int brightness = 255;
 
-		cgi_R_AddRefEntityToScene( ent);
+			if ( dif < 500 && (cent->gent->client->ps.eFlags&EF_FORCE_DRAINED) && !(cent->gent->client->ps.forcePowersActive&(1<<FP_DRAIN)) )
+			{
+				brightness = floor((dif - 500.0f) / 500.0f * 255.0f );
+			}
+
+			ent->renderfx |= RF_RGB_TINT;
+			ent->shaderRGBA[0] = brightness;
+			ent->shaderRGBA[1] = ent->shaderRGBA[2] = 0;
+			ent->shaderRGBA[3] = 255;
+
+			if ( rand() & 1 )
+			{
+				ent->customShader = cgs.media.electricBodyShader;
+			}
+			else
+			{
+				ent->customShader = cgs.media.electricBody2Shader;
+			}
+
+			cgi_R_AddRefEntityToScene( ent );
+		}
 	}
 }
 
@@ -8357,7 +8370,7 @@ SkipTrueView:
 			}
 
 			if ( cent->gent->client->ps.eFlags & EF_FORCE_DRAINED
-				|| (cent->currentState.powerups&(1<<PW_DRAINED)) )
+				|| (cent->gent->client->ps.powerups[PW_DRAINED] > cg.time) )
 			{//being drained
 				//do red electricity lines off them and red drain shell on them
 				CG_ForceElectrocution( cent, ent.origin, tempAngles, cgs.media.drainShader, qtrue );
