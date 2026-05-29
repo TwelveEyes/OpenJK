@@ -4093,7 +4093,12 @@ static qboolean S_StartBackgroundTrack_Actual( MusicInfo_t *pMusicInfo, qboolean
 	char	dump[16];
 	char	name[MAX_QPATH];
 
-	Q_strncpyz( sMusic_BackgroundLoop, loop, sizeof( sMusic_BackgroundLoop ));
+	char	*bgLoop = sMusic_BackgroundLoop;
+
+	if ( bgLoop != loop )
+	{// don't copy into yourself
+		Q_strncpyz( sMusic_BackgroundLoop, loop, sizeof( sMusic_BackgroundLoop ));
+	}
 
 	Q_strncpyz( name, intro, sizeof( name ) - 4 );	// this seems to be so that if the filename hasn't got an extension
 													//	but doesn't have the room to append on either then you'll just
@@ -4805,14 +4810,14 @@ static qboolean S_UpdateBackgroundTrack_Actual( MusicInfo_t *pMusicInfo, qboolea
 				//	or if it's a dynamic music specifier (which can't literally exist), in which case it should set
 				//	a return flag then exit...
 				//
-				char sTestName[MAX_QPATH/**2*/];// *2 so COM_DefaultExtension doesn't do an ERR_DROP if there was no space
+				char sTestName[MAX_QPATH*2];// *2 so COM_DefaultExtension doesn't do an ERR_DROP if there was no space
 											//	for an extension, since this is a "soft" test
-				Q_strncpyz( sTestName, sMusic_BackgroundLoop, sizeof(sTestName) - 4 );
+				Q_strncpyz( sTestName, sMusic_BackgroundLoop, sizeof(sTestName));
 				COM_DefaultExtension(sTestName, sizeof(sTestName), ".mp3");
 
 				if (S_FileExists( sTestName ))
 				{
-					S_StartBackgroundTrack_Actual( pMusicInfo, qfalse, sTestName, sTestName );
+					S_StartBackgroundTrack_Actual( pMusicInfo, qfalse, sMusic_BackgroundLoop, sMusic_BackgroundLoop );
 				}
 				else
 				{
