@@ -2161,8 +2161,13 @@ int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int ev
 	assert(animFileIndex < MAX_ANIM_FILES);
 	assert(eventFileIndex < MAX_ANIM_FILES);
 
-	if (eventFileIndex == -1)
-	{
+	if ( animFileIndex < 0 || animFileIndex >= MAX_ANIM_FILES )
+	{//WTF??!!
+		return 0;
+	}
+
+	if ( eventFileIndex < 0 || eventFileIndex >= MAX_ANIM_FILES )
+	{//WTF??!!
 		forcedIndex = 0;
 	}
 	else
