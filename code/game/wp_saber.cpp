@@ -12823,7 +12823,7 @@ void WP_ForcePowerStart( gentity_t *self, forcePowers_t forcePower, int override
 		}
 		else// if ( self->client->ps.forcePowerLevel[FP_SEE] == FORCE_LEVEL_3 )
 		{
-			duration = 20000;
+			duration = 100000000;
 		}
 
 		self->client->ps.forcePowersActive |= ( 1 << forcePower );
