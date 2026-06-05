@@ -743,6 +743,9 @@ void DoImpact( gentity_t *self, gentity_t *other, qboolean damageSelf, trace_t *
 	bool	thrown = false;
 	vec3_t	velocity;
 
+	const char *info = CG_ConfigString( CS_SERVERINFO );
+	const char *mapname = Info_ValueForKey( info, "mapname" );
+
 	Vehicle_t *pSelfVeh = NULL;
 	Vehicle_t *pOtherVeh = NULL;
 
@@ -1237,7 +1240,7 @@ void DoImpact( gentity_t *self, gentity_t *other, qboolean damageSelf, trace_t *
 			if( ( magnitude >= 100 + self->health
 					&& self->s.number >= MAX_CLIENTS
 					&& self->s.weapon != WP_SABER )
-				|| self->client->NPC_class == CLASS_VEHICLE
+				|| ( Q_stricmp(mapname, "doom_shields") && self->client->NPC_class == CLASS_VEHICLE )//hacky solution for outcast's doom_shields gravity change
 				|| ( magnitude >= 700 ) )//health here is used to simulate structural integrity
 			{
 				if ( (self->s.weapon == WP_SABER || self->s.number<MAX_CLIENTS || (self->client&&(self->client->NPC_class==CLASS_BOBAFETT||self->client->NPC_class==CLASS_ROCKETTROOPER))) && self->client && self->client->ps.groundEntityNum < ENTITYNUM_NONE && magnitude < 1000 )
