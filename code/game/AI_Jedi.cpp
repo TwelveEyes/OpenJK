@@ -1161,36 +1161,33 @@ static void Jedi_AdjustSaberAnimLevel( gentity_t *self, int newLevel )
 		else if ( !Q_stricmp( "cultist_saber", self->NPC_type )
 				|| !Q_stricmp( "cultist_saber_throw", self->NPC_type ) )
 		{//fast only
-			self->client->ps.saberAnimLevel = SS_FAST;
+			newLevel = SS_FAST;
 		}
 		else if ( !Q_stricmp( "cultist_saber_med", self->NPC_type )
 					|| !Q_stricmp( "cultist_saber_med_throw", self->NPC_type ) )
 		{//med only
-			self->client->ps.saberAnimLevel = SS_MEDIUM;
+			newLevel = SS_MEDIUM;
 		}
 		else if ( !Q_stricmp( "cultist_saber_strong", self->NPC_type )
 				|| !Q_stricmp( "cultist_saber_strong_throw", self->NPC_type ) )
 		{//strong only
-			self->client->ps.saberAnimLevel = SS_STRONG;
+			newLevel = SS_STRONG;
 		}
 		else
 		{//regular reborn
 			if ( self->NPC->rank == RANK_CIVILIAN || self->NPC->rank == RANK_LT_JG )
 			{//grunt and fencer always uses quick attacks
-				self->client->ps.saberAnimLevel = SS_FAST;
-				return;
+				newLevel = SS_FAST;
 			}
-			if ( self->NPC->rank == RANK_CREWMAN
+			else if ( self->NPC->rank == RANK_CREWMAN
 				|| self->NPC->rank == RANK_ENSIGN )
 			{//acrobat & force-users always use medium attacks
-				self->client->ps.saberAnimLevel = SS_MEDIUM;
-				return;
+				newLevel = SS_MEDIUM;
 			}
 			/*
-			if ( self->NPC->rank == RANK_LT )
+			else if ( self->NPC->rank == RANK_LT )
 			{//boss always uses strong attacks
-				self->client->ps.saberAnimLevel = SS_STRONG;
-				return;
+				newLevel = SS_STRONG;
 			}
 			*/
 		}
