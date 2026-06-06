@@ -276,7 +276,7 @@ void NPC_GM_Pain( gentity_t *self, gentity_t *inflictor, gentity_t *other, const
 			self->client->ps.stats[STAT_ARMOR] = 0;//no more armor
 			self->NPC->investigateDebounceTime = 0;//stop recharging
 
-			NPC_SetAnim( self, SETANIM_BOTH, BOTH_CIN_1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+			NPC_SetAnim( self, SETANIM_BOTH, BOTH_ALERT1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 			TIMER_Set( self, "attackDelay", self->client->ps.torsoAnimTimer );
 			G_AddEvent( self, Q_irand( EV_DEATH1, EV_DEATH3 ), self->health );
 		}
@@ -565,7 +565,7 @@ void NPC_GM_StartLaser( void )
 	if ( !NPC->lockCount )
 	{//haven't already started a laser attack
 		//warm up for the beam attack
-		NPC_SetAnim( NPC, SETANIM_TORSO, BOTH_CIN_6, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+		NPC_SetAnim( NPC, SETANIM_TORSO, TORSO_RAISEWEAP2, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 		TIMER_Set( NPC, "beamDelay", NPC->client->ps.torsoAnimTimer );
 		TIMER_Set( NPC, "attackDelay", NPC->client->ps.torsoAnimTimer+3000 );
 		NPC->lockCount = 1;
@@ -611,30 +611,30 @@ void NPC_BSGM_Attack( void )
 			if ( NPC->client->ps.torsoAnimTimer <= 500 )
 			{
 				G_AddVoiceEvent( NPC, Q_irand( EV_VICTORY1, EV_VICTORY3 ), 3000 );
-				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_CIN_3, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_TRIUMPHANT1START, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 				NPC->client->ps.legsAnimTimer += 500;
 				NPC->client->ps.torsoAnimTimer += 500;
 			}
 		}
-		else if ( NPC->client->ps.torsoAnim == BOTH_CIN_3 )
+		else if ( NPC->client->ps.torsoAnim == BOTH_TRIUMPHANT1START )
 		{
 			if ( NPC->client->ps.torsoAnimTimer <= 500 )
 			{
-				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_CIN_4, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_TRIUMPHANT1STARTGESTURE, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 				NPC->client->ps.legsAnimTimer += 500;
 				NPC->client->ps.torsoAnimTimer += 500;
 			}
 		}
-		else if ( NPC->client->ps.torsoAnim == BOTH_CIN_4 )
+		else if ( NPC->client->ps.torsoAnim == BOTH_TRIUMPHANT1STARTGESTURE )
 		{
 			if ( NPC->client->ps.torsoAnimTimer <= 500 )
 			{
-				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_CIN_5, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_TRIUMPHANT1STOP, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 				NPC->client->ps.legsAnimTimer += 500;
 				NPC->client->ps.torsoAnimTimer += 500;
 			}
 		}
-		else if ( NPC->client->ps.torsoAnim == BOTH_CIN_5 )
+		else if ( NPC->client->ps.torsoAnim == BOTH_TRIUMPHANT1STOP )
 		{
 			if ( NPC->client->ps.torsoAnimTimer <= 500 )
 			{
@@ -761,7 +761,7 @@ void NPC_BSGM_Attack( void )
 				NPC->lockCount = 0;
 				G_FreeEntity( NPCInfo->coverTarg );
 				NPC->s.loopSound = 0;
-				NPC_SetAnim( NPC, SETANIM_TORSO, BOTH_CIN_7, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+				NPC_SetAnim( NPC, SETANIM_TORSO, TORSO_DROPWEAP2, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 				TIMER_Set( NPC, "attackDelay", NPC->client->ps.torsoAnimTimer );
 			}
 			else
@@ -1079,7 +1079,7 @@ void NPC_BSGM_Attack( void )
 	if ( AImove && !NPC->lockCount )
 	{//move toward goal
 		if ( NPCInfo->goalEntity
-			&& NPC->client->ps.legsAnim != BOTH_CIN_1
+			&& NPC->client->ps.legsAnim != BOTH_ALERT1
 			&& NPC->client->ps.legsAnim != BOTH_ATTACK2
 			&& NPC->client->ps.legsAnim != BOTH_ATTACK4
 			&& NPC->client->ps.legsAnim != BOTH_ATTACK5
