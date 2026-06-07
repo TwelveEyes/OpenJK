@@ -2071,7 +2071,7 @@ void SP_misc_ion_cannon( gentity_t *base )
 	base->s.modelindex = G_ModelIndex( "models/map_objects/imp_mine/ion_cannon.glm" );
 	base->playerModel = gi.G2API_InitGhoul2Model( base->ghoul2, "models/map_objects/imp_mine/ion_cannon.glm", base->s.modelindex, NULL_HANDLE, NULL_HANDLE, 0, 0 );
 	base->s.radius = 320.0f;
-	VectorSet( base->s.modelScale, 2.0f, 2.0f, 2.0f );
+	VectorSet( base->s.modelScale, 1.0f, 1.0f, 1.0f );
 
 	base->rootBone = gi.G2API_GetBoneIndex( &base->ghoul2[base->playerModel], "model_root", qtrue );
 	base->torsoBolt = gi.G2API_AddBolt( &base->ghoul2[base->playerModel], "*flash02" );
