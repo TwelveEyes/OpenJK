@@ -258,6 +258,8 @@ typedef struct {
 	qhandle_t	sightShell;
 	qhandle_t	drainShader;
 
+	qhandle_t	impPistol;
+
 	// sounds
 	sfxHandle_t disintegrateSound;
 	sfxHandle_t disintegrate2Sound;
