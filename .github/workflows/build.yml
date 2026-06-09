@@ -84,6 +84,8 @@ jobs:
           cp ./pk3/jashaderfixes.pk3 ./build/bin/JediAcademy/base/
           cp ./pk3/jk2bacta.pk3 ./build/bin/JediAcademy/base/
           cp ./pk3/jk2binds.pk3 ./build/bin/JediAcademy/base/
+          cp ./pk3/jk2healsnd.pk3 ./build/bin/JediAcademy/base/
+          cp ./pk3/jk2imppistol.pk3 ./build/bin/JediAcademy/base/
           cp ./pk3/jk2lightning.pk3 ./build/bin/JediAcademy/base/
 
       - name: Install
@@ -182,6 +184,8 @@ jobs:
           cp ./pk3/jashaderfixes.pk3 ./install/JediAcademy/base/
           cp ./pk3/jk2bacta.pk3 ./install/JediAcademy/base/
           cp ./pk3/jk2binds.pk3 ./install/JediAcademy/base/
+          cp ./pk3/jk2healsnd.pk3 ./install/JediAcademy/base/
+          cp ./pk3/jk2imppistol.pk3 ./install/JediAcademy/base/
           cp ./pk3/jk2lightning.pk3 ./install/JediAcademy/base/
 
       - name: Create OpenJK binary archive
@@ -279,6 +283,8 @@ jobs:
   #         cp ./pk3/jashaderfixes.pk3 ./install/JediAcademy/openjk_sp.${{ matrix.arch }}.app/Contents/MacOS/base/
   #         cp ./pk3/jk2bacta.pk3 ./install/JediAcademy/openjk_sp.${{ matrix.arch }}.app/Contents/MacOS/base/
   #         cp ./pk3/jk2binds.pk3 ./install/JediAcademy/openjk_sp.${{ matrix.arch }}.app/Contents/MacOS/base/
+  #         cp ./pk3/jk2healsnd.pk3 ./install/JediAcademy/openjk_sp.${{ matrix.arch }}.app/Contents/MacOS/base/
+  #         cp ./pk3/jk2imppistol.pk3 ./install/JediAcademy/openjk_sp.${{ matrix.arch }}.app/Contents/MacOS/base/
   #         cp ./pk3/jk2lightning.pk3 ./install/JediAcademy/openjk_sp.${{ matrix.arch }}.app/Contents/MacOS/base/
 
   #     - name: Create OpenJK binary archive
