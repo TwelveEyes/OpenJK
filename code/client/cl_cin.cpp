@@ -1882,7 +1882,7 @@ static void PlayCinematic(const char *arg, const char *s, qboolean qbInGame)
 		// find the current mapname
 		const char *info = cl.gameState.stringData + cl.gameState.stringOffsets[ CS_SERVERINFO ];
 		const char *mapname = Info_ValueForKey( info, "mapname" );
-		if (!Q_stricmp(arg,"video/jk0101_sw.roq"))
+		if (!Q_stricmp(arg,"video/jk0101_sw.roq")||!Q_stricmp("0101_sw.roq",strlen(arg) > 11 ? (arg + strlen(arg) - 11) : ""))
 		{
 			psAudioFile = "music/cinematic_1";
 #ifdef JK2_MODE
