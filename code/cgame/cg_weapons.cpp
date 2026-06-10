@@ -1448,7 +1448,6 @@ void CG_DrawDataPadWeaponSelect( void )
 	int				sideLeftIconCnt,sideRightIconCnt;
 	int				holdCount,iconCnt;
 	char			text[1024]={0};
-	qboolean drewConc = qfalse;
 
 	// showing weapon select clears pickup item display, but not the blend blob
 	cg.itemPickupTime = 0;
@@ -1491,27 +1490,14 @@ void CG_DrawDataPadWeaponSelect( void )
 	}
 
 	// This seems to be a problem if datapad comes up too early
-	if (cg.DataPadWeaponSelect<FIRST_WEAPON)
-	{
-		cg.DataPadWeaponSelect = FIRST_WEAPON;
-	}
-	else if (cg.DataPadWeaponSelect>13)
-	{
-		cg.DataPadWeaponSelect = 13;
-	}
+	cg.DataPadWeaponSelect = Com_Clampi(FIRST_WEAPON, WP_CONCUSSION, cg.DataPadWeaponSelect);
 
 	// What weapon does the player currently have selected
-	if ( cg.DataPadWeaponSelect == WP_CONCUSSION )
+	weaponSelectI = cg.DataPadWeaponSelect - 1;
+
+	if (weaponSelectI<FIRST_WEAPON)
 	{
-		weaponSelectI = WP_FLECHETTE;
-	}
-	else
-	{
-		weaponSelectI = cg.DataPadWeaponSelect - 1;
-	}
-	if (weaponSelectI<1)
-	{
-		weaponSelectI = 13;
+		weaponSelectI = WP_CONCUSSION;
 	}
 
 	const float smallIconSize_x = 40 * cgs.widthRatioCoef, smallIconSize_y = 40;
@@ -1530,27 +1516,13 @@ void CG_DrawDataPadWeaponSelect( void )
 	cgi_R_SetColor( colorTable[CT_WHITE] );
 	for (iconCnt=1;iconCnt<(sideLeftIconCnt+1);weaponSelectI--)
 	{
-		if ( weaponSelectI == WP_CONCUSSION )
-		{
-			weaponSelectI--;
-		}
-		else if ( weaponSelectI == WP_FLECHETTE && !drewConc && cg.DataPadWeaponSelect != WP_CONCUSSION )
+		if (weaponSelectI<FIRST_WEAPON)
 		{
 			weaponSelectI = WP_CONCUSSION;
 		}
 
-		if (weaponSelectI<1)
-		{
-			weaponSelectI = 13;
-		}
-
 		if ( !(weaponBitFlag & ( 1 << weaponSelectI )))	// Does he have this weapon?
 		{
-			if ( weaponSelectI == WP_CONCUSSION )
-			{
-				drewConc = qtrue;
-				weaponSelectI = WP_ROCKET_LAUNCHER;
-			}
 			continue;
 		}
 
@@ -1572,12 +1544,6 @@ void CG_DrawDataPadWeaponSelect( void )
 			}
 
 			holdX -= (smallIconSize_x+pad);
-		}
-
-		if ( weaponSelectI == WP_CONCUSSION )
-		{
-			drewConc = qtrue;
-			weaponSelectI = WP_ROCKET_LAUNCHER;
 		}
 	}
 
@@ -1601,18 +1567,11 @@ void CG_DrawDataPadWeaponSelect( void )
 		}
 	}
 
-	if ( cg.DataPadWeaponSelect == WP_CONCUSSION )
-	{
-		weaponSelectI = WP_ROCKET_LAUNCHER;
-	}
-	else
-	{
-		weaponSelectI = cg.DataPadWeaponSelect + 1;
-	}
+	weaponSelectI = cg.DataPadWeaponSelect + 1;
 
-	if (weaponSelectI> 13)
+	if (weaponSelectI>WP_CONCUSSION)
 	{
-		weaponSelectI = 1;
+		weaponSelectI = FIRST_WEAPON;
 	}
 
 	// Right side ICONS
@@ -1621,26 +1580,13 @@ void CG_DrawDataPadWeaponSelect( void )
 	holdX = centerXPos + (bigIconSize_x/2) + bigPad;
 	for (iconCnt=1;iconCnt<(sideRightIconCnt+1);weaponSelectI++)
 	{
-		if ( weaponSelectI == WP_CONCUSSION )
+		if (weaponSelectI>WP_CONCUSSION)
 		{
-			weaponSelectI++;
-		}
-		else if ( weaponSelectI == WP_ROCKET_LAUNCHER && !drewConc && cg.DataPadWeaponSelect != WP_CONCUSSION )
-		{
-			weaponSelectI = WP_CONCUSSION;
-		}
-		if (weaponSelectI>13)
-		{
-			weaponSelectI = 1;
+			weaponSelectI = FIRST_WEAPON;
 		}
 
 		if ( !(weaponBitFlag & ( 1 << weaponSelectI )))	// Does he have this weapon?
 		{
-			if ( weaponSelectI == WP_CONCUSSION )
-			{
-				drewConc = qtrue;
-				weaponSelectI = WP_FLECHETTE;
-			}
 			continue;
 		}
 
@@ -1664,11 +1610,6 @@ void CG_DrawDataPadWeaponSelect( void )
 
 
 			holdX += (smallIconSize_x+pad);
-		}
-		if ( weaponSelectI == WP_CONCUSSION )
-		{
-			drewConc = qtrue;
-			weaponSelectI = WP_FLECHETTE;
 		}
 	}
 
@@ -2282,28 +2223,16 @@ void CG_DPNextWeapon_f( void ) {
 
 	original = cg.DataPadWeaponSelect;
 
-	for ( i = 0 ; i <= MAX_PLAYER_WEAPONS ; i++ )
+	for ( i = 0 ; i <= WP_CONCUSSION ; i++ )
 	{
-
-		//*SIGH*... Hack to put concussion rifle before rocketlauncher
-		if ( cg.DataPadWeaponSelect == WP_FLECHETTE )
-		{
-			cg.DataPadWeaponSelect = WP_CONCUSSION;
-		}
-		else if ( cg.DataPadWeaponSelect == WP_CONCUSSION )
-		{
-			cg.DataPadWeaponSelect = WP_ROCKET_LAUNCHER;
-		}
-		else if ( cg.DataPadWeaponSelect == WP_DET_PACK )
+		if ( cg.DataPadWeaponSelect > WP_CONCUSSION )
 		{
 			cg.DataPadWeaponSelect = FIRST_WEAPON;
 		}
-		else
-		{
-			cg.DataPadWeaponSelect++;
-		}
 
-		if ( cg.DataPadWeaponSelect < FIRST_WEAPON || cg.DataPadWeaponSelect > MAX_PLAYER_WEAPONS) {
+		cg.DataPadWeaponSelect++;
+
+		if ( cg.DataPadWeaponSelect < FIRST_WEAPON || cg.DataPadWeaponSelect > WP_CONCUSSION) {
 			cg.DataPadWeaponSelect = FIRST_WEAPON;
 		}
 
@@ -2340,30 +2269,18 @@ void CG_DPPrevWeapon_f( void )
 
 	original = cg.DataPadWeaponSelect;
 
-	for ( i = 0 ; i <= MAX_PLAYER_WEAPONS ; i++ )
+	for ( i = 0 ; i <= WP_CONCUSSION ; i++ )
 	{
-
-		//*SIGH*... Hack to put concussion rifle before rocketlauncher
-		if ( cg.DataPadWeaponSelect == WP_ROCKET_LAUNCHER )
+		if ( cg.DataPadWeaponSelect < FIRST_WEAPON )
 		{
 			cg.DataPadWeaponSelect = WP_CONCUSSION;
 		}
-		else if ( cg.DataPadWeaponSelect == WP_CONCUSSION )
-		{
-			cg.DataPadWeaponSelect = WP_FLECHETTE;
-		}
-		else if ( cg.DataPadWeaponSelect == WP_MELEE )
-		{
-			cg.DataPadWeaponSelect = WP_DET_PACK;
-		}
-		else
-		{
-			cg.DataPadWeaponSelect--;
-		}
 
-		if ( cg.DataPadWeaponSelect < FIRST_WEAPON || cg.DataPadWeaponSelect > MAX_PLAYER_WEAPONS)
+		cg.DataPadWeaponSelect--;
+
+		if ( cg.DataPadWeaponSelect < FIRST_WEAPON || cg.DataPadWeaponSelect > WP_CONCUSSION)
 		{
-			cg.DataPadWeaponSelect = MAX_PLAYER_WEAPONS;
+			cg.DataPadWeaponSelect = WP_CONCUSSION;
 		}
 
 		if ( CG_WeaponSelectable( cg.DataPadWeaponSelect, original, qtrue ) )
