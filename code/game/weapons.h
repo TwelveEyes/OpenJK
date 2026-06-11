@@ -102,6 +102,25 @@ typedef enum //# ammo_e
 	AMMO_MAX
 } ammo_t;
 
+static int weaponDPOrder[] = 
+{
+	WP_NONE,
+
+	WP_SABER,
+	WP_BLASTER_PISTOL,
+	WP_BLASTER,
+	WP_DISRUPTOR,
+	WP_BOWCASTER,
+	WP_REPEATER,
+	WP_DEMP2,
+	WP_FLECHETTE,
+	WP_CONCUSSION,
+	WP_ROCKET_LAUNCHER,
+	WP_THERMAL,
+	WP_TRIP_MINE,
+	WP_DET_PACK,
+};
+
 
 typedef struct weaponData_s
 {
