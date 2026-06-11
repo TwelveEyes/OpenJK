@@ -436,7 +436,7 @@ int CG_WeaponCheck( int weaponIndex );
 
 // For printing load screen icons
 const int	MAXLOADICONSPERROW = 8;		// Max icons displayed per row
-const int	MAXLOADWEAPONS = 16;
+const int	MAXLOADWEAPONS = MAX_PLAYER_WEAPONS;
 const int	MAXLOAD_FORCEICONSIZE = 40;	// Size of force power icons
 const int	MAXLOAD_FORCEICONPAD = 12;	// Padding space between icons
 
@@ -471,7 +471,7 @@ static int CG_DrawLoadWeaponsPrintRow( const char *itemName, int weaponsBits,int
 	// calculate placement of weapon icons
 	holdX = x + (width - ((iconSize*rowIconCnt) + (pad * (rowIconCnt-1))))/2;
 
-	for (i=startIndex;i<MAXLOADWEAPONS;i++)
+	for (i=startIndex;i<=MAXLOADWEAPONS;i++)
 	{
 		if ( !(weaponsBits & ( 1 << i )))	// Does he have this weapon?
 		{
@@ -517,7 +517,7 @@ static void CG_DrawLoadWeapons( int weaponBits )
 
 	// count the number of weapons owned
 	iconCnt = 0;
-	for ( i = 1 ; i < MAXLOADWEAPONS ; i++ )
+	for ( i = 1 ; i <= MAXLOADWEAPONS ; i++ )
 	{
 		if ( weaponBits & ( 1 << i ) )
 		{
