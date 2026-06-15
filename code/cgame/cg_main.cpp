@@ -185,6 +185,13 @@ Ghoul2 Insert End
 	return -1;
 }
 
+static void CG_Set2DRatio(void) {
+	if (cg_hudRatio.integer)
+		cgs.widthRatioCoef = (float)(SCREEN_WIDTH * cgs.glconfig.vidHeight) / (float)(SCREEN_HEIGHT * cgs.glconfig.vidWidth);
+	else
+		cgs.widthRatioCoef = 1.0f;
+}
+
 /*
 Ghoul2 Insert Start
 */
@@ -346,6 +353,8 @@ vmCvar_t	cg_scaleVehicleSensitivity;
 // vmCvar_t		cg_trueflip;
 // vmCvar_t		cg_truespin;
 
+vmCvar_t		cg_hudRatio;
+
 typedef struct {
 	vmCvar_t	*vmCvar;
 	const char	*cvarName;
@@ -469,6 +478,8 @@ static cvarTable_t cvarTable[] = {
 	// { &cg_trueroll,	"cg_trueroll",	"0", CVAR_ARCHIVE },
 	// { &cg_trueflip,	"cg_trueflip",	"0", CVAR_ARCHIVE },
 	// { &cg_truespin,	"cg_truespin",	"0", CVAR_ARCHIVE },
+
+	{ &cg_hudRatio, "cg_hudRatio", "1", CVAR_ARCHIVE },
 };
 
 static const size_t cvarTableSize = ARRAY_LEN( cvarTable );
@@ -484,6 +495,9 @@ void CG_RegisterCvars( void ) {
 
 	for ( i=0, cv=cvarTable; i<cvarTableSize; i++, cv++ ) {
 		cgi_Cvar_Register( cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags );
+		if (cv->vmCvar == &cg_hudRatio) {
+			CG_Set2DRatio();
+		}
 	}
 }
 
@@ -498,7 +512,11 @@ void CG_UpdateCvars( void ) {
 
 	for ( i=0, cv=cvarTable; i<cvarTableSize; i++, cv++ ) {
 		if ( cv->vmCvar ) {
+			int modCount = cv->vmCvar->modificationCount;
 			cgi_Cvar_Update( cv->vmCvar );
+			if (cv->vmCvar->modificationCount > modCount && cv->vmCvar == &cg_hudRatio) {
+				CG_Set2DRatio();
+			}
 		}
 	}
 }
@@ -2174,6 +2192,8 @@ void CG_Init( int serverCommandSequence ) {
 	CG_GameStateReceived();
 
 	CG_InitConsoleCommands();
+
+	CG_Set2DRatio();
 
 	cg.weaponPickupTextTime = 0;
 
