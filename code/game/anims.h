@@ -1815,6 +1815,18 @@ typedef enum //# animNumber_e
 	MAX_TOTALANIMATIONS,
 } animNumber_t;
 
+// JK2 specific anims remapped onto existing anim indexes to avoid affecting LOADSAVE structure 
+typedef enum
+{
+	BOTH_ALERT1						= BOTH_CIN_1,
+	BOTH_RADIO_ONOFF				= BOTH_CIN_2,
+	BOTH_TRIUMPHANT1START			= BOTH_CIN_3,
+	BOTH_TRIUMPHANT1STARTGESTURE	= BOTH_CIN_4,
+	BOTH_TRIUMPHANT1STOP			= BOTH_CIN_5,
+	TORSO_RAISEWEAP2				= BOTH_CIN_6,
+	TORSO_DROPWEAP2					= BOTH_CIN_7,
+} animRemapNumber_GalakMech_t;
+
 #define SABER_ANIM_GROUP_SIZE (BOTH_A2_T__B_ - BOTH_A1_T__B_)
 
 
