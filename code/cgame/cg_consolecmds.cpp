@@ -119,7 +119,7 @@ void CG_ToggleBinoculars( void )
 		cg.zoomMode = 1;
 		cg.zoomLocked = qfalse;
 
-		if ( cg.weaponSelect == WP_SABER )
+		if ( cg.weaponSelect == WP_SABER || cg.weaponSelect == WP_MELEE )
 		{
 			cg.weaponSelect = WP_NONE;
 		}
@@ -151,6 +151,10 @@ void CG_ToggleBinoculars( void )
 			// FIXME: this is pretty damn ugly but whatever
 			cg.weaponSelect = WP_SABER;
 		}
+		else if( cg.weaponSelect == WP_NONE && cg.snap->ps.stats[STAT_WEAPONS] & ( 1 << WP_MELEE ) )
+		{
+			cg.weaponSelect = WP_MELEE;
+		}
 	}
 }
 
@@ -177,6 +181,12 @@ void CG_ToggleLAGoggles( void )
 
 		cg.zoomMode = 3;
 		cg.zoomLocked = qfalse;
+
+		if ( cg.weaponSelect == WP_SABER || cg.weaponSelect == WP_MELEE )
+		{
+			cg.weaponSelect = WP_NONE;
+		}
+
 		if ( cg.overrides.active & CG_OVERRIDE_FOV )
 		{
 			cg_zoomFov = cg.overrides.fov;
@@ -193,6 +203,16 @@ void CG_ToggleLAGoggles( void )
 		cg.zoomMode = 0;
 		cg.zoomTime = cg.time;
 		cgi_S_StartSound( NULL, cg.snap->ps.clientNum, CHAN_AUTO, cgs.media.zoomEnd );
+
+		if( cg.weaponSelect == WP_NONE && cg.snap->ps.stats[STAT_WEAPONS] & ( 1 << WP_SABER ) )
+		{
+			// FIXME: this is pretty damn ugly but whatever
+			cg.weaponSelect = WP_SABER;
+		}
+		else if( cg.weaponSelect == WP_NONE && cg.snap->ps.stats[STAT_WEAPONS] & ( 1 << WP_MELEE ) )
+		{
+			cg.weaponSelect = WP_MELEE;
+		}
 	}
 }
 

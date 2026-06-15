@@ -328,7 +328,7 @@ static void CG_DrawAmmo(const centity_t	*cent,const int xPos,const int yPos)
 		return;
 	}
 
-	if ( cent->currentState.weapon == WP_STUN_BATON )
+	if ( cent->currentState.weapon == WP_STUN_BATON || cent->currentState.weapon == WP_MELEE )
 	{
 		return;
 	}
@@ -3991,7 +3991,7 @@ static void CG_Draw2D( void )
 	{
 		if ( !(cent->gent && cent->gent->s.eFlags & (EF_LOCKED_TO_WEAPON )))//|EF_IN_ATST
 		{
-			//CG_DrawIconBackground();
+			CG_DrawIconBackground();
 		}
 
 		CG_DrawWeaponSelect();
@@ -4145,8 +4145,8 @@ void CG_DrawIconBackground(void)
 	// Use weapon background?
 	else if (((cg.weaponSelectTime+WEAPON_SELECT_TIME)>cg.time) || (cgs.media.currentBackground == ICON_WEAPONS))
 	{
-		background = 0;
-		//background = cgs.media.weaponIconBackground;
+		//background = 0;
+		background = cgs.media.weaponIconBackground;
 	}
 	// Use force background?
 	else

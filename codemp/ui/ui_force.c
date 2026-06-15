@@ -494,6 +494,7 @@ void UI_ReadLegalForce(void)
 	int forcePowerRank = 0;
 	int currank = 0;
 	int forceTeam = 0;
+	int forceBasedTeams = atoi( Info_ValueForKey( info, "g_forceBasedTeams" ) );
 	qboolean updateForceLater = qfalse;
 
 	//First, stick them into a string.
@@ -514,7 +515,7 @@ void UI_ReadLegalForce(void)
 	info[0] = '\0';
 	trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
 
-	if (atoi( Info_ValueForKey( info, "g_forceBasedTeams" ) ))
+	if (forceBasedTeams)
 	{
 		switch((int)(trap->Cvar_VariableValue("ui_myteam")))
 		{
@@ -604,7 +605,7 @@ void UI_ReadLegalForce(void)
 			continue;  // skip this power
 		}
 
-		if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide)
+		if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide && forceBasedTeams)
 		{ //Apparently the user has crafted a force config that has powers that don't fit with the config's side.
 			continue;  // skip this power
 		}
@@ -868,14 +869,14 @@ qboolean UI_ForceSide_HandleKey(int flags, float *special, int key, int num, int
 		uiForceSide = num;
 
 		// Resetting power ranks based on if light or dark side is chosen
-		while (x < NUM_FORCE_POWERS)
+		/*while (x < NUM_FORCE_POWERS)
 		{
 			if (uiForcePowerDarkLight[x] && uiForceSide != uiForcePowerDarkLight[x])
 			{
 				uiForcePowersRank[x] = 0;
 			}
 			x++;
-		}
+		}*/
 
 		UpdateForceUsed();
 
@@ -1022,11 +1023,11 @@ qboolean UI_ForcePowerRank_HandleKey(int flags, float *special, int key, int num
 		}
 
 		// If we are not on the same side as a power, or if we are not of any rank at all.
-		if (uiForcePowerDarkLight[forcepower] && uiForceSide != uiForcePowerDarkLight[forcepower])
+		/*if (uiForcePowerDarkLight[forcepower] && uiForceSide != uiForcePowerDarkLight[forcepower])
 		{
 			return qtrue;
 		}
-		else if (forcepower == FP_SABER_DEFENSE || forcepower == FP_SABERTHROW)
+		else*/ if (forcepower == FP_SABER_DEFENSE || forcepower == FP_SABERTHROW)
 		{	// Saberdefend and saberthrow can't be bought if there is no saberattack
 			if (uiForcePowersRank[FP_SABER_OFFENSE] < 1)
 			{
@@ -1136,6 +1137,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 	char singleBuf[64];
 	char info[MAX_INFO_VALUE];
 	int forceTeam = 0;
+	int forceBasedTeams = atoi( Info_ValueForKey( info, "g_forceBasedTeams" ) );
 
 	if (oldindex == 0)
 	{ //switching out from custom config, so first shove the current values into the custom storage
@@ -1215,7 +1217,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 	info[0] = '\0';
 	trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
 
-	if (atoi( Info_ValueForKey( info, "g_forceBasedTeams" ) ))
+	if (forceBasedTeams)
 	{
 		switch((int)(trap->Cvar_VariableValue("ui_myteam")))
 		{
@@ -1321,7 +1323,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 			continue;  // skip this power
 		}
 
-		if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide)
+		if (uiForcePowerDarkLight[c] && uiForcePowerDarkLight[c] != uiForceSide && forceBasedTeams)
 		{ //Apparently the user has crafted a force config that has powers that don't fit with the config's side.
 			continue;  // skip this power
 		}

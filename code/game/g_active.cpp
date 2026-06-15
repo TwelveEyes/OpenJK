@@ -84,6 +84,7 @@ extern void PM_CmdForRoll( playerState_t *ps, usercmd_t *pCmd );
 extern qboolean PM_InAttackRoll( int anim );
 extern qboolean PM_CrouchAnim( int anim );
 extern qboolean PM_FlippingAnim( int anim );
+extern qboolean PM_RestAnim( int anim );
 extern qboolean PM_InCartwheel( int anim );
 extern qboolean PM_StandingAnim( int anim );
 extern qboolean PM_InForceGetUp( playerState_t *ps );
@@ -1724,6 +1725,26 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			else
 			{//done
 				ent->flags &= ~FL_OVERCHARGED_HEALTH;
+			}
+		}
+		if ( (ent->health > 0 && ent->health < ent->client->ps.stats[STAT_MAX_HEALTH]/4) &&
+			 (ent->client->ps.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_1) &&
+			 (ent->painDebounceTime < level.time) )
+		{//gradually increase health back to 25% of max if force sight >= 1
+			ent->health++;
+			ent->client->ps.stats[STAT_HEALTH] = ent->health;
+		}
+		if ( PM_RestAnim( ent->client->ps.legsAnim ) &&
+			 (ent->health > 0 && ent->health < ent->client->ps.stats[STAT_MAX_HEALTH]) &&
+			 (ent->client->ps.forcePower >= ent->client->ps.forcePowerMax) &&
+			 (ent->client->ps.forcePowerLevel[FP_SEE] >= FORCE_LEVEL_1) &&
+			 (ent->painDebounceTime < level.time) )
+		{//regen health to max when force is max (force sight must be >= 1)
+			ent->health++;
+
+			if ( ent->health >= ent->client->ps.stats[STAT_MAX_HEALTH]/3 )
+			{
+				gi.G2API_ClearSkinGore(ent->ghoul2);
 			}
 		}
 	}
@@ -3912,7 +3933,7 @@ qboolean G_CheckClampUcmd( gentity_t *ent, usercmd_t *ucmd )
 			{
 				if ( ent->client->ps.torsoAnimTimer < 100 )
 				{
-					ent->client->ps.legsAnimTimer = 100;
+					ent->client->ps.torsoAnimTimer = 100;
 				}
 			}
 			if ( ent->client->ps.legsAnimTimer > 0 || ent->client->ps.torsoAnimTimer > 0 )
@@ -4283,6 +4304,10 @@ void G_StartCinematicSkip( void )
 void G_CheckClientIdle( gentity_t *ent, usercmd_t *ucmd )
 {
 	if ( !ent || !ent->client || ent->health <= 0 )
+	{
+		return;
+	}
+	if ( !ent->s.number && ( !cg.renderingThirdPerson && (ent->client->ps.weapon == WP_SABER || ent->client->ps.weapon == WP_MELEE) ) )
 	{
 		return;
 	}
@@ -4908,14 +4933,14 @@ extern cvar_t	*g_skippingcin;
 			ucmd->upmove = 0;
 			PM_AdjustAnglesToGripper( ent, ucmd );
 		}
-		if ( ent->client->ps.leanofs )
+		/*if ( ent->client->ps.leanofs )
 		{//no shooting while leaning
 			ucmd->buttons &= ~BUTTON_ATTACK;
 			if ( ent->client->ps.weapon != WP_DISRUPTOR )
 			{//can still zoom around corners
 				ucmd->buttons &= ~BUTTON_ALT_ATTACK;
 			}
-		}
+		}*/
 	}
 	else
 	{

@@ -65,6 +65,17 @@ qboolean BG_SaberStanceAnim( int anim )
 	return qfalse;
 }
 
+qboolean BG_RestAnim( int anim )
+{
+	switch ( anim )
+	{
+	case BOTH_MEDITATE:			// default taunt
+		return qtrue;
+		break;
+	}
+	return qfalse;
+}
+
 qboolean BG_CrouchAnim( int anim )
 {
 	switch ( anim )

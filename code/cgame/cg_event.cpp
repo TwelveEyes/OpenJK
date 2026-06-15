@@ -253,6 +253,34 @@ static void CG_UseItem( centity_t *cent )
 
 }
 
+/*
+==============
+CG_UnsafeEventType
+Returns qtrue for event types that access cent->gent directly (and don't require it
+to be the player / entity 0).
+==============
+*/
+qboolean CG_UnsafeEventType(int eventType)
+{//from JKEnhanced
+	switch (eventType)
+	{
+		case EV_CHANGE_WEAPON:
+		case EV_DISRUPTOR_SNIPER_SHOT:
+		case EV_DISRUPTOR_SNIPER_MISS:
+		case EV_CONC_ALT_MISS:
+		case EV_DISINTEGRATION:
+		case EV_GRENADE_BOUNCE:
+		case EV_MISSILE_HIT:
+		case EV_MISSILE_MISS:
+		case EV_PAIN:
+		case EV_PLAY_EFFECT:
+		case EV_TARGET_BEAM_DRAW:
+			return qtrue;
+			break;
+		default:
+			return qfalse;
+	}
+}
 
 /*
 ==============
@@ -284,6 +312,14 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	if ( !cent->gent )//|| !cent->gent->client )
 	{
+		return;
+	}
+
+	//When skipping a cutscene the timescale is drastically increased, causing entities to be freed
+	//and possibly reused between the snapshot currentState and the actual state of the gent when accessed.
+	//We try to avoid this issue by ignoring events on entities that have been freed since the snapshot.
+	if (cent->gent->freetime > cg.snap->serverTime && CG_UnsafeEventType(event))
+	{//from JKEnhanced
 		return;
 	}
 

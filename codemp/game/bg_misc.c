@@ -163,15 +163,15 @@ char *forceMasteryLevels[NUM_FORCE_MASTERY_LEVELS] =
 };
 
 int forceMasteryPoints[NUM_FORCE_MASTERY_LEVELS] =
-{
-	0,		// FORCE_MASTERY_UNINITIATED,
-	5,		// FORCE_MASTERY_INITIATE,
-	10,		// FORCE_MASTERY_PADAWAN,
-	20,		// FORCE_MASTERY_JEDI,
-	30,		// FORCE_MASTERY_JEDI_GUARDIAN,
-	50,		// FORCE_MASTERY_JEDI_ADEPT,
-	75,		// FORCE_MASTERY_JEDI_KNIGHT,
-	100		// FORCE_MASTERY_JEDI_MASTER,
+{//231 points to max all powers (including team powers in team game modes)
+	0,		// FORCE_MASTERY_UNINITIATED,		//0
+	10,		// FORCE_MASTERY_INITIATE,			//5
+	20,		// FORCE_MASTERY_PADAWAN,			//10
+	40,		// FORCE_MASTERY_JEDI,				//20
+	60,		// FORCE_MASTERY_JEDI_GUARDIAN,		//30
+	100,	// FORCE_MASTERY_JEDI_ADEPT,		//50
+	150,	// FORCE_MASTERY_JEDI_KNIGHT,		//75
+	200		// FORCE_MASTERY_JEDI_MASTER,		//100
 };
 
 int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS] = //0 == neutral
@@ -495,7 +495,8 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 	{ //if this power doesn't match the side we're on, then 0 it now.
 		if (final_Powers[i] &&
 			forcePowerDarkLight[i] &&
-			forcePowerDarkLight[i] != final_Side)
+			forcePowerDarkLight[i] != final_Side &&
+			teamForce)
 		{
 			final_Powers[i] = 0;
 			//This is only likely to happen with g_forceBasedTeams. Let it slide.

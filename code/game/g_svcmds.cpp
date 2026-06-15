@@ -479,6 +479,18 @@ void Svcmd_SaberAttackCycle_f( void )
 		return;
 	}
 
+	if (self->client->ps.forcePowerLevel[FP_SABER_OFFENSE] >= FORCE_LEVEL_1)
+	{//give medium style at offense level 1, as in JK2
+		self->client->ps.saberStylesKnown |= (1<<SS_MEDIUM);
+	}
+	if (self->client->ps.forcePowerLevel[FP_SABER_OFFENSE] >= FORCE_LEVEL_2)
+	{//give fast style at offense level 2, as in JK2
+		self->client->ps.saberStylesKnown |= (1<<SS_FAST);
+	}
+	if (self->client->ps.forcePowerLevel[FP_SABER_OFFENSE] >= FORCE_LEVEL_3)
+	{//give strong style at offense level 3, as in JK2
+		self->client->ps.saberStylesKnown |= (1<<SS_STRONG);
+	}
 	int allowedStyles = self->client->ps.saberStylesKnown;
 	if ( self->client->ps.dualSabers
 		&& self->client->ps.saber[0].Active()

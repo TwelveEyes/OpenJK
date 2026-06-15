@@ -2336,7 +2336,8 @@ qboolean G_DoDismemberment( gentity_t *self, vec3_t point, int mod, int damage, 
 	if ( ( g_dismemberment->integer || g_saberRealisticCombat->integer > 1 ) && mod == MOD_SABER )//only lightsaber
 	{//FIXME: don't do strcmps here
 		if ( G_StandardHumanoid( self )
-			&& (force||g_dismemberProbabilities->value>0.0f||G_Dismemberable2( self, hitLoc )) )
+			&& (force||g_dismemberProbabilities->value>0.0f||G_Dismemberable2( self, hitLoc ))
+			&& (force||(!(self->flags&FL_DISINTEGRATED) && self->contents != CONTENTS_NONE)) )//can't be dismembered if disintegrated
 		{//either it's a forced dismemberment or we're using probabilities (which are checked before this) or we've done enough damage to this location
 			//FIXME: check the hitLoc and hitDir against the cap tag for the place
 			//where the split will be- if the hit dir is roughly perpendicular to
