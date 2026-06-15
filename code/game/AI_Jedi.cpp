@@ -6542,30 +6542,33 @@ qboolean Jedi_CheckKataAttack( void )
 				{//on the ground
 					if ( ucmd.upmove <= 0 && NPC->client->ps.forceJumpCharge <= 0 )
 					{//not going to try to jump
-						/*
-						if ( (NPCInfo->scriptFlags&SCF_NO_ACROBATICS) )
-						{//uh-oh, no jumping moves!
-							if ( NPC->client->ps.saberAnimLevel == SS_STAFF )
-							{//this kata move has a jump in it...
-								return qfalse;
+						if ( G_EnoughPowerForSpecialMove( NPC->client->ps.forcePower, SABER_ALT_ATTACK_POWER, qtrue ) )
+						{// have enough power
+							/*
+							if ( (NPCInfo->scriptFlags&SCF_NO_ACROBATICS) )
+							{//uh-oh, no jumping moves!
+								if ( NPC->client->ps.saberAnimLevel == SS_STAFF )
+								{//this kata move has a jump in it...
+									return qfalse;
+								}
 							}
-						}
-						*/
+							*/
 
-						if ( Q_irand( 0, g_spskill->integer+1 ) //50% chance on easy, 66% on medium, 75% on hard
-							&& !Q_irand( 0, 9 ) )//10% chance overall
-						{//base on skill level
-							ucmd.upmove = 0;
-							VectorClear( NPC->client->ps.moveDir );
-							if ( g_saberNewControlScheme->integer )
-							{
-								ucmd.buttons |= BUTTON_FORCE_FOCUS;
+							if ( Q_irand( 0, g_spskill->integer+1 ) //50% chance on easy, 66% on medium, 75% on hard
+								&& !Q_irand( 0, 9 ) )//10% chance overall
+							{//base on skill level
+								ucmd.upmove = 0;
+								VectorClear( NPC->client->ps.moveDir );
+								if ( g_saberNewControlScheme->integer )
+								{
+									ucmd.buttons |= BUTTON_FORCE_FOCUS;
+								}
+								else
+								{
+									ucmd.buttons |= BUTTON_ALT_ATTACK;
+								}
+								return qtrue;
 							}
-							else
-							{
-								ucmd.buttons |= BUTTON_ALT_ATTACK;
-							}
-							return qtrue;
 						}
 					}
 				}
@@ -6938,6 +6941,7 @@ static void Jedi_Attack( void )
 	//FIXME: what about force-pull attacks?
 	if ( Jedi_CheckKataAttack() )
 	{//doing a kata attack
+		G_DrainPowerForSpecialMove( NPC, FP_SABER_OFFENSE, SABER_ALT_ATTACK_POWER, qtrue );
 	}
 	else
 	{//check other special combat behavior
