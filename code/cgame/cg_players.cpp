@@ -5055,7 +5055,7 @@ void CG_AddRefEntityWithPowerups( refEntity_t *ent, int powerups, centity_t *cen
 			// fade out over the last 500 ms
 			int brightness = 255;
 
-			if ( dif < 500 && (cent->gent->client->ps.eFlags&EF_FORCE_DRAINED) && !(cent->gent->client->ps.forcePowersActive&(1<<FP_DRAIN)) )
+			if ( dif < 500 && !(cent->gent->client->ps.eFlags&EF_FORCE_DRAINED) && !(cent->gent->client->ps.forcePowersActive&(1<<FP_DRAIN)) )
 			{
 				brightness = floor((dif - 500.0f) / 500.0f * 255.0f );
 			}
