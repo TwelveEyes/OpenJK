@@ -2139,8 +2139,8 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 			}
 		}
 		//check force speed power level to determine if I should be able to dodge it
-		if ( Q_irand( 1, 10 ) > self->client->ps.forcePowerLevel[FP_SPEED] )
-		{//more likely to fail on lower force speed level
+		if ( Q_irand( 0, 3 ) > self->client->ps.forcePowerLevel[FP_SPEED] )
+		{//more likely to fail on lower force speed level. always succeeds at max force speed level
 			return qfalse;
 		}
 	}
