@@ -98,7 +98,7 @@ jobs:
         if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ github.workspace }}
         shell: bash
-        run: rm -r ./build/bin/JediAcademy/base/*
+        run: rm ./build/bin/JediAcademy/base/cgamex86_64.dll ./build/bin/JediAcademy/base/jampgamex86_64.dll ./build/bin/JediAcademy/base/uix86_64.dll
 
       - uses: actions/upload-artifact@v4
         if: ${{ matrix.build_type == 'Release' }}
