@@ -27,7 +27,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "g_navigator.h"
 #include "wp_saber.h"
 #include "g_functions.h"
-#include "../cgame/cg_local.h"
 
 extern void G_AddVoiceEvent( gentity_t *self, int event, int speakDebounceTime );
 extern void G_SetEnemy( gentity_t *self, gentity_t *enemy );
@@ -1044,21 +1043,6 @@ void NPC_ChangeWeapon( int newWeapon )
 		else
 		{
 			G_CreateG2AttachedWeaponModel( NPC, weaponData[NPC->client->ps.weapon].weaponMdl, NPC->handRBolt, 0 );
-		}
-	}
-	if ( !Q_stricmp( "imperial", NPC->NPC_type )
-		|| !Q_strncmp( "impworker", NPC->NPC_type, 9 )
-		|| !Q_stricmp( "stormpilot", NPC->NPC_type ) )
-	{//Gross hardcoded hack for certain imp npcs to use the imp_pistol model - all to avoid expanding the weapons enum
-		if ( NPC->client->ps.weapon == WP_BLASTER_PISTOL )
-		{
-			qhandle_t impPistol = cgi_R_RegisterModel( "models/weapons2/imp_pistol/pistol_w.glm" );
-
-			if ( impPistol )
-			{
-				G_RemoveWeaponModels( NPC );
-				G_CreateG2AttachedWeaponModel( NPC, "models/weapons2/imp_pistol/pistol_w.glm", NPC->handRBolt, 0 );
-			}
 		}
 	}
 }
