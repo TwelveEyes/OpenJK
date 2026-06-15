@@ -102,10 +102,11 @@ typedef enum //# ammo_e
 	AMMO_MAX
 } ammo_t;
 
-static int weaponDPOrder[] = 
+#define LAST_WEAPON_DP 15 // this is the last index in the datapad list
+static const int weaponDPOrder[LAST_WEAPON_DP+1] = 
 {
 	WP_NONE,
-
+	// Selectable below here
 	WP_SABER,
 	WP_BLASTER_PISTOL,
 	WP_BLASTER,
@@ -119,6 +120,8 @@ static int weaponDPOrder[] =
 	WP_THERMAL,
 	WP_TRIP_MINE,
 	WP_DET_PACK,
+	WP_STUN_BATON,
+	WP_BRYAR_PISTOL,
 };
 
 

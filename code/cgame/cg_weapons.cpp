@@ -1416,7 +1416,7 @@ int CG_WeaponCheck( int weaponIndex )
 
 int cgi_UI_GetItemText(char *menuFile,char *itemName, char *text);
 
-const char *weaponDesc[14] =
+const char *weaponDesc[LAST_WEAPON_DP+1] =
 {
 "UNUSED_SLOT",
 "SABER_DESC",
@@ -1432,6 +1432,8 @@ const char *weaponDesc[14] =
 "THERMAL_DETONATOR_DESC",
 "TRIP_MINE_DESC",
 "DET_PACK_DESC",
+"STUN_BATON_DESC",
+"BLASTER_PISTOL_DESC",
 };
 
 /*
@@ -1491,14 +1493,14 @@ void CG_DrawDataPadWeaponSelect( void )
 	}
 
 	// This seems to be a problem if datapad comes up too early
-	cg.DataPadWeaponSelect = Com_Clampi(FIRST_WEAPON, WP_CONCUSSION, cg.DataPadWeaponSelect);
+	cg.DataPadWeaponSelect = Com_Clampi(FIRST_WEAPON, LAST_WEAPON_DP, cg.DataPadWeaponSelect);
 
 	// What weapon does the player currently have selected
 	weaponSelectI = cg.DataPadWeaponSelect - 1;
 
 	if (weaponSelectI<FIRST_WEAPON)
 	{
-		weaponSelectI = WP_CONCUSSION;
+		weaponSelectI = LAST_WEAPON_DP;
 	}
 
 	const float smallIconSize_x = 40 * cgs.widthRatioCoef, smallIconSize_y = 40;
@@ -1519,7 +1521,7 @@ void CG_DrawDataPadWeaponSelect( void )
 	{
 		if (weaponSelectI<FIRST_WEAPON)
 		{
-			weaponSelectI = WP_CONCUSSION;
+			weaponSelectI = LAST_WEAPON_DP;
 		}
 
 		if ( !(weaponBitFlag & ( 1 << weaponDPOrder[weaponSelectI] )))	// Does he have this weapon?
@@ -1570,7 +1572,7 @@ void CG_DrawDataPadWeaponSelect( void )
 
 	weaponSelectI = cg.DataPadWeaponSelect + 1;
 
-	if (weaponSelectI>WP_CONCUSSION)
+	if (weaponSelectI>LAST_WEAPON_DP)
 	{
 		weaponSelectI = FIRST_WEAPON;
 	}
@@ -1581,7 +1583,7 @@ void CG_DrawDataPadWeaponSelect( void )
 	holdX = centerXPos + (bigIconSize_x/2) + bigPad;
 	for (iconCnt=1;iconCnt<(sideRightIconCnt+1);weaponSelectI++)
 	{
-		if (weaponSelectI>WP_CONCUSSION)
+		if (weaponSelectI>LAST_WEAPON_DP)
 		{
 			weaponSelectI = FIRST_WEAPON;
 		}
@@ -2237,16 +2239,16 @@ void CG_DPNextWeapon_f( void ) {
 
 	original = cg.DataPadWeaponSelect;
 
-	for ( i = 0 ; i <= WP_CONCUSSION ; i++ )
+	for ( i = 0 ; i <= LAST_WEAPON_DP ; i++ )
 	{
-		if ( cg.DataPadWeaponSelect > WP_CONCUSSION )
+		if ( cg.DataPadWeaponSelect > LAST_WEAPON_DP )
 		{
 			cg.DataPadWeaponSelect = FIRST_WEAPON;
 		}
 
 		cg.DataPadWeaponSelect++;
 
-		if ( cg.DataPadWeaponSelect < FIRST_WEAPON || cg.DataPadWeaponSelect > WP_CONCUSSION) {
+		if ( cg.DataPadWeaponSelect < FIRST_WEAPON || cg.DataPadWeaponSelect > LAST_WEAPON_DP) {
 			cg.DataPadWeaponSelect = FIRST_WEAPON;
 		}
 
@@ -2283,18 +2285,18 @@ void CG_DPPrevWeapon_f( void )
 
 	original = cg.DataPadWeaponSelect;
 
-	for ( i = 0 ; i <= WP_CONCUSSION ; i++ )
+	for ( i = 0 ; i <= LAST_WEAPON_DP ; i++ )
 	{
 		if ( cg.DataPadWeaponSelect < FIRST_WEAPON )
 		{
-			cg.DataPadWeaponSelect = WP_CONCUSSION;
+			cg.DataPadWeaponSelect = LAST_WEAPON_DP;
 		}
 
 		cg.DataPadWeaponSelect--;
 
-		if ( cg.DataPadWeaponSelect < FIRST_WEAPON || cg.DataPadWeaponSelect > WP_CONCUSSION)
+		if ( cg.DataPadWeaponSelect < FIRST_WEAPON || cg.DataPadWeaponSelect > LAST_WEAPON_DP)
 		{
-			cg.DataPadWeaponSelect = WP_CONCUSSION;
+			cg.DataPadWeaponSelect = LAST_WEAPON_DP;
 		}
 
 		if ( CG_WeaponSelectable( weaponDPOrder[cg.DataPadWeaponSelect], original, qtrue ) )
