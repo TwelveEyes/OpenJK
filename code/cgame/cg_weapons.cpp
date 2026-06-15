@@ -302,6 +302,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		{
 			cgi_S_RegisterSound( va( "sound/weapons/force/heal%d_m.mp3", i ) );
 			cgi_S_RegisterSound( va( "sound/weapons/force/heal%d_f.mp3", i ) );
+			cgi_S_RegisterSound( va( "sound/weapons/force/heal%d.mp3", i ) );
 		}
 		cgi_S_RegisterSound( "sound/weapons/force/lightning.wav" );
 		cgi_S_RegisterSound( "sound/weapons/force/lightning2.wav" );
