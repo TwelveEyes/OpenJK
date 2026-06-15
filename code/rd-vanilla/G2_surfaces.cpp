@@ -307,7 +307,7 @@ qboolean G2_SetRootSurface( CGhoul2Info_v &ghoul2, const int modelIndex, const c
 		ghoul2[modelIndex].mSurfaceRoot = surf;
 		return qtrue;
 	}
-	assert(0);
+	// assert(0);
 	return qfalse;
 }
 
@@ -394,7 +394,7 @@ int G2_IsSurfaceRendered(CGhoul2Info *ghlInfo, const char *surfaceName, surfaceI
 		const mdxmSurfHierarchy_t *surfInfo = (mdxmSurfHierarchy_t *)((byte *)surfIndexes + surfIndexes->offsets[surfNum]);
 		surfNum = surfInfo->parentIndex;
 		// walk the surface hierarchy up until we hit the root
-		while (surfNum != -1)
+		while (surfNum > -1)
 		{
 			const mdxmSurface_t *parentSurf;
 			uint32_t parentFlags = 0u;
