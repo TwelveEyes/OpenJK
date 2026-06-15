@@ -2315,18 +2315,21 @@ void panel_turret_shoot( gentity_t *self, vec3_t org, vec3_t dir)
 	const short outcastTurret = ( !Q_stricmp( mapname, "ns_starpad" ) || !Q_stricmp( mapname, "doom_detention" ) );
 
 	short missileType, missileVector, missileOffset;
+	char *muzzleEffect;
 
 	if (outcastTurret)
 	{//Hack for correct panel turret behavior in outcast levels
 		missileType = WP_EMPLACED_GUN;
 		missileVector = 7;
 		missileOffset = 5;
+		muzzleEffect = "emplaced/muzzle_flash";
 	}
 	else
 	{
 		missileType = WP_TIE_FIGHTER;
 		missileVector = 9;
 		missileOffset = 4;
+		muzzleEffect = "ships/imp_blastermuzzleflash";
 	}
 
 	gentity_t *missile = CreateMissile( org, dir, self->speed, 10000, self );
@@ -2348,7 +2351,7 @@ void panel_turret_shoot( gentity_t *self, vec3_t org, vec3_t dir)
 
 	VectorMA( org, 32, dir, org );
 	org[2] -= missileOffset;
-	G_PlayEffect( "ships/imp_blastermuzzleflash", org, dir );
+	G_PlayEffect( muzzleEffect, org, dir );
 }
 
 //-----------------------------------------
@@ -2443,12 +2446,17 @@ void panel_turret_think( gentity_t *self )
 			// don't draw me when being looked through
 //			self->s.eFlags |= EF_NODRAW;
 //			self->s.modelindex = 0;
+			const char *info = CG_ConfigString( CS_SERVERINFO );
+			const char *mapname = Info_ValueForKey( info, "mapname" );
+			const short outcastTurret = ( !Q_stricmp( mapname, "ns_starpad" ) || !Q_stricmp( mapname, "doom_detention" ) );
+
+			const short turretFOV = outcastTurret ? 50 : 90;
 
 			// we only need to think when we are being used
 			self->nextthink = level.time + 50;
 
 			cg.overrides.active |= CG_OVERRIDE_FOV;
-			cg.overrides.fov = 90;
+			cg.overrides.fov = turretFOV;
 		}
 
 		if ( ucmd->buttons & BUTTON_ATTACK || ucmd->buttons & BUTTON_ALT_ATTACK )
