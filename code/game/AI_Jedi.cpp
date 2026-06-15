@@ -6941,7 +6941,6 @@ static void Jedi_Attack( void )
 	//FIXME: what about force-pull attacks?
 	if ( Jedi_CheckKataAttack() )
 	{//doing a kata attack
-		G_DrainPowerForSpecialMove( NPC, FP_SABER_OFFENSE, SABER_ALT_ATTACK_POWER, qtrue );
 	}
 	else
 	{//check other special combat behavior
