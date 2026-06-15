@@ -14417,8 +14417,8 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 	{
 		usingForce = qtrue;
 	}
-	if ( !usingForce )
-	{//when not using the force, regenerate at 10 points per second
+	if ( !usingForce || (usingForce && !(self->client->ps.forcePowersActive ^ (1 << FP_SEE))) )
+	{//when not using the force, regenerate at 10 points per second (force sight doesn't count)
 		if ( self->client->ps.forcePowerRegenDebounceTime < level.time )
 		{
 			WP_ForcePowerRegenerate( self, self->client->ps.forcePowerRegenAmount );
