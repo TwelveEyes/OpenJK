@@ -758,13 +758,22 @@ Loads the ambient sound sets and prepares to play them when needed
 -------------------------
 */
 
+static namePrecache_m *TheNamePrecache()
+{
+	// we use these singletons so we can find memory leaks
+	// if you let things like this leak, you never can tell
+	// what is really leaking and what is merely not ever freed
+	static namePrecache_m singleton;
+	return &singleton;
+}
+
 void AS_Init( void )
 {
 	if (!aSets)
 	{
 		numSets = 0;
 
-		pMap = new namePrecache_m;
+		pMap = TheNamePrecache();
 
 		//Setup the structure
 		aSets = new CSetGroup();
@@ -882,8 +891,7 @@ void AS_FreePartial(void)
 
 		numSets	= 0;
 
-		delete pMap;
-		pMap = new namePrecache_m;
+		pMap = TheNamePrecache();
 		pMap->clear();
 	}
 }
