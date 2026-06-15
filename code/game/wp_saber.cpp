@@ -12842,7 +12842,7 @@ void WP_ForcePowerStart( gentity_t *self, forcePowers_t forcePower, int override
 
 		self->client->ps.forcePowersActive |= ( 1 << forcePower );
 		G_SoundOnEnt( self, CHAN_ITEM, "sound/weapons/force/see.mp3" );
-		self->s.loopSound = G_SoundIndex( "sound/weapons/force/seeloop.wav" );
+		// self->s.loopSound = G_SoundIndex( "sound/weapons/force/seeloop.wav" );
 		break;
 	default:
 		break;
