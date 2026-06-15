@@ -110,11 +110,11 @@ void NPC_GalakMech_Init( gentity_t *ent )
 	{
 		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "helmet", TURN_OFF );
 		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_shield_off", TURN_OFF );
-		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galakface_off", TURN_ON );
-		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galakhead_off", TURN_ON );
-		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_eyes_mouth_off", TURN_ON );
-		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_collar_off", TURN_ON );
-		// gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galaktorso_off", TURN_ON );
+		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galakface_off", TURN_ON );
+		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galakhead_off", TURN_ON );
+		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_eyes_mouth_off", TURN_ON );
+		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_collar_off", TURN_ON );
+		gi.G2API_SetSurfaceOnOff( &ent->ghoul2[ent->playerModel], "torso_galaktorso_off", TURN_ON );
 	}
 
 }
@@ -256,7 +256,7 @@ NPC_GM_Pain
 */
 
 extern void NPC_SetPainEvent( gentity_t *self );
-void NPC_GM_Pain( gentity_t *self, gentity_t *inflictor, gentity_t *other, const vec3_t point, int damage, int mod,int hitLoc )
+void NPC_GM_Pain( gentity_t *self, gentity_t *inflictor, gentity_t *other, const vec3_t point, int damage, int mod, int hitLoc )
 {
 	if ( self->client->ps.powerups[PW_GALAK_SHIELD] == 0 )
 	{//shield is currently down
@@ -276,7 +276,7 @@ void NPC_GM_Pain( gentity_t *self, gentity_t *inflictor, gentity_t *other, const
 			self->client->ps.stats[STAT_ARMOR] = 0;//no more armor
 			self->NPC->investigateDebounceTime = 0;//stop recharging
 
-			NPC_SetAnim( self, SETANIM_BOTH, BOTH_PAIN1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD ); //NPC_SetAnim( self, SETANIM_BOTH, BOTH_ALERT1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+			NPC_SetAnim( self, SETANIM_BOTH, BOTH_CIN_1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 			TIMER_Set( self, "attackDelay", self->client->ps.torsoAnimTimer );
 			G_AddEvent( self, Q_irand( EV_DEATH1, EV_DEATH3 ), self->health );
 		}
@@ -401,10 +401,6 @@ static qboolean GM_Move( void )
 			GM_HoldPosition();
 		}
 	}
-	/* if (NPCInfo->blockedEntity && NPCInfo->blockedEntity == NPC->enemy)
-	{
-		GM_HoldPosition();
-	} */
 
 	//If our move failed, then reset
 	if ( moved == qfalse )
@@ -459,7 +455,7 @@ static void GM_CheckMoveState( void )
 	if ( ( NPCInfo->goalEntity != NPC->enemy ) && ( NPCInfo->goalEntity != NULL ) )
 	{
 		//Did we make it?
-		if ( /* STEER::Reached(NPC, NPCInfo->goalEntity, 16, qfalse) */ NAV_HitNavGoal( NPC->currentOrigin, NPC->mins, NPC->maxs, NPCInfo->goalEntity->currentOrigin, 16, qfalse ) ||
+		if ( NAV_HitNavGoal( NPC->currentOrigin, NPC->mins, NPC->maxs, NPCInfo->goalEntity->currentOrigin, 16, qfalse ) ||
 			( !Q3_TaskIDPending( NPC, TID_MOVE_NAV ) && enemyLOS && enemyDist <= 10000 ) )
 		{//either hit our navgoal or our navgoal was not a crucial (scripted) one (maybe a combat point) and we're scouting and found our enemy
 			NPC_ReachedGoal();
@@ -569,7 +565,7 @@ void NPC_GM_StartLaser( void )
 	if ( !NPC->lockCount )
 	{//haven't already started a laser attack
 		//warm up for the beam attack
-		// NPC_SetAnim( NPC, SETANIM_TORSO, TORSO_RAISEWEAP2, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+		NPC_SetAnim( NPC, SETANIM_TORSO, BOTH_CIN_6, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 		TIMER_Set( NPC, "beamDelay", NPC->client->ps.torsoAnimTimer );
 		TIMER_Set( NPC, "attackDelay", NPC->client->ps.torsoAnimTimer+3000 );
 		NPC->lockCount = 1;
@@ -582,16 +578,14 @@ void NPC_GM_StartLaser( void )
 void GM_StartGloat( void )
 {
 	NPC->wait = 0;
-	/*gi.G2API_SetSurfaceOnOff( &NPC->ghoul2[NPC->playerModel], "torso_galakface_off", TURN_ON );
+	gi.G2API_SetSurfaceOnOff( &NPC->ghoul2[NPC->playerModel], "torso_galakface_off", TURN_ON );
 	gi.G2API_SetSurfaceOnOff( &NPC->ghoul2[NPC->playerModel], "torso_galakhead_off", TURN_ON );
 	gi.G2API_SetSurfaceOnOff( &NPC->ghoul2[NPC->playerModel], "torso_eyes_mouth_off", TURN_ON );
 	gi.G2API_SetSurfaceOnOff( &NPC->ghoul2[NPC->playerModel], "torso_collar_off", TURN_ON );
 	gi.G2API_SetSurfaceOnOff( &NPC->ghoul2[NPC->playerModel], "torso_galaktorso_off", TURN_ON );
 	NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_STAND2TO1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 	NPC->client->ps.legsAnimTimer += 500;
-	NPC->client->ps.torsoAnimTimer += 500;*/
-	G_AddVoiceEvent( NPC, Q_irand( EV_VICTORY1, EV_VICTORY3 ), 3000 );
-	NPC->enemy == NULL;
+	NPC->client->ps.torsoAnimTimer += 500;
 }
 /*
 -------------------------
@@ -612,35 +606,35 @@ void NPC_BSGM_Attack( void )
 	if ( NPC->enemy && NPC->enemy->health <= 0
 		&& !NPC->enemy->s.number )
 	{//my enemy is dead
-		/*if ( NPC->client->ps.torsoAnim == BOTH_STAND2TO1 )
+		if ( NPC->client->ps.torsoAnim == BOTH_STAND2TO1 )
 		{
 			if ( NPC->client->ps.torsoAnimTimer <= 500 )
 			{
 				G_AddVoiceEvent( NPC, Q_irand( EV_VICTORY1, EV_VICTORY3 ), 3000 );
-				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_TRIUMPHANT1START, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_CIN_3, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 				NPC->client->ps.legsAnimTimer += 500;
 				NPC->client->ps.torsoAnimTimer += 500;
 			}
 		}
-		else if ( NPC->client->ps.torsoAnim == BOTH_TRIUMPHANT1START )
+		else if ( NPC->client->ps.torsoAnim == BOTH_CIN_3 )
 		{
 			if ( NPC->client->ps.torsoAnimTimer <= 500 )
 			{
-				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_TRIUMPHANT1STARTGESTURE, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_CIN_4, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 				NPC->client->ps.legsAnimTimer += 500;
 				NPC->client->ps.torsoAnimTimer += 500;
 			}
 		}
-		else if ( NPC->client->ps.torsoAnim == BOTH_TRIUMPHANT1STARTGESTURE )
+		else if ( NPC->client->ps.torsoAnim == BOTH_CIN_4 )
 		{
 			if ( NPC->client->ps.torsoAnimTimer <= 500 )
 			{
-				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_TRIUMPHANT1STOP, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+				NPC_SetAnim( NPC, SETANIM_BOTH, BOTH_CIN_5, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 				NPC->client->ps.legsAnimTimer += 500;
 				NPC->client->ps.torsoAnimTimer += 500;
 			}
 		}
-		else if ( NPC->client->ps.torsoAnim == BOTH_TRIUMPHANT1STOP )
+		else if ( NPC->client->ps.torsoAnim == BOTH_CIN_5 )
 		{
 			if ( NPC->client->ps.torsoAnimTimer <= 500 )
 			{
@@ -649,7 +643,7 @@ void NPC_BSGM_Attack( void )
 				NPC->client->ps.torsoAnimTimer = -1;
 			}
 		}
-		else*/ if ( NPC->wait )
+		else if ( NPC->wait )
 		{
 			if ( TIMER_Done( NPC, "gloatTime" ) )
 			{
@@ -767,7 +761,7 @@ void NPC_BSGM_Attack( void )
 				NPC->lockCount = 0;
 				G_FreeEntity( NPCInfo->coverTarg );
 				NPC->s.loopSound = 0;
-				// NPC_SetAnim( NPC, SETANIM_TORSO, TORSO_DROPWEAP2, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
+				NPC_SetAnim( NPC, SETANIM_TORSO, BOTH_CIN_7, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 				TIMER_Set( NPC, "attackDelay", NPC->client->ps.torsoAnimTimer );
 			}
 			else
@@ -1085,7 +1079,7 @@ void NPC_BSGM_Attack( void )
 	if ( AImove && !NPC->lockCount )
 	{//move toward goal
 		if ( NPCInfo->goalEntity
-			&& NPC->client->ps.legsAnim != BOTH_PAIN1 //&& NPC->client->ps.legsAnim != BOTH_ALERT1
+			&& NPC->client->ps.legsAnim != BOTH_CIN_1
 			&& NPC->client->ps.legsAnim != BOTH_ATTACK2
 			&& NPC->client->ps.legsAnim != BOTH_ATTACK4
 			&& NPC->client->ps.legsAnim != BOTH_ATTACK5
