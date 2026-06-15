@@ -1459,7 +1459,7 @@ void CG_DrawDataPadWeaponSelect( void )
 
 	// count the number of weapons owned
 	weaponCount = 0;
-	for ( i = 1 ; i < 16 ; i++ )
+	for ( i = 1 ; i <= MAX_PLAYER_WEAPONS ; i++ )
 	{
 		if ( weaponBitFlag & ( 1 << i ) )
 		{
@@ -1754,7 +1754,7 @@ void CG_DrawWeaponSelect( void )
 	// count the number of weapons owned
 	count = 0;
 	isOnVeh = (G_IsRidingVehicle(cg_entities[0].gent)!=0);
- 	for ( i = 1 ; i < MAX_PLAYER_WEAPONS ; i++ )
+ 	for ( i = 1 ; i <= MAX_PLAYER_WEAPONS ; i++ )
 	{
 		if ((bits & ( 1 << i ))  &&
 			(!isOnVeh || i==WP_NONE || i==WP_SABER || i==WP_BLASTER))
