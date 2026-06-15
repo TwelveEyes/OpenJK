@@ -2554,7 +2554,8 @@ qboolean G_CheckClampUcmd( gentity_t *ent, usercmd_t *ucmd )
 		}
 	}
 	//check force drain
-	if ( (ent->client->ps.forcePowersActive&(1<<FP_DRAIN)) )
+	if ( (ent->client->ps.forcePowersActive&(1<<FP_DRAIN))
+		&& ent->client->ps.forceDrainEntityNum < ENTITYNUM_WORLD )
 	{//draining
 		ucmd->forwardmove = ucmd->rightmove = ucmd->upmove = 0;
 		ucmd->buttons &= ~(BUTTON_ATTACK|BUTTON_ALT_ATTACK|BUTTON_FORCE_FOCUS);
