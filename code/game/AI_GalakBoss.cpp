@@ -387,24 +387,24 @@ static qboolean GM_Move( void )
 	NPCInfo->combatMove = qtrue;//always move straight toward our goal
 
 	qboolean	moved = NPC_MoveToGoal( qtrue );
-	// navInfo_t	info;
+	navInfo_t	info;
 
-	// //Get the move info
-	// NAV_GetLastMove( info );
+	//Get the move info
+	NAV_GetLastMove( info );
 
-	// //FIXME: if we bump into another one of our guys and can't get around him, just stop!
-	// //If we hit our target, then stop and fire!
-	// if ( info.flags & NIF_COLLISION )
-	// {
-	// 	if ( info.blocker == NPC->enemy )
-	// 	{
-	// 		GM_HoldPosition();
-	// 	}
-	// }
-	if (NPCInfo->blockedEntity && NPCInfo->blockedEntity == NPC->enemy)
+	//FIXME: if we bump into another one of our guys and can't get around him, just stop!
+	//If we hit our target, then stop and fire!
+	if ( info.flags & NIF_COLLISION )
+	{
+		if ( info.blocker == NPC->enemy )
+		{
+			GM_HoldPosition();
+		}
+	}
+	/* if (NPCInfo->blockedEntity && NPCInfo->blockedEntity == NPC->enemy)
 	{
 		GM_HoldPosition();
-	}
+	} */
 
 	//If our move failed, then reset
 	if ( moved == qfalse )
@@ -459,7 +459,7 @@ static void GM_CheckMoveState( void )
 	if ( ( NPCInfo->goalEntity != NPC->enemy ) && ( NPCInfo->goalEntity != NULL ) )
 	{
 		//Did we make it?
-		if ( STEER::Reached(NPC, NPCInfo->goalEntity, 16, qfalse) ||
+		if ( /* STEER::Reached(NPC, NPCInfo->goalEntity, 16, qfalse) */ NAV_HitNavGoal( NPC->currentOrigin, NPC->mins, NPC->maxs, NPCInfo->goalEntity->currentOrigin, 16, qfalse ) ||
 			( !Q3_TaskIDPending( NPC, TID_MOVE_NAV ) && enemyLOS && enemyDist <= 10000 ) )
 		{//either hit our navgoal or our navgoal was not a crucial (scripted) one (maybe a combat point) and we're scouting and found our enemy
 			NPC_ReachedGoal();

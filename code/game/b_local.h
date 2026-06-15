@@ -324,6 +324,7 @@ extern int NPC_FindSquadPoint( vec3_t position );
 extern void ClearPlayerAlertEvents( void );
 
 extern qboolean G_BoundsOverlap(const vec3_t mins1, const vec3_t maxs1, const vec3_t mins2, const vec3_t maxs2);
+extern qboolean NAV_HitNavGoal( vec3_t point, vec3_t mins, vec3_t maxs, vec3_t dest, int radius, qboolean flying );
 
 extern void NPC_SetMoveGoal( gentity_t *ent, vec3_t point, int radius, qboolean isNavGoal = qfalse, int combatPoint = -1, gentity_t *targetEnt = NULL );
 
@@ -359,7 +360,7 @@ typedef struct navInfo_s
 	int			flags;
 } navInfo_t;
 
-
+extern void NAV_GetLastMove( navInfo_t &info );
 
 
 #endif
