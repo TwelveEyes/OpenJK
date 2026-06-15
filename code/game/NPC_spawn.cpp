@@ -587,7 +587,7 @@ void NPC_SetMiscDefaultData( gentity_t *ent )
 					//shotgunner
 					if ( !Q_stricmp( "stofficeralt", ent->NPC_type ) )
 					{
-						//ent->NPC->scriptFlags |= SCF_ALT_FIRE;
+						ent->NPC->scriptFlags |= SCF_ALT_FIRE;
 					}
 					break;
 				case WP_ROCKET_LAUNCHER:
@@ -611,11 +611,11 @@ void NPC_SetMiscDefaultData( gentity_t *ent )
 					ST_ClearTimers( ent );
 					if ( ent->NPC->rank >= RANK_COMMANDER )
 					{//commanders use alt-fire
-						//ent->NPC->scriptFlags |= SCF_ALT_FIRE;
+						ent->NPC->scriptFlags |= SCF_ALT_FIRE;
 					}
 					if ( !Q_stricmp( "rodian2", ent->NPC_type ) )
 					{
-						//ent->NPC->scriptFlags |= SCF_ALT_FIRE;
+						ent->NPC->scriptFlags |= SCF_ALT_FIRE;
 					}
 					break;
 				}
