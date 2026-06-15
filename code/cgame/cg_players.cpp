@@ -4916,12 +4916,10 @@ void CG_AddRefEntityWithPowerups( refEntity_t *ent, int powerups, centity_t *cen
 
 	// Invincibility -- effect needs work
 	//------------------------------------------------------
-	/*
 	if ( powerups & ( 1 << PW_INVINCIBLE ))
 	{
 		theFxScheduler.PlayEffect( cgs.effects.forceInvincibility, cent->lerpOrigin );
 	}
-	*/
 
 	// Healing -- could use some work....maybe also make it NOT be framerate dependant
 	//------------------------------------------------------
