@@ -3909,7 +3909,9 @@ qboolean G_CheckClampUcmd( gentity_t *ent, usercmd_t *ucmd )
 			|| (ucmd->buttons&BUTTON_FORCEGRIP)
 			|| (ucmd->buttons&BUTTON_FORCE_LIGHTNING)
 			|| (ucmd->buttons&BUTTON_FORCE_DRAIN)
-			|| ucmd->upmove )
+			|| ucmd->upmove
+			|| ucmd->rightmove
+			|| ucmd->forwardmove )
 		{//stop the anim
 			if ( ent->client->ps.legsAnim == BOTH_MEDITATE
 				&& ent->client->ps.torsoAnim == BOTH_MEDITATE )
@@ -3939,32 +3941,24 @@ qboolean G_CheckClampUcmd( gentity_t *ent, usercmd_t *ucmd )
 			}
 			if ( ent->client->ps.legsAnimTimer > 0 || ent->client->ps.torsoAnimTimer > 0 )
 			{
-				ucmd->rightmove = 0;
-				ucmd->upmove = 0;
-				ucmd->forwardmove = 0;
 				ucmd->buttons = 0;
 				if ( ent->NPC )
 				{
 					VectorClear( ent->client->ps.moveDir );
 					ent->client->ps.forceJumpCharge = 0;
 				}
-				overridAngles = (PM_LockAngles( ent, ucmd )?qtrue:overridAngles);
 			}
 		}
 	}
 	else if ( ent->client->ps.legsAnim == BOTH_MEDITATE_END
 		&& ent->client->ps.legsAnimTimer > 0 )
 	{
-        ucmd->rightmove = 0;
-		ucmd->upmove = 0;
-		ucmd->forwardmove = 0;
 		ucmd->buttons = 0;
 		if ( ent->NPC )
 		{
 			VectorClear( ent->client->ps.moveDir );
 			ent->client->ps.forceJumpCharge = 0;
 		}
-		overridAngles = (PM_LockAngles( ent, ucmd )?qtrue:overridAngles);
 	}
 	else if ( !ent->s.number )
 	{
