@@ -5509,6 +5509,7 @@ static const char *g_bindCommands[] = {
 	"cg_thirdperson !",
 	"datapad",
 	"exitview",
+	"exitcutscene",
 	"flourish",				//add flourish
 #ifndef JK2_MODE
 	"force_absorb",
