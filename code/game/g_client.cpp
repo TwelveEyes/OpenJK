@@ -934,8 +934,9 @@ qboolean G_StandardHumanoid( gentity_t *self )
 		{//rockettrooper duplicates many of these
 			return qtrue;
 		}
-		if ( !Q_stricmp( "models/players/JK2anims/JK2anims", GLAName ) )
-		{//unfortunate hardcoded hack for JK2 anims
+		if ( !Q_stricmp( "/_humanoid", strlen(GLAName) > 10 ? (GLAName + strlen(GLAName) - 10) : "" )
+			|| !Q_stricmp( "/JK2anims", strlen(GLAName) > 9 ? (GLAName + strlen(GLAName) - 9) : "" ) )
+		{//some custom humanoid file with its path ending in "/_humanoid" or "/JK2anims"
 			return qtrue;
 		}
 	}
