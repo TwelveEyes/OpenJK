@@ -488,12 +488,12 @@ void CG_DrawHead( float x, float y, float w, float h, int clientNum, vec3_t head
 
 	ci = &cgs.clientinfo[ clientNum ];
 
-	CG_DrawPic( x, y, w, h, ci->modelIcon );
+	CG_DrawPic( x, y, w * cgs.widthRatioCoef, h, ci->modelIcon );
 
 	// if they are deferred, draw a cross out
 	if ( ci->deferred )
 	{
-		CG_DrawPic( x, y, w, h, cgs.media.deferShader );
+		CG_DrawPic( x, y, w * cgs.widthRatioCoef, h, cgs.media.deferShader );
 	}
 }
 
@@ -557,7 +557,7 @@ void CG_DrawFlagModel( float x, float y, float w, float h, int team, qboolean fo
 			return;
 		}
 		if (item) {
-		  CG_DrawPic( x, y, w, h, cg_items[ ITEM_INDEX(item) ].icon );
+		  CG_DrawPic( x, y, w * cgs.widthRatioCoef, h, cg_items[ ITEM_INDEX(item) ].icon );
 		}
 	}
 }
@@ -567,7 +567,7 @@ void CG_DrawFlagModel( float x, float y, float w, float h, int team, qboolean fo
 CG_DrawHealth
 ================
 */
-void CG_DrawHealth( menuDef_t *menuHUD, float hudRatio )
+void CG_DrawHealth( menuDef_t *menuHUD )
 {
 	vec4_t			calcColor;
 	playerState_t	*ps;
@@ -620,9 +620,9 @@ void CG_DrawHealth( menuDef_t *menuHUD, float hudRatio )
 		trap->R_SetColor( calcColor);
 
 		CG_DrawPic(
-			focusItem->window.rect.x * hudRatio,
+			focusItem->window.rect.x * cgs.widthRatioCoef,
 			focusItem->window.rect.y,
-			focusItem->window.rect.w * hudRatio,
+			focusItem->window.rect.w * cgs.widthRatioCoef,
 			focusItem->window.rect.h,
 			focusItem->window.background
 			);
@@ -638,11 +638,11 @@ void CG_DrawHealth( menuDef_t *menuHUD, float hudRatio )
 		trap->R_SetColor( focusItem->window.foreColor );
 
 		CG_DrawNumField (
-			focusItem->window.rect.x * hudRatio,
+			focusItem->window.rect.x * cgs.widthRatioCoef,
 			focusItem->window.rect.y,
 			3,
 			ps->stats[STAT_HEALTH],
-			focusItem->window.rect.w * hudRatio,
+			focusItem->window.rect.w * cgs.widthRatioCoef,
 			focusItem->window.rect.h,
 			NUM_FONT_SMALL,
 			qfalse);
@@ -655,7 +655,7 @@ void CG_DrawHealth( menuDef_t *menuHUD, float hudRatio )
 CG_DrawArmor
 ================
 */
-void CG_DrawArmor( menuDef_t *menuHUD, float hudRatio )
+void CG_DrawArmor( menuDef_t *menuHUD )
 {
 	vec4_t			calcColor;
 	playerState_t	*ps;
@@ -707,9 +707,9 @@ void CG_DrawArmor( menuDef_t *menuHUD, float hudRatio )
 			if (cg.HUDArmorFlag)
 			{
 				CG_DrawPic(
-					focusItem->window.rect.x * hudRatio,
+					focusItem->window.rect.x * cgs.widthRatioCoef,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w * hudRatio,
+					focusItem->window.rect.w * cgs.widthRatioCoef,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
@@ -718,9 +718,9 @@ void CG_DrawArmor( menuDef_t *menuHUD, float hudRatio )
 		else
 		{
 				CG_DrawPic(
-					focusItem->window.rect.x * hudRatio,
+					focusItem->window.rect.x * cgs.widthRatioCoef,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w * hudRatio,
+					focusItem->window.rect.w * cgs.widthRatioCoef,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
@@ -737,11 +737,11 @@ void CG_DrawArmor( menuDef_t *menuHUD, float hudRatio )
 		trap->R_SetColor( focusItem->window.foreColor );
 
 		CG_DrawNumField (
-			focusItem->window.rect.x * hudRatio,
+			focusItem->window.rect.x * cgs.widthRatioCoef,
 			focusItem->window.rect.y,
 			3,
 			ps->stats[STAT_ARMOR],
-			focusItem->window.rect.w * hudRatio,
+			focusItem->window.rect.w * cgs.widthRatioCoef,
 			focusItem->window.rect.h,
 			NUM_FONT_SMALL,
 			qfalse);
@@ -788,7 +788,7 @@ If the weapon is a light saber (which needs no ammo) then draw a graphic showing
 the saber style (fast, medium, strong)
 ================
 */
-static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD, float hudRatio )
+static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD )
 {
 	itemDef_t		*focusItem;
 
@@ -822,9 +822,9 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD, float hudRat
 			trap->R_SetColor( colorTable[CT_WHITE] );
 
 			CG_DrawPic(
-				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
+				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
 				focusItem->window.rect.y,
-				focusItem->window.rect.w * hudRatio,
+				focusItem->window.rect.w * cgs.widthRatioCoef,
 				focusItem->window.rect.h,
 				focusItem->window.background
 				);
@@ -841,9 +841,9 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD, float hudRat
 			trap->R_SetColor( colorTable[CT_WHITE] );
 
 			CG_DrawPic(
-				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
+				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
 				focusItem->window.rect.y,
-				focusItem->window.rect.w * hudRatio,
+				focusItem->window.rect.w * cgs.widthRatioCoef,
 				focusItem->window.rect.h,
 				focusItem->window.background
 				);
@@ -858,9 +858,9 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD, float hudRat
 			trap->R_SetColor( colorTable[CT_WHITE] );
 
 			CG_DrawPic(
-				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
+				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
 				focusItem->window.rect.y,
-				focusItem->window.rect.w * hudRatio,
+				focusItem->window.rect.w * cgs.widthRatioCoef,
 				focusItem->window.rect.h,
 				focusItem->window.background
 				);
@@ -875,7 +875,7 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD, float hudRat
 CG_DrawAmmo
 ================
 */
-static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD, float hudRatio )
+static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD )
 {
 	playerState_t	*ps;
 	int				i;
@@ -924,7 +924,7 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD, float hudRatio )
 		trap->R_SetColor( colorTable[CT_YELLOW] );
 		if (focusItem)
 		{
-			CG_DrawProportionalString(SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio, focusItem->window.rect.y, "--", NUM_FONT_SMALL, focusItem->window.foreColor);
+			CG_DrawProportionalString(SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef, focusItem->window.rect.y, "--", NUM_FONT_SMALL, focusItem->window.foreColor);
 		}
 	}
 	else
@@ -972,11 +972,11 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD, float hudRatio )
 			value =ps->ammo[weaponData[cent->currentState.weapon].ammoIndex];
 
 			CG_DrawNumField (
-				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
+				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
 				focusItem->window.rect.y,
 				3,
 				value,
-				focusItem->window.rect.w * hudRatio,
+				focusItem->window.rect.w * cgs.widthRatioCoef,
 				focusItem->window.rect.h,
 				NUM_FONT_SMALL,
 				qfalse);
@@ -1010,9 +1010,9 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD, float hudRatio )
 		trap->R_SetColor( calcColor);
 
 		CG_DrawPic(
-			SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
+			SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
 			focusItem->window.rect.y,
-			focusItem->window.rect.w * hudRatio,
+			focusItem->window.rect.w * cgs.widthRatioCoef,
 			focusItem->window.rect.h,
 			focusItem->window.background
 			);
@@ -1027,7 +1027,7 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD, float hudRatio )
 CG_DrawForcePower
 ================
 */
-void CG_DrawForcePower( menuDef_t *menuHUD, float hudRatio )
+void CG_DrawForcePower( menuDef_t *menuHUD )
 {
 	int				i;
 	vec4_t			calcColor;
@@ -1120,9 +1120,9 @@ void CG_DrawForcePower( menuDef_t *menuHUD, float hudRatio )
 		trap->R_SetColor( calcColor);
 
 		CG_DrawPic(
-			SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
+			SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
 			focusItem->window.rect.y,
-			focusItem->window.rect.w * hudRatio,
+			focusItem->window.rect.w * cgs.widthRatioCoef,
 			focusItem->window.rect.h,
 			focusItem->window.background
 			);
@@ -1145,11 +1145,11 @@ void CG_DrawForcePower( menuDef_t *menuHUD, float hudRatio )
 		}
 
 		CG_DrawNumField (
-			SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
+			SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
 			focusItem->window.rect.y,
 			3,
 			cg.snap->ps.fd.forcePower,
-			focusItem->window.rect.w * hudRatio,
+			focusItem->window.rect.w * cgs.widthRatioCoef,
 			focusItem->window.rect.h,
 			NUM_FONT_SMALL,
 			qfalse);
@@ -1330,7 +1330,6 @@ void CG_DrawHUD(centity_t	*cent)
 	const char *scoreStr = NULL;
 	int	scoreBias;
 	char scoreBiasStr[16];
-	float hudRatio = cg_hudRatio.integer ? cgs.widthRatioCoef : 1.0f;
 
 	if (cg_hudFiles.integer)
 	{
@@ -1372,9 +1371,9 @@ void CG_DrawHUD(centity_t	*cent)
 			{
 				trap->R_SetColor( colorTable[CT_WHITE] );
 				CG_DrawPic(
-					focusItem->window.rect.x * hudRatio,
+					focusItem->window.rect.x * cgs.widthRatioCoef,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w * hudRatio,
+					focusItem->window.rect.w * cgs.widthRatioCoef,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
@@ -1386,16 +1385,16 @@ void CG_DrawHUD(centity_t	*cent)
 			{
 				trap->R_SetColor( colorTable[CT_WHITE] );
 				CG_DrawPic(
-					focusItem->window.rect.x * hudRatio,
+					focusItem->window.rect.x * cgs.widthRatioCoef,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w * hudRatio,
+					focusItem->window.rect.w * cgs.widthRatioCoef,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
 			}
 
-			CG_DrawArmor(menuHUD,hudRatio);
-			CG_DrawHealth(menuHUD,hudRatio);
+			CG_DrawArmor(menuHUD);
+			CG_DrawHealth(menuHUD);
 		}
 		else
 		{
@@ -1467,9 +1466,9 @@ void CG_DrawHUD(centity_t	*cent)
 			{
 				trap->R_SetColor( colorTable[CT_WHITE] );
 				CG_DrawPic(
-					SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
+					SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w * hudRatio,
+					focusItem->window.rect.w * cgs.widthRatioCoef,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
@@ -1480,24 +1479,24 @@ void CG_DrawHUD(centity_t	*cent)
 			{
 				trap->R_SetColor( colorTable[CT_WHITE] );
 				CG_DrawPic(
-					SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
+					SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w * hudRatio,
+					focusItem->window.rect.w * cgs.widthRatioCoef,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
 			}
 
-			CG_DrawForcePower(menuHUD,hudRatio);
+			CG_DrawForcePower(menuHUD);
 
 			// Draw ammo tics or saber style
 			if ( cent->currentState.weapon == WP_SABER )
 			{
-				CG_DrawSaberStyle(cent,menuHUD,hudRatio);
+				CG_DrawSaberStyle(cent,menuHUD);
 			}
 			else
 			{
-				CG_DrawAmmo(cent,menuHUD,hudRatio);
+				CG_DrawAmmo(cent,menuHUD);
 			}
 		}
 		else
@@ -2519,7 +2518,7 @@ veh_damage_t vehDamageData[4] =
 };
 
 // Draw health graphic for given part of vehicle
-void CG_DrawVehicleDamage(const centity_t *veh,int brokenLimbs,const menuDef_t	*menuHUD,float alpha,int index,float hudRatio,int isEnemyVehicleHUD)
+void CG_DrawVehicleDamage(const centity_t *veh,int brokenLimbs,const menuDef_t	*menuHUD,float alpha,int index,int isEnemyVehicleHUD)
 {
 	itemDef_t		*item;
 	int				colorI;
@@ -2569,9 +2568,9 @@ void CG_DrawVehicleDamage(const centity_t *veh,int brokenLimbs,const menuDef_t	*
 		if (graphicHandle)
 		{
 			CG_DrawPic(
-				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * hudRatio : item->window.rect.x * hudRatio,
+				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * cgs.widthRatioCoef : item->window.rect.x * cgs.widthRatioCoef,
 				item->window.rect.y,
-				item->window.rect.w * hudRatio,
+				item->window.rect.w * cgs.widthRatioCoef,
 				item->window.rect.h,
 				graphicHandle );
 		}
@@ -2624,9 +2623,9 @@ void CG_DrawVehicleDamageHUD(const centity_t *veh,int brokenLimbs,float percShie
 			}
 
 			CG_DrawPic(
-				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * hudRatio : item->window.rect.x * hudRatio,
+				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * cgs.widthRatioCoef : item->window.rect.x * cgs.widthRatioCoef,
 				item->window.rect.y,
-				item->window.rect.w * hudRatio,
+				item->window.rect.w * cgs.widthRatioCoef,
 				item->window.rect.h,
 				veh->m_pVehicle->m_pVehicleInfo->dmgIndicBackgroundHandle );
 		}
@@ -2639,9 +2638,9 @@ void CG_DrawVehicleDamageHUD(const centity_t *veh,int brokenLimbs,float percShie
 		{
 			trap->R_SetColor( item->window.foreColor );
 			CG_DrawPic(
-				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * hudRatio : item->window.rect.x * hudRatio,
+				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * cgs.widthRatioCoef : item->window.rect.x * cgs.widthRatioCoef,
 				item->window.rect.y,
-				item->window.rect.w * hudRatio,
+				item->window.rect.w * cgs.widthRatioCoef,
 				item->window.rect.h,
 				veh->m_pVehicle->m_pVehicleInfo->dmgIndicFrameHandle );
 		}
@@ -2656,9 +2655,9 @@ void CG_DrawVehicleDamageHUD(const centity_t *veh,int brokenLimbs,float percShie
 			color[3] = percShields;
 			trap->R_SetColor( color );
 			CG_DrawPic(
-				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * hudRatio : item->window.rect.x * hudRatio,
+				isEnemyVehicleHUD ? SCREEN_WIDTH - (SCREEN_WIDTH - item->window.rect.x) * cgs.widthRatioCoef : item->window.rect.x * cgs.widthRatioCoef,
 				item->window.rect.y,
-				item->window.rect.w * hudRatio,
+				item->window.rect.w * cgs.widthRatioCoef,
 				item->window.rect.h,
 				veh->m_pVehicle->m_pVehicleInfo->dmgIndicShieldHandle );
 		}
@@ -2666,10 +2665,10 @@ void CG_DrawVehicleDamageHUD(const centity_t *veh,int brokenLimbs,float percShie
 
 	//TODO: if we check nextState.brokenLimbs & prevState.brokenLimbs, we can tell when a damage flag has been added and flash that part of the ship
 	//FIXME: when ship explodes, either stop drawing ship or draw all parts black
-	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_FRONT,hudRatio,isEnemyVehicleHUD);
-	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_BACK,hudRatio,isEnemyVehicleHUD);
-	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_LEFT,hudRatio,isEnemyVehicleHUD);
-	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_RIGHT,hudRatio,isEnemyVehicleHUD);
+	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_FRONT,isEnemyVehicleHUD);
+	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_BACK,isEnemyVehicleHUD);
+	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_LEFT,isEnemyVehicleHUD);
+	CG_DrawVehicleDamage(veh,brokenLimbs,menuHUD,alpha,VEH_DAMAGE_RIGHT,isEnemyVehicleHUD);
 }
 
 qboolean CG_DrawVehicleHud( const centity_t *cent )
@@ -2851,7 +2850,7 @@ static void CG_DrawPickupItem( void ) {
 		{
 			CG_RegisterItemVisuals( value );
 			trap->R_SetColor( fadeColor );
-			CG_DrawPic( 573, 320, ICON_SIZE, ICON_SIZE, cg_items[ value ].icon );
+			CG_DrawPic( 573, 320, ICON_SIZE * cgs.widthRatioCoef, ICON_SIZE, cg_items[ value ].icon );
 			trap->R_SetColor( NULL );
 		}
 	}
@@ -2993,7 +2992,7 @@ static float CG_DrawEnemyInfo ( float y )
 			size = ICON_SIZE * 1.25;
 			y += 5;
 
-			CG_DrawPic( 640 - size - 12 + xOffset, y, size, size, cgs.media.weaponIcons[WP_SABER] );
+			CG_DrawPic( 640 - (size * cgs.widthRatioCoef) - 12 + xOffset, y, size * cgs.widthRatioCoef, size, cgs.media.weaponIcons[WP_SABER] );
 
 			y += size;
 
@@ -3084,7 +3083,7 @@ static float CG_DrawEnemyInfo ( float y )
 
 	if ( ci->modelIcon )
 	{
-		CG_DrawPic( 640 - size - 5 + xOffset, y, size, size, ci->modelIcon );
+		CG_DrawPic( 640 - (size * cgs.widthRatioCoef) - 5 + xOffset, y, size * cgs.widthRatioCoef, size, ci->modelIcon );
 	}
 
 	y += size;
@@ -4057,7 +4056,7 @@ static void CG_DrawPowerupIcons(int y)
 					icoShader = trap->R_RegisterShader( item->icon );
 				}
 
-				CG_DrawPic( (640-(ico_size*1.1)) + xOffset, y, ico_size, ico_size, icoShader );
+				CG_DrawPic( (640-(ico_size*1.1)) + xOffset, y, ico_size * cgs.widthRatioCoef, ico_size, icoShader );
 
 				y += ico_size;
 
@@ -5676,7 +5675,7 @@ static void CG_DrawHolocronIcons(void)
 	int startx = 10;
 	int starty = 10;//SCREEN_HEIGHT - icon_size*3;
 
-	int endx = icon_size;
+	int endx = icon_size * cgs.widthRatioCoef;
 	int endy = icon_size;
 
 	if (cg.snap->ps.zoomMode)
@@ -5731,7 +5730,7 @@ static void CG_DrawActivePowers(void)
 	int startx = icon_size*2+16;
 	int starty = SCREEN_HEIGHT - icon_size*2;
 
-	int endx = icon_size;
+	int endx = icon_size * cgs.widthRatioCoef;
 	int endy = icon_size;
 
 	if (cg.snap->ps.zoomMode)
@@ -6992,14 +6991,14 @@ void CG_DrawFlagStatus()
 	if (CG_YourTeamHasFlag())
 	{
 		//CG_DrawPic( startDrawPos, 330, ico_size, ico_size, theirFlagShader );
-		CG_DrawPic( 2, 330-startDrawPos, ico_size, ico_size, theirFlagShader );
+		CG_DrawPic( 2, 330-startDrawPos, ico_size * cgs.widthRatioCoef, ico_size, theirFlagShader );
 		startDrawPos += ico_size+2;
 	}
 
 	if (CG_OtherTeamHasFlag())
 	{
 		//CG_DrawPic( startDrawPos, 330, ico_size, ico_size, myFlagTakenShader );
-		CG_DrawPic( 2, 330-startDrawPos, ico_size, ico_size, myFlagTakenShader );
+		CG_DrawPic( 2, 330-startDrawPos, ico_size * cgs.widthRatioCoef, ico_size, myFlagTakenShader );
 	}
 }
 
