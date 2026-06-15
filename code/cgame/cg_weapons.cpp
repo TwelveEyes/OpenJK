@@ -1416,8 +1416,9 @@ int CG_WeaponCheck( int weaponIndex )
 
 int cgi_UI_GetItemText(char *menuFile,char *itemName, char *text);
 
-const char *weaponDesc[13] =
+const char *weaponDesc[14] =
 {
+"UNUSED_SLOT",
 "SABER_DESC",
 "NEW_BLASTER_PISTOL_DESC",
 "BLASTER_RIFLE_DESC",
@@ -1426,11 +1427,11 @@ const char *weaponDesc[13] =
 "HEAVYREPEATER_DESC",
 "DEMP2_DESC",
 "FLECHETTE_DESC",
+"CONCUSSION_DESC",
 "MERR_SONN_DESC",
 "THERMAL_DETONATOR_DESC",
 "TRIP_MINE_DESC",
 "DET_PACK_DESC",
-"CONCUSSION_DESC",
 };
 
 /*
@@ -1521,20 +1522,20 @@ void CG_DrawDataPadWeaponSelect( void )
 			weaponSelectI = WP_CONCUSSION;
 		}
 
-		if ( !(weaponBitFlag & ( 1 << weaponSelectI )))	// Does he have this weapon?
+		if ( !(weaponBitFlag & ( 1 << weaponDPOrder[weaponSelectI] )))	// Does he have this weapon?
 		{
 			continue;
 		}
 
 		++iconCnt;					// Good icon
 
-		if (weaponData[weaponSelectI].weaponIcon[0])
+		if (weaponData[weaponDPOrder[weaponSelectI]].weaponIcon[0])
 		{
 			weaponInfo_t	*weaponInfo;
-			CG_RegisterWeapon( weaponSelectI );
-			weaponInfo = &cg_weapons[weaponSelectI];
+			CG_RegisterWeapon( weaponDPOrder[weaponSelectI] );
+			weaponInfo = &cg_weapons[weaponDPOrder[weaponSelectI]];
 
-			if (!CG_WeaponCheck(weaponSelectI))
+			if (!CG_WeaponCheck(weaponDPOrder[weaponSelectI]))
 			{
 				CG_DrawPic( holdX, graphicYPos, smallIconSize_x, smallIconSize_y, weaponInfo->weaponIconNoAmmo );
 			}
@@ -1550,14 +1551,14 @@ void CG_DrawDataPadWeaponSelect( void )
 	// Current Center Icon
 	cgi_R_SetColor(colorTable[CT_WHITE]);
 
-	if (weaponData[cg.DataPadWeaponSelect].weaponIcon[0])
+	if (weaponData[weaponDPOrder[cg.DataPadWeaponSelect]].weaponIcon[0])
 	{
 		weaponInfo_t	*weaponInfo;
-		CG_RegisterWeapon( cg.DataPadWeaponSelect );
-		weaponInfo = &cg_weapons[cg.DataPadWeaponSelect];
+		CG_RegisterWeapon( weaponDPOrder[cg.DataPadWeaponSelect] );
+		weaponInfo = &cg_weapons[weaponDPOrder[cg.DataPadWeaponSelect]];
 
 			// Draw graphic to show weapon has ammo or no ammo
-		if (!CG_WeaponCheck(cg.DataPadWeaponSelect))
+		if (!CG_WeaponCheck(weaponDPOrder[cg.DataPadWeaponSelect]))
 		{
 			CG_DrawPic( centerXPos-(bigIconSize_x/2), (graphicYPos-((bigIconSize_y-smallIconSize_y)/2))+10, bigIconSize_x, bigIconSize_y, weaponInfo->weaponIconNoAmmo );
 		}
@@ -1585,18 +1586,18 @@ void CG_DrawDataPadWeaponSelect( void )
 			weaponSelectI = FIRST_WEAPON;
 		}
 
-		if ( !(weaponBitFlag & ( 1 << weaponSelectI )))	// Does he have this weapon?
+		if ( !(weaponBitFlag & ( 1 << weaponDPOrder[weaponSelectI] )))	// Does he have this weapon?
 		{
 			continue;
 		}
 
 		++iconCnt;					// Good icon
 
-		if (weaponData[weaponSelectI].weaponIcon[0])
+		if (weaponData[weaponDPOrder[weaponSelectI]].weaponIcon[0])
 		{
 			weaponInfo_t	*weaponInfo;
-			CG_RegisterWeapon( weaponSelectI );
-			weaponInfo = &cg_weapons[weaponSelectI];
+			CG_RegisterWeapon( weaponDPOrder[weaponSelectI] );
+			weaponInfo = &cg_weapons[weaponDPOrder[weaponSelectI]];
 
 			// Draw graphic to show weapon has ammo or no ammo
 			if (!CG_WeaponCheck(i))
@@ -1614,7 +1615,7 @@ void CG_DrawDataPadWeaponSelect( void )
 	}
 
 	// Print the weapon description
-	cgi_SP_GetStringTextString( va("SP_INGAME_%s",weaponDesc[cg.DataPadWeaponSelect-1]), text, sizeof(text) );
+	cgi_SP_GetStringTextString( va("SP_INGAME_%s",weaponDesc[cg.DataPadWeaponSelect]), text, sizeof(text) );
 
 	if (text[0])
 	{
@@ -2236,7 +2237,7 @@ void CG_DPNextWeapon_f( void ) {
 			cg.DataPadWeaponSelect = FIRST_WEAPON;
 		}
 
-		if ( CG_WeaponSelectable( cg.DataPadWeaponSelect, original, qtrue ) )
+		if ( CG_WeaponSelectable( weaponDPOrder[cg.DataPadWeaponSelect], original, qtrue ) )
 		{
 			return;
 		}
@@ -2283,7 +2284,7 @@ void CG_DPPrevWeapon_f( void )
 			cg.DataPadWeaponSelect = WP_CONCUSSION;
 		}
 
-		if ( CG_WeaponSelectable( cg.DataPadWeaponSelect, original, qtrue ) )
+		if ( CG_WeaponSelectable( weaponDPOrder[cg.DataPadWeaponSelect], original, qtrue ) )
 		{
 			return;
 		}
