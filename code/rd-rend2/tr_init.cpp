@@ -1496,15 +1496,15 @@ void R_Register( void )
 	r_ext_multi_draw_arrays = ri_Cvar_Get_NoComm( "r_ext_multi_draw_arrays", "1", CVAR_ARCHIVE | CVAR_LATCH, "Unused" );
 	r_ext_texture_float = ri_Cvar_Get_NoComm( "r_ext_texture_float", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable floating-point textures" );
 	r_arb_half_float_pixel = ri_Cvar_Get_NoComm( "r_arb_half_float_pixel", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable ARB_half_float GL extension" );
-	r_ext_framebuffer_multisample = ri_Cvar_Get_NoComm( "r_ext_multisample", "0", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable framebuffer MSAA" );
+	r_ext_framebuffer_multisample = ri_Cvar_Get_NoComm( "r_ext_multisample", "8", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable framebuffer MSAA" );
 	// We do MSAA resolving manually in rend2, so don't bother with the default framebuffer
 	ri.Cvar_Set("r_ext_multisample_default_fb", "0");
-	r_arb_seamless_cube_map = ri_Cvar_Get_NoComm( "r_arb_seamless_cube_map", "0", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable seamless cube map filtering GL extension" );
+	r_arb_seamless_cube_map = ri_Cvar_Get_NoComm( "r_arb_seamless_cube_map", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable seamless cube map filtering GL extension" );
 	r_arb_vertex_type_2_10_10_10_rev = ri_Cvar_Get_NoComm( "r_arb_vertex_type_2_10_10_10_rev", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable 1010102 UI data type" );
-	r_arb_buffer_storage = ri_Cvar_Get_NoComm( "r_arb_buffer_storage", "0", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable buffer storage GL extension" );
+	r_arb_buffer_storage = ri_Cvar_Get_NoComm( "r_arb_buffer_storage", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable buffer storage GL extension" );
 	r_ext_texture_filter_anisotropic = ri_Cvar_Get_NoComm( "r_ext_texture_filter_anisotropic", "16", CVAR_ARCHIVE, "Disable/enable anisotropic texture filtering" );
 
-	r_dynamicGlow						= ri_Cvar_Get_NoComm( "r_dynamicGlow",			"0",		CVAR_ARCHIVE, "" );
+	r_dynamicGlow						= ri_Cvar_Get_NoComm( "r_dynamicGlow",			"1",		CVAR_ARCHIVE, "" );
 	r_dynamicGlowPasses					= ri_Cvar_Get_NoComm( "r_dynamicGlowPasses",	"5",		CVAR_ARCHIVE, "" );
 	r_dynamicGlowDelta					= ri_Cvar_Get_NoComm( "r_dynamicGlowDelta",		"0.8f",		CVAR_ARCHIVE, "" );
 	r_dynamicGlowIntensity				= ri_Cvar_Get_NoComm( "r_dynamicGlowIntensity",	"1.13f",	CVAR_ARCHIVE, "" );
@@ -1549,20 +1549,20 @@ void R_Register( void )
 	r_forceAutoExposureMin = ri_Cvar_Get_NoComm( "r_forceAutoExposureMin", "-2.0", CVAR_CHEAT, "" );
 	r_forceAutoExposureMax = ri_Cvar_Get_NoComm( "r_forceAutoExposureMax", "2.0", CVAR_CHEAT, "" );
 
-	r_smaa = ri_Cvar_Get_NoComm("r_smaa", "0", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable SMAA");
+	r_smaa = ri_Cvar_Get_NoComm("r_smaa", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable SMAA");
 	r_smaa_quality = ri_Cvar_Get_NoComm("r_smaa_quality", "2", CVAR_ARCHIVE | CVAR_LATCH, "0: LOW | 1: MEDIUM | 2: HIGH | 3: ULTRA");
 
 	r_cameraExposure = ri_Cvar_Get_NoComm( "r_cameraExposure", "0", CVAR_CHEAT, "" );
 
 	r_depthPrepass = ri_Cvar_Get_NoComm( "r_depthPrepass", "1", CVAR_ARCHIVE, "" );
-	r_ssao = ri_Cvar_Get_NoComm( "r_ssao", "0", CVAR_LATCH | CVAR_ARCHIVE, "" );
+	r_ssao = ri_Cvar_Get_NoComm( "r_ssao", "1", CVAR_LATCH | CVAR_ARCHIVE, "" );
 
 	r_normalMapping = ri_Cvar_Get_NoComm( "r_normalMapping", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable normal mapping" );
 	r_specularMapping = ri_Cvar_Get_NoComm( "r_specularMapping", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable specular mapping" );
 	r_deluxeMapping = ri_Cvar_Get_NoComm( "r_deluxeMapping", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable reading deluxemaps when compiled with q3map2" );
 	r_deluxeSpecular = ri_Cvar_Get_NoComm("r_deluxeSpecular", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable/scale the specular response from deluxemaps");
-	r_cubeMapping = ri_Cvar_Get_NoComm( "r_cubeMapping", "0", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable cubemapping" );
-	r_cubeMappingBounces = ri_Cvar_Get_NoComm("r_cubeMappingBounces", "0", CVAR_ARCHIVE | CVAR_LATCH, "Renders cubemaps multiple times to get reflections in reflections");
+	r_cubeMapping = ri_Cvar_Get_NoComm( "r_cubeMapping", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable cubemapping" );
+	r_cubeMappingBounces = ri_Cvar_Get_NoComm("r_cubeMappingBounces", "1", CVAR_ARCHIVE | CVAR_LATCH, "Renders cubemaps multiple times to get reflections in reflections");
 	ri.Cvar_CheckRange(r_cubeMappingBounces, 0, 2, qfalse);
 	r_baseNormalX = ri_Cvar_Get_NoComm( "r_baseNormalX", "1.0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_baseNormalY = ri_Cvar_Get_NoComm( "r_baseNormalY", "1.0", CVAR_ARCHIVE | CVAR_LATCH, "" );
@@ -1582,7 +1582,7 @@ void R_Register( void )
 	r_drawSunRays = ri_Cvar_Get_NoComm( "r_drawSunRays", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_sunlightMode = ri_Cvar_Get_NoComm( "r_sunlightMode", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
 
-	r_volumetricFog = ri_Cvar_Get_NoComm("r_volumetricFog", "0", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable lightgrid lighting on fog volumes");
+	r_volumetricFog = ri_Cvar_Get_NoComm("r_volumetricFog", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable lightgrid lighting on fog volumes");
 	r_volumetricFogDefaultScale = ri_Cvar_Get_NoComm("r_volumetricFogDefaultScale", "1.0", CVAR_ARCHIVE | CVAR_LATCH, "Scales volumetric fog density unless scale has been explicitly defined");
 	r_volumetricFogSamples = ri_Cvar_Get_NoComm("r_volumetricFogSamples", "48", CVAR_ARCHIVE | CVAR_LATCH, "How many ray samples to take");
 	ri.Cvar_CheckRange(r_volumetricFogSamples, 16, 128, qfalse);
@@ -1609,7 +1609,7 @@ void R_Register( void )
 	//
 	r_lodCurveError = ri_Cvar_Get_NoComm( "r_lodCurveError", "250", CVAR_ARCHIVE|CVAR_CHEAT, "" );
 	r_lodbias = ri_Cvar_Get_NoComm( "r_lodbias", "0", CVAR_ARCHIVE, "" );
-	r_flares = ri_Cvar_Get_NoComm ("r_flares", "0", CVAR_ARCHIVE, "" );
+	r_flares = ri_Cvar_Get_NoComm ("r_flares", "1", CVAR_ARCHIVE, "" );
 	r_znear = ri_Cvar_Get_NoComm( "r_znear", "4", CVAR_CHEAT, "" );
 	ri.Cvar_CheckRange( r_znear, 0.001f, 200, qfalse );
 	r_autolodscalevalue	= ri_Cvar_Get_NoComm( "r_autolodscalevalue", "0", CVAR_ROM, "" );
@@ -1621,12 +1621,12 @@ void R_Register( void )
 	r_drawSun = ri_Cvar_Get_NoComm( "r_drawSun", "0", CVAR_ARCHIVE, "" );
 	r_dynamiclight = ri_Cvar_Get_NoComm( "r_dynamiclight", "1", CVAR_ARCHIVE, "" );
 	r_finish = ri_Cvar_Get_NoComm ("r_finish", "0", CVAR_ARCHIVE, "");
-	r_textureMode = ri_Cvar_Get_NoComm( "r_textureMode", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE, "" );
+	r_textureMode = ri_Cvar_Get_NoComm( "r_textureMode", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE, "" );
 	r_markcount = ri_Cvar_Get_NoComm( "r_markcount", "100", CVAR_ARCHIVE, "" );
 	r_gamma = ri_Cvar_Get_NoComm( "r_gamma", "1", CVAR_ARCHIVE, "" );
 	r_facePlaneCull = ri_Cvar_Get_NoComm ("r_facePlaneCull", "1", CVAR_ARCHIVE, "" );
 
-	r_parallaxMapping = ri_Cvar_Get_NoComm("r_parallaxMapping", "0", CVAR_ARCHIVE, "Disable/enable parallax mapping");
+	r_parallaxMapping = ri_Cvar_Get_NoComm("r_parallaxMapping", "1", CVAR_ARCHIVE, "Disable/enable parallax mapping");
 
 	r_ambientScale = ri_Cvar_Get_NoComm( "r_ambientScale", "0.6", CVAR_CHEAT, "" );
 	r_directedScale = ri_Cvar_Get_NoComm( "r_directedScale", "1", CVAR_CHEAT, "" );
