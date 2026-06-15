@@ -5554,6 +5554,10 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 				return qfalse;
 			}
 		}
+		else
+		{
+			return qfalse;
+		}
 	}
 
 	switch( hitLoc )
