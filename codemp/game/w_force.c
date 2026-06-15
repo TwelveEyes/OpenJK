@@ -5534,34 +5534,26 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 		return qfalse;
 	}
 
+	//We now dodge all the time, but only on level 3
+	if (self->client->ps.fd.forcePowerLevel[FP_SEE] < FORCE_LEVEL_3)
+	{//more likely to fail on lower force sight level
+		return qfalse;
+	}
+
 	if (g_forceDodge.integer == 2)
 	{
 		if (self->client->ps.fd.forcePowersActive)
 		{ //for now just don't let us dodge if we're using a force power at all
 			return qfalse;
 		}
-	}
-
-	if (g_forceDodge.integer == 2)
-	{
+	
 		if ( !WP_ForcePowerUsable( self, FP_SPEED ) )
 		{//make sure we have it and have enough force power
 			return qfalse;
 		}
-	}
-
-	if (g_forceDodge.integer == 2)
-	{
+	
 		if ( Q_irand( 1, 3 ) > self->client->ps.fd.forcePowerLevel[FP_SPEED] )
 		{//more likely to fail on lower force speed level. always succeeds at max force speed level
-			return qfalse;
-		}
-	}
-	else
-	{
-		//We now dodge all the time, but only on level 3
-		if (self->client->ps.fd.forcePowerLevel[FP_SEE] < FORCE_LEVEL_3)
-		{//more likely to fail on lower force sight level
 			return qfalse;
 		}
 	}
