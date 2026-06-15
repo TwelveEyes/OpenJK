@@ -222,6 +222,11 @@ qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh )
 	return qfalse;
 }
 
+qboolean BG_AllowThirdPersonSpecialMove( playerState_t *ps )
+{
+	return (qboolean)((cg.renderingThirdPerson || ps->weapon == WP_SABER || ps->weapon == WP_MELEE) && !cg.zoomMode);
+}
+
 
 /*
 ===============
@@ -1269,8 +1274,7 @@ static qboolean PM_CheckJump( void )
 								pm->ps->legsAnim != BOTH_ALORA_FLIP_1 &&
 								pm->ps->legsAnim != BOTH_ALORA_FLIP_2 &&
 								pm->ps->legsAnim != BOTH_ALORA_FLIP_3
-								&& cg.renderingThirdPerson//third person only
-								&& !cg.zoomMode //not zoomed in
+								&& BG_AllowThirdPersonSpecialMove( pm->ps )//third person only
 								&& !(pm->ps->saber[0].saberFlags&SFL_NO_FLIPS)//okay to do flips with this saber
 								&& (!pm->ps->dualSabers || !(pm->ps->saber[1].saberFlags&SFL_NO_FLIPS) )//okay to do flips with this saber
 								)
@@ -1483,7 +1487,7 @@ static qboolean PM_CheckJump( void )
 		//&& !PM_InKnockDown( pm->ps )//not in a knockdown
 		&& pm->ps->forceRageRecoveryTime < pm->cmd.serverTime	//not in a force Rage recovery period
 		&& pm->gent && WP_ForcePowerAvailable( pm->gent, FP_LEVITATION, 0 ) //have enough force power to jump
-		&& ((pm->ps->clientNum&&!PM_ControlledByPlayer())||((pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) && cg.renderingThirdPerson && !cg.zoomMode	&& !(pm->gent->flags&FL_LOCK_PLAYER_WEAPONS) )) )// yes this locked weapons check also includes force powers, if we need a separate check later I'll make one
+		&& ((pm->ps->clientNum&&!PM_ControlledByPlayer())||((pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) && BG_AllowThirdPersonSpecialMove( pm->ps ) && !(pm->gent->flags&FL_LOCK_PLAYER_WEAPONS) )) )// yes this locked weapons check also includes force powers, if we need a separate check later I'll make one
 	{
 		if ( pm->gent->NPC && pm->gent->NPC->rank != RANK_CREWMAN && pm->gent->NPC->rank <= RANK_LT_JG )
 		{//reborn who are not acrobats can't do any of these acrobatics
@@ -1759,7 +1763,7 @@ static qboolean PM_CheckJump( void )
 				switch ( anim )
 				{
 				case BOTH_WALL_FLIP_LEFT:
-					if ( g_debugMelee->integer )
+					if ( g_debugMelee->integer || pm->ps->forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1 )
 					{
 						contents |= CONTENTS_BODY;
 					}
@@ -1770,7 +1774,7 @@ static qboolean PM_CheckJump( void )
 					break;
 
 				case BOTH_WALL_FLIP_RIGHT:
-					if ( g_debugMelee->integer )
+					if ( g_debugMelee->integer || pm->ps->forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1 )
 					{
 						contents |= CONTENTS_BODY;
 					}
@@ -1781,7 +1785,7 @@ static qboolean PM_CheckJump( void )
 					break;
 
 				case BOTH_WALL_FLIP_BACK1:
-					if ( g_debugMelee->integer )
+					if ( g_debugMelee->integer || pm->ps->forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1 )
 					{
 						contents |= CONTENTS_BODY;
 					}
@@ -1790,7 +1794,7 @@ static qboolean PM_CheckJump( void )
 					break;
 
 				case BOTH_FORCEWALLRUNFLIP_START:
-					if ( g_debugMelee->integer )
+					if ( g_debugMelee->integer || pm->ps->forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1 )
 					{
 						contents |= CONTENTS_BODY;
 					}
@@ -2179,28 +2183,29 @@ static qboolean PM_CheckJump( void )
 				&& pm->ps->forceRageRecoveryTime < pm->cmd.serverTime	//not in a force Rage recovery period
 				&& pm->ps->forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1 //have force jump 2 or higher
 				&& (level.time - pm->ps->lastOnGround) <= 250//just jumped
-				&& (pm->ps->legsAnim == BOTH_JUMP1 || pm->ps->legsAnim == BOTH_INAIR1 )//not in a flip or spin or anything
+				&& (pm->ps->legsAnim == BOTH_JUMP1 || pm->ps->legsAnim == BOTH_INAIR1) )//not in a flip or spin or anything
 			{//run up wall, flip backwards
 				//FIXME: have to be moving... make sure it's opposite the wall... or at least forward?
 				int wallWalkAnim = BOTH_WALL_FLIP_BACK1;
 				int parts = SETANIM_LEGS;
 				int contents = CONTENTS_SOLID;
 				qboolean kick = qtrue;
-				if ( pm->ps->forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_2 )
-				{
-					wallWalkAnim = BOTH_FORCEWALLRUNFLIP_START;
-					parts = SETANIM_BOTH;
-					kick = qfalse;
-				}
-				else
-				{
+				int highJump = pm->ps->forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_2;
+				// if ( highJump )
+				// {
+				// 	wallWalkAnim = BOTH_FORCEWALLRUNFLIP_START;
+				// 	parts = SETANIM_BOTH;
+				// 	kick = qfalse;
+				// }
+				// else
+				// {
 					contents |= CONTENTS_BODY;
 					if ( !pm->ps->weaponTime )
 					{
 						parts = SETANIM_BOTH;
 					}
-				}
-				if ( PM_HasAnimation( pm->gent, wallWalkAnim ) )
+				// }
+				if ( PM_HasAnimation( pm->gent, wallWalkAnim ) && (highJump ? PM_HasAnimation( pm->gent, BOTH_FORCEWALLRUNFLIP_START ) : true) )
 				{
 					vec3_t fwd, traceto, mins = {pm->mins[0],pm->mins[1],0}, maxs = {pm->maxs[0],pm->maxs[1],24}, fwdAngles = {0, pm->ps->viewangles[YAW], 0};
 					trace_t	trace;
@@ -2209,7 +2214,7 @@ static qboolean PM_CheckJump( void )
 					AngleVectors( fwdAngles, fwd, NULL, NULL );
 					VectorMA( pm->ps->origin, 32, fwd, traceto );
 
-					pm->trace( &trace, pm->ps->origin, mins, maxs, traceto, pm->ps->clientNum, contents );//FIXME: clip brushes too?
+					pm->trace( &trace, pm->ps->origin, mins, maxs, traceto, pm->ps->clientNum, contents, G2_NOCOLLIDE, 0 );//FIXME: clip brushes too?
 					VectorSubtract( pm->ps->origin, traceto, idealNormal );
 					VectorNormalize( idealNormal );
 					gentity_t *traceEnt = &g_entities[trace.entityNum];
@@ -2218,6 +2223,12 @@ static qboolean PM_CheckJump( void )
 						&&((trace.entityNum<ENTITYNUM_WORLD&&traceEnt&&traceEnt->s.solid!=SOLID_BMODEL)||DotProduct(trace.plane.normal,idealNormal)>0.7) )
 					{//there is a wall there
 						pm->ps->velocity[0] = pm->ps->velocity[1] = 0;
+						if ( highJump && kick && traceEnt && !(traceEnt->s.eType == ET_PLAYER) )
+						{
+							wallWalkAnim = BOTH_FORCEWALLRUNFLIP_START;
+							parts = SETANIM_BOTH;
+							kick = qfalse;
+						}
 						if ( wallWalkAnim == BOTH_FORCEWALLRUNFLIP_START )
 						{
 							pm->ps->velocity[2] = forceJumpStrength[FORCE_LEVEL_3]/2.0f;
@@ -2360,7 +2371,7 @@ static qboolean PM_CheckJump( void )
 		&& pm->ps->forceRageRecoveryTime < pm->cmd.serverTime	//not in a force Rage recovery period
 		&& pm->ps->weapon == WP_SABER
 		&& (pm->ps->weaponTime > 0||(pm->cmd.buttons&BUTTON_ATTACK))
-		&& ((pm->ps->clientNum&&!PM_ControlledByPlayer())||((pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) && cg.renderingThirdPerson && !cg.zoomMode)) )
+		&& ((pm->ps->clientNum&&!PM_ControlledByPlayer())||((pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) && BG_AllowThirdPersonSpecialMove( pm->ps ))) )
 	{//okay, we just jumped and we're in an attack
 		if ( !PM_RollingAnim( pm->ps->legsAnim )
 			&& !PM_InKnockDown( pm->ps )
@@ -3124,7 +3135,7 @@ static void PM_WalkMove( void ) {
 	if ( g_debugMelee->integer )
 	{
 		if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer())//player
-			&& cg.renderingThirdPerson//in third person
+			&& BG_AllowThirdPersonSpecialMove( pm->ps )//in third person
 			&& ((pm->cmd.buttons&BUTTON_USE)||pm->ps->leanStopDebounceTime)//holding use or leaning
 			//&& (pm->ps->forcePowersActive&(1<<FP_SPEED))
 			&& pm->ps->groundEntityNum != ENTITYNUM_NONE//on ground
@@ -3794,7 +3805,7 @@ static qboolean PM_TryRoll( void )
 			return qfalse;
 		}
 	}
-	if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) && (!cg.renderingThirdPerson || cg.zoomMode) )
+	if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) && (!BG_AllowThirdPersonSpecialMove( pm->ps )) )
 	{//player can't do this in 1st person
 		return qfalse;
 	}
@@ -5697,7 +5708,7 @@ static void PM_CheckDuck (void)
 
 		if ( pm->ps->clientNum < MAX_CLIENTS
 			&& (pm->gent->client->NPC_class == CLASS_ATST ||pm->gent->client->NPC_class == CLASS_RANCOR)
-			&& !cg.renderingThirdPerson )
+			&& !BG_AllowThirdPersonSpecialMove( pm->ps ) )
 		{
 			standheight = crouchheight = 128;
 		}
@@ -6710,6 +6721,17 @@ qboolean PM_InRoll( playerState_t *ps )
 	return qfalse;
 }
 
+qboolean PM_RestAnim( int anim )
+{
+	switch ( anim )
+	{
+	case BOTH_MEDITATE:			// default taunt
+		return qtrue;
+		break;
+	}
+	return qfalse;
+}
+
 qboolean PM_CrouchAnim( int anim )
 {
 	switch ( anim )
@@ -7452,7 +7474,7 @@ qboolean PM_AdjustStandAnimForSlope( void )
 		return qfalse;
 	}
 	if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer())
-		&& (!cg.renderingThirdPerson || cg.zoomMode) )
+		&& (!BG_AllowThirdPersonSpecialMove( pm->ps )) )
 	{//first person doesn't do this
 		return qfalse;
 	}
@@ -8916,7 +8938,7 @@ static void PM_BeginWeaponChange( int weapon ) {
 	// eezstreet edit: also ignore if we change to WP_NONE..sorta hacky fix for binoculars using WP_SABER
 	if ( pm->ps->clientNum == 0 && cg.weaponSelect != WP_NONE )
 	{
-		if ( cg.zoomMode > 0 && cg.zoomMode < 3 )
+		if ( (cg.zoomMode > 0 && cg.zoomMode < 3) || (cg.zoomMode == 3 && (cg.weaponSelect == WP_SABER || cg.weaponSelect == WP_MELEE)) )
 		{
 			cg.zoomMode = 0;
 			cg.zoomTime = cg.time;
@@ -9034,7 +9056,7 @@ static void PM_FinishWeaponChange( void ) {
 		if ( pm->gent )
 		{
 			WP_SaberInitBladeData( pm->gent );
-			if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) )
+			if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) && cg_saberAutoThird.integer )
 			{
 				gi.cvar_set( "cg_thirdperson", "1" );
 			}
@@ -13837,7 +13859,7 @@ static void PM_Weapon( void )
 				}
 				else
 				{
-					if ( cg.renderingThirdPerson )
+					if ( BG_AllowThirdPersonSpecialMove( pm->ps ) )
 					{
 						if ( PM_StandingAnim( pm->ps->legsAnim )
 							|| pm->ps->legsAnim == BOTH_THERMAL_READY )

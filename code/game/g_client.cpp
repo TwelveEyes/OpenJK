@@ -1290,6 +1290,16 @@ qboolean G_SetG2PlayerModelInfo( gentity_t *ent, const char *modelName, const ch
 			{
 				ent->handRBolt = ent->headBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*head_f1");
 			}
+			else if ( !Q_stricmp( "galak_mech", modelName ))
+			{
+				ent->genericBolt1 = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*antenna_effect");
+				ent->headBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*head_eyes");
+				ent->torsoBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "torso");
+				ent->crotchBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "hips");
+				ent->handRBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*flasha");
+				ent->genericBolt3 = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*flashb");
+				ent->handLBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*flashc");
+			}
 			else if ( !Q_stricmp( "rancor", modelName )
 					|| !Q_stricmp( "mutant_rancor", modelName ))
 			{
@@ -1334,6 +1344,7 @@ qboolean G_SetG2PlayerModelInfo( gentity_t *ent, const char *modelName, const ch
 					ent->elbowLBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*bicep_lg");
 					ent->elbowRBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*bicep_rg");
 					ent->handLBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*hand_l");
+					ent->handRBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*r_hand");//use the standard bone r_hand
 					ent->kneeLBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*thigh_lg");
 					ent->kneeRBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*thigh_rg");
 					ent->footLBolt = gi.G2API_AddBolt(&ent->ghoul2[ent->playerModel], "*foot_lg");
@@ -2153,6 +2164,21 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 
 		gi.linkentity (ent);
 
+		if ( ent->client->NPC_class == CLASS_ATST )
+		{//try and eject out of ATST
+			GEntity_UseFunc( ent->activator, ent, ent );
+
+			if ( ent->client->ps.stats[STAT_WEAPONS] & ( 1 << WP_BLASTER ) )
+			{
+				ent->client->ps.weapon = WP_BLASTER;
+			}
+			else
+			{
+				ent->client->ps.weapon = WP_NONE;
+			}
+			ent->client->ps.weaponstate = WEAPON_READY;
+		}
+
 		// run the presend to set anything else
 		ClientEndFrame( ent );
 
@@ -2179,6 +2205,12 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 		//setup sabers
 		G_ReloadSaberData( ent );
 		//force power levels should already be set
+
+		//make sure we always have the binocular inventory item
+		if ( client->ps.inventory[INV_ELECTROBINOCULARS] < 1 )
+		{
+			client->ps.inventory[INV_ELECTROBINOCULARS] = 1;
+		}
 	}
 	else
 	{
@@ -2261,8 +2293,8 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 		// give default weapons
 		//these are precached in g_items, ClearRegisteredItems()
 		client->ps.stats[STAT_WEAPONS] = ( 1 << WP_NONE );
-		//client->ps.inventory[INV_ELECTROBINOCULARS] = 1;
-		//ent->client->ps.inventory[INV_BACTA_CANISTER] = 1;
+		client->ps.inventory[INV_ELECTROBINOCULARS] = 1;
+		ent->client->ps.inventory[INV_BACTA_CANISTER] = 1;
 
 		// give EITHER the saber or the stun baton..never both
 		if ( spawnPoint->spawnflags & 32 ) // STUN_BATON
@@ -2347,6 +2379,12 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 		// restore some player data
 		//
 		Player_RestoreFromPrevLevel(ent, eSavedGameJustLoaded);
+
+		//make sure we always have the binocular inventory item
+		if ( client->ps.inventory[INV_ELECTROBINOCULARS] < 1 )
+		{
+			client->ps.inventory[INV_ELECTROBINOCULARS] = 1;
+		}
 
 		//FIXME: put this BEFORE the Player_RestoreFromPrevLevel check above?
 		if (eSavedGameJustLoaded == eNO)
