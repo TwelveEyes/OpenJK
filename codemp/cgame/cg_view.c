@@ -2578,6 +2578,13 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		{ //force third person for e-web and emplaced use
 			cg.renderingThirdPerson = 1;
 		}
+		else if (cg_fpls.integer && !cg_thirdPerson.integer &&
+			(cg.predictedPlayerState.weapon == WP_SABER || cg.predictedPlayerState.weapon == WP_MELEE) &&
+			!cg.predictedPlayerState.fallingToDeath &&
+			!cg.predictedPlayerState.m_iVehicleNum)
+		{
+			cg.renderingThirdPerson = 0;
+		}
 		else if (cg.predictedPlayerState.weapon == WP_SABER || cg.predictedPlayerState.weapon == WP_MELEE ||
 			BG_InGrappleMove(cg.predictedPlayerState.torsoAnim) || BG_InGrappleMove(cg.predictedPlayerState.legsAnim) ||
 			cg.predictedPlayerState.forceHandExtend == HANDEXTEND_KNOCKDOWN || cg.predictedPlayerState.fallingToDeath ||
@@ -2735,3 +2742,15 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	}
 }
 
+//Checks to see if the current camera position is valid based on the last known safe location.  If it's not safe, place
+//the camera at the last position safe location
+void CheckCameraLocation( vec3_t OldeyeOrigin )
+{
+	trace_t			trace;
+	
+	CG_Trace(&trace, OldeyeOrigin, cameramins, cameramaxs, cg.refdef.vieworg, cg.snap->ps.clientNum, MASK_CAMERACLIP);
+	if (trace.fraction <= 1.0)
+	{
+		VectorCopy(trace.endpos, cg.refdef.vieworg);
+	}
+}
