@@ -1368,8 +1368,7 @@ void G_RunMissile( gentity_t *ent )
 				if ( other->owner
 					&& other->owner->client
 					&& !other->owner->client->ps.saberInFlight
-					&& ( Q_irand( 0, (other->owner->client->ps.forcePowerLevel[FP_SABER_DEFENSE]*other->owner->client->ps.forcePowerLevel[FP_SABER_DEFENSE]) ) == 0
-						|| !InFront( ent->currentOrigin, other->owner->currentOrigin, other->owner->client->ps.viewangles, SABER_REFLECT_MISSILE_CONE ) ) )//other->owner->s.number == 0 &&
+					&& !InFront( ent->currentOrigin, other->owner->currentOrigin, other->owner->client->ps.viewangles, SABER_REFLECT_MISSILE_CONE ) )//other->owner->s.number == 0 &&
 				{//Jedi cannot block shots from behind!
 					//re-trace from here, ignoring the lightsaber
 					gi.trace( &tr, tr.endpos, ent->mins, ent->maxs, origin, tr.entityNum, ent->clipmask, G2_RETURNONHIT, 10 );
