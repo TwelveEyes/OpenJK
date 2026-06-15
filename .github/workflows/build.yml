@@ -94,6 +94,12 @@ jobs:
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
+      - name: Clear Base Folder
+        if: ${{ matrix.build_type == 'Release' }}
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: rm -r ./build/bin/JediAcademy/base/*
+
       - uses: actions/upload-artifact@v4
         if: ${{ matrix.build_type == 'Release' }}
         with:
