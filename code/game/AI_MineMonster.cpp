@@ -105,8 +105,8 @@ void MineMonster_Move( qboolean visible )
 	if ( NPCInfo->localState != LSTATE_WAITING )
 	{
 		NPCInfo->goalEntity = NPC->enemy;
+		NPCInfo->goalRadius = MIN_DISTANCE;	// just get us within combat range
 		NPC_MoveToGoal( qtrue );
-		NPCInfo->goalRadius = MAX_DISTANCE;	// just get us within combat range
 	}
 }
 
@@ -206,7 +206,7 @@ void MineMonster_Combat( void )
 	{
 		NPCInfo->combatMove = qtrue;
 		NPCInfo->goalEntity = NPC->enemy;
-		NPCInfo->goalRadius = MAX_DISTANCE;	// just get us within combat range
+		NPCInfo->goalRadius = MIN_DISTANCE;	// just get us within combat range
 
 		NPC_MoveToGoal( qtrue );
 		return;
