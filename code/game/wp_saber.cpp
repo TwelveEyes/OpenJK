@@ -11050,31 +11050,7 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, flo
 			}
 			else
 			{
-				//dmg = Q_irand( 1, 3 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];
-				dmg = 1;
-				if ( self->client->NPC_class == CLASS_REBORN
-					&& self->client->ps.weapon == WP_NONE )
-				{//Cultist: looks fancy, but does less damage
-				}
-				else
-				{
-					if ( dist < 50 )
-					{
-						dmg += 2;
-					}
-					else if ( dist < 100 )
-					{
-						dmg += 1;
-					}
-					if ( dot > 0.95f )
-					{
-						dmg += 2;
-					}
-					else if ( dot > 0.75f )
-					{
-						dmg += 1;
-					}
-				}
+				dmg = Q_irand( 3, 5 );//*self->client->ps.forcePowerLevel[FP_LIGHTNING];
 			}
 
 			if ( traceEnt->client
@@ -12695,6 +12671,16 @@ void WP_ForcePowerDrain( gentity_t *self, forcePowers_t forcePower, int override
 	if ( !drain )
 	{
 		drain = forcePowerNeeded[forcePower];
+	}
+	switch ( forcePower )
+	{
+		case FP_LIGHTNING:
+		case FP_DRAIN:
+			if (level.time % 250 != 0)
+			{
+				drain = 0;
+			}
+			break;
 	}
 	if ( !drain )
 	{
