@@ -624,6 +624,7 @@ extern	vmCvar_t		cg_thirdPersonPitchOffset;
 extern	vmCvar_t		cg_thirdPersonVertOffset;
 extern	vmCvar_t		cg_thirdPersonCameraDamp;
 extern	vmCvar_t		cg_thirdPersonTargetDamp;
+extern	vmCvar_t		cg_saberAutoThird;
 extern	vmCvar_t		cg_gunAutoFirst;
 
 extern	vmCvar_t		cg_stereoSeparation;
@@ -654,6 +655,10 @@ extern	vmCvar_t		cg_fovViewmodel;
 extern	vmCvar_t		cg_fovViewmodelAdjust;
 
 extern	vmCvar_t		cg_scaleVehicleSensitivity;
+
+// extern	vmCvar_t		cg_trueroll;
+// extern	vmCvar_t		cg_trueflip;
+// extern	vmCvar_t		cg_truespin;
 
 void CG_NewClientinfo( int clientNum );
 //

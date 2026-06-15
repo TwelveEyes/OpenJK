@@ -299,6 +299,7 @@ vmCvar_t	cg_thirdPersonPitchOffset;
 vmCvar_t	cg_thirdPersonVertOffset;
 vmCvar_t	cg_thirdPersonCameraDamp;
 vmCvar_t	cg_thirdPersonTargetDamp;
+vmCvar_t	cg_saberAutoThird;
 vmCvar_t	cg_gunAutoFirst;
 
 vmCvar_t	cg_thirdPersonAlpha;
@@ -341,6 +342,10 @@ vmCvar_t	cg_fovViewmodelAdjust;
 
 vmCvar_t	cg_scaleVehicleSensitivity;
 
+// vmCvar_t		cg_trueroll;
+// vmCvar_t		cg_trueflip;
+// vmCvar_t		cg_truespin;
+
 typedef struct {
 	vmCvar_t	*vmCvar;
 	const char	*cvarName;
@@ -352,7 +357,7 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_autoswitch, "cg_autoswitch", "1", CVAR_ARCHIVE },
 	{ &cg_drawGun, "cg_drawGun", "1", CVAR_ARCHIVE },
 	{ &cg_fov, "cg_fov", "80", CVAR_ARCHIVE },
-	{ &cg_fovAspectAdjust, "cg_fovAspectAdjust", "0", CVAR_ARCHIVE },
+	{ &cg_fovAspectAdjust, "cg_fovAspectAdjust", "1", CVAR_ARCHIVE },
 	{ &cg_stereoSeparation, "cg_stereoSeparation", "0.4", CVAR_ARCHIVE  },
 	{ &cg_shadows, "cg_shadows", "1", CVAR_ARCHIVE  },
 	{ &cg_renderToTextureFX, "cg_renderToTextureFX", "1", CVAR_ARCHIVE  },
@@ -424,6 +429,7 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_thirdPersonAlpha, "cg_thirdPersonAlpha", "1.0", CVAR_ARCHIVE },
 	{ &cg_thirdPersonAutoAlpha,	"cg_thirdPersonAutoAlpha",	"0", 0 },
 	// NOTE: also declare this in UI_Init
+	{ &cg_saberAutoThird, "cg_saberAutoThird", "1", CVAR_ARCHIVE },
 	{ &cg_gunAutoFirst, "cg_gunAutoFirst", "1", CVAR_ARCHIVE },
 
 	{ &cg_pano, "pano", "0", 0 },
@@ -459,6 +465,10 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_fovViewmodelAdjust, "cg_fovViewmodelAdjust", "1", CVAR_ARCHIVE },
 
 	{ &cg_scaleVehicleSensitivity, "cg_scaleVehicleSensitivity", "1", CVAR_ARCHIVE },
+
+	// { &cg_trueroll,	"cg_trueroll",	"0", CVAR_ARCHIVE },
+	// { &cg_trueflip,	"cg_trueflip",	"0", CVAR_ARCHIVE },
+	// { &cg_truespin,	"cg_truespin",	"0", CVAR_ARCHIVE },
 };
 
 static const size_t cvarTableSize = ARRAY_LEN( cvarTable );
@@ -1368,7 +1378,7 @@ static void CG_RegisterGraphics( void ) {
 	// FIXME: do these conditionally
 	cgi_R_RegisterShader( "gfx/2d/workingCamera" );
 	cgi_R_RegisterShader( "gfx/2d/brokenCamera" );
-	//cgi_R_RegisterShader( "gfx/effects/irid_shield" ); // for galak, but he doesn't have his own weapon so I can't register the shader there.
+	cgi_R_RegisterShader( "gfx/effects/irid_shield" ); // for galak, but he doesn't have his own weapon so I can't register the shader there.
 
 	//interface
 	for ( i = 0 ; i < NUM_CROSSHAIRS ; i++ ) {
