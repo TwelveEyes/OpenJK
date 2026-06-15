@@ -2131,17 +2131,20 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 	}
 	else
 	{//the player
-		if ( !(self->client->ps.forcePowersActive&(1<<FP_SPEED)) )
-		{//not already in speed
-			if ( !WP_ForcePowerUsable( self, FP_SPEED, 0 ) )
-			{//make sure we have it and have enough force power
+		if ( self->client->ps.forcePowerLevel[FP_SEE] < FORCE_LEVEL_3 )
+		{//auto dodge on force sight level 3
+			if ( !(self->client->ps.forcePowersActive&(1<<FP_SPEED)) )
+			{//not already in speed
+				if ( !WP_ForcePowerUsable( self, FP_SPEED, 0 ) )
+				{//make sure we have it and have enough force power
+					return qfalse;
+				}
+			}
+			//check force speed power level to determine if I should be able to dodge it
+			if ( Q_irand( 0, 2 ) >= self->client->ps.forcePowerLevel[FP_SPEED] )
+			{//more likely to fail on lower force speed level
 				return qfalse;
 			}
-		}
-		//check force speed power level to determine if I should be able to dodge it
-		if ( Q_irand( 0, 2 ) >= self->client->ps.forcePowerLevel[FP_SPEED] )
-		{//more likely to fail on lower force speed level
-			return qfalse;
 		}
 	}
 
@@ -2296,9 +2299,13 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 			//sound
 			G_Sound( self, G_SoundIndex( "sound/weapons/force/speed.wav" ) );
 		}
-		else
+		else if ( self->client->ps.forcePowerLevel[FP_SEE] < FORCE_LEVEL_3 )
 		{//player
 			ForceSpeed( self, 500 );
+		}
+		else
+		{
+			G_Sound( self, G_SoundIndex( "sound/weapons/force/speed.wav" ) );
 		}
 
 		WP_ForcePowerStop( self, FP_GRIP );
