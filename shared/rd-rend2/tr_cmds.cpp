@@ -364,7 +364,7 @@ RE_RotatePic
 =============
 */
 void RE_RotatePic ( float x, float y, float w, float h,
-					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader ) {
+					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader, float aspectCorrection ) {
 	rotatePicCommand_t	*cmd;
 
 	if (!tr.registered) {
@@ -385,6 +385,7 @@ void RE_RotatePic ( float x, float y, float w, float h,
 	cmd->s2 = s2;
 	cmd->t2 = t2;
 	cmd->a = a;
+	cmd->ratio = aspectCorrection;
 }
 
 /*
@@ -393,7 +394,7 @@ RE_RotatePic2
 =============
 */
 void RE_RotatePic2 ( float x, float y, float w, float h,
-					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader ) {
+					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader, float aspectCorrection ) {
 	rotatePicCommand_t	*cmd;
 
 	if (!tr.registered) {
@@ -414,6 +415,7 @@ void RE_RotatePic2 ( float x, float y, float w, float h,
 	cmd->s2 = s2;
 	cmd->t2 = t2;
 	cmd->a = a;
+	cmd->ratio = aspectCorrection;
 }
 
 /*

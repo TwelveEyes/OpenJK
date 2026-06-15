@@ -312,7 +312,10 @@ static void CG_DrawZoomMask( void )
 
 		// Draw target mask
 		trap->R_SetColor( colorTable[CT_WHITE] );
-		CG_DrawPic( 0, 0, 640, 480, cgs.media.disruptorMask );
+		CG_DrawPic( SCREEN_WIDTH/2 - (SCREEN_WIDTH*cgs.widthRatioCoef)/2, 0, SCREEN_WIDTH*cgs.widthRatioCoef, 480, cgs.media.disruptorMask );
+
+		CG_FillRect(0, 0, SCREEN_WIDTH / 2 - (SCREEN_WIDTH * cgs.widthRatioCoef) / 2, SCREEN_HEIGHT, colorTable[CT_BLACK]);
+		CG_FillRect(SCREEN_WIDTH / 2 + (SCREEN_WIDTH * cgs.widthRatioCoef) / 2, 0, SCREEN_WIDTH / 2 - (SCREEN_WIDTH * cgs.widthRatioCoef) / 2, SCREEN_HEIGHT, colorTable[CT_BLACK]);
 
 		// apparently 99.0f is the full zoom level
 		if ( level >= 99 )
@@ -327,7 +330,7 @@ static void CG_DrawZoomMask( void )
 		}
 
 		// Draw rotating insert
-		CG_DrawRotatePic2( 320, 240, 640, 480, -level, cgs.media.disruptorInsert );
+		CG_DrawRotatePic2( SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT, -level, cgs.media.disruptorInsert, cgs.widthRatioCoef );
 
 		// Increase the light levels under the center of the target
 //		CG_DrawPic( 198, 118, 246, 246, cgs.media.disruptorLight );
@@ -396,10 +399,10 @@ static void CG_DrawZoomMask( void )
 
 		for (fi = 18.5f; fi <= 18.5f + max; fi+= 3 ) // going from 15 to 45 degrees, with 5 degree increments
 		{
-			cx = 320 + sin( (fi+90.0f)/57.296f ) * 190;
+			cx = 320 + sin( (fi+90.0f)/57.296f ) * 190 * cgs.widthRatioCoef;
 			cy = 240 + cos( (fi+90.0f)/57.296f ) * 190;
 
-			CG_DrawRotatePic2( cx, cy, 12, 24, 90 - fi, cgs.media.disruptorInsertTick );
+			CG_DrawRotatePic2( cx, cy, 12, 24, 90 - fi, cgs.media.disruptorInsertTick, cgs.widthRatioCoef );
 		}
 
 		if ( cg.predictedPlayerState.weaponstate == WEAPON_CHARGING_ALT )
@@ -564,7 +567,7 @@ void CG_DrawFlagModel( float x, float y, float w, float h, int team, qboolean fo
 CG_DrawHealth
 ================
 */
-void CG_DrawHealth( menuDef_t *menuHUD )
+void CG_DrawHealth( menuDef_t *menuHUD, float hudRatio )
 {
 	vec4_t			calcColor;
 	playerState_t	*ps;
@@ -617,9 +620,9 @@ void CG_DrawHealth( menuDef_t *menuHUD )
 		trap->R_SetColor( calcColor);
 
 		CG_DrawPic(
-			focusItem->window.rect.x,
+			focusItem->window.rect.x * hudRatio,
 			focusItem->window.rect.y,
-			focusItem->window.rect.w,
+			focusItem->window.rect.w * hudRatio,
 			focusItem->window.rect.h,
 			focusItem->window.background
 			);
@@ -635,11 +638,11 @@ void CG_DrawHealth( menuDef_t *menuHUD )
 		trap->R_SetColor( focusItem->window.foreColor );
 
 		CG_DrawNumField (
-			focusItem->window.rect.x,
+			focusItem->window.rect.x * hudRatio,
 			focusItem->window.rect.y,
 			3,
 			ps->stats[STAT_HEALTH],
-			focusItem->window.rect.w,
+			focusItem->window.rect.w * hudRatio,
 			focusItem->window.rect.h,
 			NUM_FONT_SMALL,
 			qfalse);
@@ -652,7 +655,7 @@ void CG_DrawHealth( menuDef_t *menuHUD )
 CG_DrawArmor
 ================
 */
-void CG_DrawArmor( menuDef_t *menuHUD )
+void CG_DrawArmor( menuDef_t *menuHUD, float hudRatio )
 {
 	vec4_t			calcColor;
 	playerState_t	*ps;
@@ -704,9 +707,9 @@ void CG_DrawArmor( menuDef_t *menuHUD )
 			if (cg.HUDArmorFlag)
 			{
 				CG_DrawPic(
-					focusItem->window.rect.x,
+					focusItem->window.rect.x * hudRatio,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w,
+					focusItem->window.rect.w * hudRatio,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
@@ -715,9 +718,9 @@ void CG_DrawArmor( menuDef_t *menuHUD )
 		else
 		{
 				CG_DrawPic(
-					focusItem->window.rect.x,
+					focusItem->window.rect.x * hudRatio,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w,
+					focusItem->window.rect.w * hudRatio,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
@@ -734,11 +737,11 @@ void CG_DrawArmor( menuDef_t *menuHUD )
 		trap->R_SetColor( focusItem->window.foreColor );
 
 		CG_DrawNumField (
-			focusItem->window.rect.x,
+			focusItem->window.rect.x * hudRatio,
 			focusItem->window.rect.y,
 			3,
 			ps->stats[STAT_ARMOR],
-			focusItem->window.rect.w,
+			focusItem->window.rect.w * hudRatio,
 			focusItem->window.rect.h,
 			NUM_FONT_SMALL,
 			qfalse);
@@ -785,7 +788,7 @@ If the weapon is a light saber (which needs no ammo) then draw a graphic showing
 the saber style (fast, medium, strong)
 ================
 */
-static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
+static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD, float hudRatio )
 {
 	itemDef_t		*focusItem;
 
@@ -819,9 +822,9 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
 			trap->R_SetColor( colorTable[CT_WHITE] );
 
 			CG_DrawPic(
-				focusItem->window.rect.x,
+				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
 				focusItem->window.rect.y,
-				focusItem->window.rect.w,
+				focusItem->window.rect.w * hudRatio,
 				focusItem->window.rect.h,
 				focusItem->window.background
 				);
@@ -838,9 +841,9 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
 			trap->R_SetColor( colorTable[CT_WHITE] );
 
 			CG_DrawPic(
-				focusItem->window.rect.x,
+				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
 				focusItem->window.rect.y,
-				focusItem->window.rect.w,
+				focusItem->window.rect.w * hudRatio,
 				focusItem->window.rect.h,
 				focusItem->window.background
 				);
@@ -855,9 +858,9 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
 			trap->R_SetColor( colorTable[CT_WHITE] );
 
 			CG_DrawPic(
-				focusItem->window.rect.x,
+				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
 				focusItem->window.rect.y,
-				focusItem->window.rect.w,
+				focusItem->window.rect.w * hudRatio,
 				focusItem->window.rect.h,
 				focusItem->window.background
 				);
@@ -872,7 +875,7 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
 CG_DrawAmmo
 ================
 */
-static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
+static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD, float hudRatio )
 {
 	playerState_t	*ps;
 	int				i;
@@ -969,11 +972,11 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 			value =ps->ammo[weaponData[cent->currentState.weapon].ammoIndex];
 
 			CG_DrawNumField (
-				focusItem->window.rect.x,
+				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
 				focusItem->window.rect.y,
 				3,
 				value,
-				focusItem->window.rect.w,
+				focusItem->window.rect.w * hudRatio,
 				focusItem->window.rect.h,
 				NUM_FONT_SMALL,
 				qfalse);
@@ -1007,9 +1010,9 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 		trap->R_SetColor( calcColor);
 
 		CG_DrawPic(
-			focusItem->window.rect.x,
+			SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
 			focusItem->window.rect.y,
-			focusItem->window.rect.w,
+			focusItem->window.rect.w * hudRatio,
 			focusItem->window.rect.h,
 			focusItem->window.background
 			);
@@ -1024,7 +1027,7 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 CG_DrawForcePower
 ================
 */
-void CG_DrawForcePower( menuDef_t *menuHUD )
+void CG_DrawForcePower( menuDef_t *menuHUD, float hudRatio )
 {
 	int				i;
 	vec4_t			calcColor;
@@ -1117,9 +1120,9 @@ void CG_DrawForcePower( menuDef_t *menuHUD )
 		trap->R_SetColor( calcColor);
 
 		CG_DrawPic(
-			focusItem->window.rect.x,
+			SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
 			focusItem->window.rect.y,
-			focusItem->window.rect.w,
+			focusItem->window.rect.w * hudRatio,
 			focusItem->window.rect.h,
 			focusItem->window.background
 			);
@@ -1142,11 +1145,11 @@ void CG_DrawForcePower( menuDef_t *menuHUD )
 		}
 
 		CG_DrawNumField (
-			focusItem->window.rect.x,
+			SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
 			focusItem->window.rect.y,
 			3,
 			cg.snap->ps.fd.forcePower,
-			focusItem->window.rect.w,
+			focusItem->window.rect.w * hudRatio,
 			focusItem->window.rect.h,
 			NUM_FONT_SMALL,
 			qfalse);
@@ -1327,6 +1330,7 @@ void CG_DrawHUD(centity_t	*cent)
 	const char *scoreStr = NULL;
 	int	scoreBias;
 	char scoreBiasStr[16];
+	float hudRatio = cg_hudRatio.integer ? cgs.widthRatioCoef : 1.0f;
 
 	if (cg_hudFiles.integer)
 	{
@@ -1368,9 +1372,9 @@ void CG_DrawHUD(centity_t	*cent)
 			{
 				trap->R_SetColor( colorTable[CT_WHITE] );
 				CG_DrawPic(
-					focusItem->window.rect.x,
+					focusItem->window.rect.x * hudRatio,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w,
+					focusItem->window.rect.w * hudRatio,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
@@ -1382,16 +1386,16 @@ void CG_DrawHUD(centity_t	*cent)
 			{
 				trap->R_SetColor( colorTable[CT_WHITE] );
 				CG_DrawPic(
-					focusItem->window.rect.x,
+					focusItem->window.rect.x * hudRatio,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w,
+					focusItem->window.rect.w * hudRatio,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
 			}
 
-			CG_DrawArmor(menuHUD);
-			CG_DrawHealth(menuHUD);
+			CG_DrawArmor(menuHUD,hudRatio);
+			CG_DrawHealth(menuHUD,hudRatio);
 		}
 		else
 		{
@@ -1463,9 +1467,9 @@ void CG_DrawHUD(centity_t	*cent)
 			{
 				trap->R_SetColor( colorTable[CT_WHITE] );
 				CG_DrawPic(
-					focusItem->window.rect.x,
+					SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w,
+					focusItem->window.rect.w * hudRatio,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
@@ -1476,24 +1480,24 @@ void CG_DrawHUD(centity_t	*cent)
 			{
 				trap->R_SetColor( colorTable[CT_WHITE] );
 				CG_DrawPic(
-					focusItem->window.rect.x,
+					SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio,
 					focusItem->window.rect.y,
-					focusItem->window.rect.w,
+					focusItem->window.rect.w * hudRatio,
 					focusItem->window.rect.h,
 					focusItem->window.background
 					);
 			}
 
-			CG_DrawForcePower(menuHUD);
+			CG_DrawForcePower(menuHUD,hudRatio);
 
 			// Draw ammo tics or saber style
 			if ( cent->currentState.weapon == WP_SABER )
 			{
-				CG_DrawSaberStyle(cent,menuHUD);
+				CG_DrawSaberStyle(cent,menuHUD,hudRatio);
 			}
 			else
 			{
-				CG_DrawAmmo(cent,menuHUD);
+				CG_DrawAmmo(cent,menuHUD,hudRatio);
 			}
 		}
 		else
@@ -3232,7 +3236,8 @@ CG_DrawRadar
 float	cg_radarRange = 2500.0f;
 
 #define RADAR_RADIUS			60
-#define RADAR_X					(580 - RADAR_RADIUS)
+#define RADAR_RADIUS_X			60 * cgs.widthRatioCoef
+#define RADAR_X					SCREEN_WIDTH - 2 * RADAR_RADIUS_X
 #define RADAR_CHAT_DURATION		6000
 static int radarLockSoundDebounceTime = 0;
 static int impactSoundDebounceTime = 0;
@@ -3279,7 +3284,7 @@ float CG_DrawRadar ( float y )
 	color[0] = color[1] = color[2] = 1.0f;
 	color[3] = 0.6f;
 	trap->R_SetColor ( color );
-	CG_DrawPic( RADAR_X + xOffset, y, RADAR_RADIUS*2, RADAR_RADIUS*2, cgs.media.radarShader );
+	CG_DrawPic( RADAR_X + xOffset, y, RADAR_RADIUS_X*2, RADAR_RADIUS*2, cgs.media.radarShader );
 
 	//Always green for your own team.
 	VectorCopy ( g_color_table[ColorIndex(COLOR_GREEN)], teamColor );
@@ -3338,7 +3343,7 @@ float CG_DrawRadar ( float y )
 					qhandle_t shader;
 					vec4_t    color;
 
-					x = (float)RADAR_X + (float)RADAR_RADIUS + (float)sin (angle) * distance;
+					x = (float)RADAR_X + (float)RADAR_RADIUS_X + (float)sin (angle) * distance * cgs.widthRatioCoef;
 					ly = y + (float)RADAR_RADIUS + (float)cos (angle) * distance;
 
 					arrowBaseScale = 9.0f;
@@ -3776,10 +3781,10 @@ float CG_DrawRadar ( float y )
 				arrow_w = arrowBaseScale * RADAR_RADIUS / 128;
 				arrow_h = arrowBaseScale * RADAR_RADIUS / 128;
 
-				CG_DrawRotatePic2( RADAR_X + RADAR_RADIUS + sin (angle) * distance + xOffset,
+				CG_DrawRotatePic2( RADAR_X + RADAR_RADIUS_X + sin (angle) * distance + xOffset,
 								   y + RADAR_RADIUS + cos (angle) * distance,
 								   arrow_w, arrow_h,
-								   (360 - cent->lerpAngles[YAW]) + cg.predictedPlayerState.viewangles[YAW], cgs.media.mAutomapPlayerIcon );
+								   (360 - cent->lerpAngles[YAW]) + cg.predictedPlayerState.viewangles[YAW], cgs.media.mAutomapPlayerIcon, cgs.widthRatioCoef );
 				break;
 			}
 		}
@@ -3791,8 +3796,8 @@ float CG_DrawRadar ( float y )
 	arrow_h = arrowBaseScale * RADAR_RADIUS / 128;
 
 	trap->R_SetColor ( colorWhite );
-	CG_DrawRotatePic2( RADAR_X + RADAR_RADIUS + xOffset, y + RADAR_RADIUS, arrow_w, arrow_h,
-					   0, cgs.media.mAutomapPlayerIcon );
+	CG_DrawRotatePic2( RADAR_X + RADAR_RADIUS_X + xOffset, y + RADAR_RADIUS, arrow_w, arrow_h,
+					   0, cgs.media.mAutomapPlayerIcon, cgs.widthRatioCoef );
 
 	return y+(RADAR_RADIUS*2);
 }
@@ -5192,11 +5197,13 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		}
 		//bigger by default
 		w = cg_crosshairSize.value*2.0f;
+		w *= cgs.widthRatioCoef;
 		h = w;
 	}
 	else
 	{
 		w = h = cg_crosshairSize.value;
+		w *= cgs.widthRatioCoef;
 	}
 
 	// pulse the size of the crosshair when picking up items
@@ -5951,7 +5958,7 @@ static void CG_DrawRocketLocking( int lockEntNum, int lockTime )
 			trap->R_SetColor( color );
 
 			// our slices are offset by about 45 degrees.
-			CG_DrawRotatePic( cx - sz, cy - sz, sz, sz, i * 45.0f, trap->R_RegisterShaderNoMip( "gfx/2d/wedge" ));
+			CG_DrawRotatePic( cx - sz, cy - sz, sz, sz, i * 45.0f, trap->R_RegisterShaderNoMip( "gfx/2d/wedge" ), cgs.widthRatioCoef);
 		}
 
 		// we are locked and loaded baby
