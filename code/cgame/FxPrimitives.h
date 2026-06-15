@@ -28,7 +28,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define FX_PRIMITIVES_H_INC
 
 
-#define MAX_EFFECTS			2400
+#define MAX_EFFECTS			4800
 
 
 // Generic group flags, used by parser, then get converted to the appropriate specific flags
