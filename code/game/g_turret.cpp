@@ -2302,12 +2302,31 @@ extern gentity_t	*CreateMissile( vec3_t org, vec3_t dir, float vel, int life, ge
 
 void panel_turret_shoot( gentity_t *self, vec3_t org, vec3_t dir)
 {
+	const char *info = CG_ConfigString( CS_SERVERINFO );
+	const char *mapname = Info_ValueForKey( info, "mapname" );
+	const short outcastTurret = ( !Q_stricmp(mapname, "ns_starpad") || !Q_stricmp(mapname, "doom_detention") );
+
+	short missileType, missileVector, missileOffset;
+
+	if (outcastTurret)
+	{//Hack for correct panel turret behavior in outcast levels
+		missileType = WP_EMPLACED_GUN;
+		missileVector = 7;
+		missileOffset = 5;
+	}
+	else
+	{
+		missileType = WP_TIE_FIGHTER;
+		missileVector = 9;
+		missileOffset = 4;
+	}
+
 	gentity_t *missile = CreateMissile( org, dir, self->speed, 10000, self );
 
 	missile->classname = "b_proj";
-	missile->s.weapon = WP_TIE_FIGHTER;
+	missile->s.weapon = missileType;
 
-	VectorSet( missile->maxs, 7, 7, 7 );
+	VectorSet( missile->maxs, missileVector, missileVector, missileVector );
 	VectorScale( missile->maxs, -1, missile->mins );
 
 	missile->bounceCount = 0;
@@ -2320,7 +2339,7 @@ void panel_turret_shoot( gentity_t *self, vec3_t org, vec3_t dir)
 	G_SoundOnEnt( self, CHAN_AUTO, "sound/movers/objects/ladygun_fire" );
 
 	VectorMA( org, 32, dir, org );
-	org[2] -= 5;
+	org[2] -= missileOffset;
 	G_PlayEffect( "ships/imp_blastermuzzleflash", org, dir );
 }
 
