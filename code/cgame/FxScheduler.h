@@ -39,7 +39,7 @@ typedef sstring_t fxString_t;
 #define FX_FILE_PATH	"effects"
 
 #define FX_MAX_TRACE_DIST			WORLD_SIZE
-#define FX_MAX_EFFECTS				300		// how many effects the system can store
+#define FX_MAX_EFFECTS				600		// how many effects the system can store
 #define FX_MAX_EFFECT_COMPONENTS	24		// how many primitives an effect can hold, this should be plenty
 #define FX_MAX_PRIM_NAME			32
 
