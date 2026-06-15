@@ -307,7 +307,7 @@ qboolean G2_SetRootSurface( CGhoul2Info_v &ghoul2, const int modelIndex, const c
 		ghoul2[modelIndex].mSurfaceRoot = surf;
 		return qtrue;
 	}
-	// assert(0);
+	assert(0);
 	return qfalse;
 }
 
