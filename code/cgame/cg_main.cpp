@@ -4259,6 +4259,18 @@ void CG_DrawDataPadForceSelect( void )
 	const int centerXPos = 320;
 	const int graphicYPos = 340;
 
+	cg.DataPadforcepowerSelect = Com_Clampi(0, MAX_DPSHOWPOWERS-1, cg.DataPadforcepowerSelect);
+
+	// Somehow player aquired a new power in world gameplay, so update the pads force selection to not display an unlearned power
+	if (!ForcePowerDataPad_Valid(cg.DataPadforcepowerSelect))
+	{
+		if (++cg.DataPadforcepowerSelect >= MAX_DPSHOWPOWERS)
+		{
+			cg.DataPadforcepowerSelect = 0;
+		}
+		return;
+	}
+
 	i = cg.DataPadforcepowerSelect - 1;
 	if (i < 0)
 	{
