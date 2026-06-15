@@ -4578,7 +4578,7 @@ void CG_AddForceSightShell( refEntity_t *ent, centity_t *cent )
 
 	if ( g_entities[0].client->ps.forcePowerLevel[FP_SEE] > FORCE_LEVEL_2 )
 	{//TEST: level 3 also displays health
-		if ( cent->gent && cent->gent->health > 0 && cent->gent->max_health > 0 )
+		if ( cent->gent && cent->gent->s.clientNum > 0 && cent->gent->health > 0 && cent->gent->max_health > 0 )
 		{//draw a health bar over them
 			CG_AddHealthBarEnt( cent->currentState.clientNum );
 		}
