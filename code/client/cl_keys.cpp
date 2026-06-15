@@ -1258,10 +1258,8 @@ void CL_KeyDownEvent( int key, unsigned time )
 		}
 
 		if ( !( Key_GetCatcher( ) & KEYCATCH_UI ) ) {
-			if ( cls.state == CA_ACTIVE ) {
-				Cbuf_ExecuteText( EXEC_NOW, "exitview\n" );
+			if ( cls.state == CA_ACTIVE )
 				UI_SetActiveMenu( "ingame", NULL );
-			}
 			else {
 				CL_Disconnect_f();
 				UI_SetActiveMenu( "mainMenu", NULL );
