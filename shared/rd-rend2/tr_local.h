@@ -3860,7 +3860,7 @@ struct gpuFrame_t
 // all of the information needed by the back end must be
 // contained in a backEndData_t.
 
-#define PER_FRAME_MEMORY_BYTES (32 * 1024 * 1024)
+#define PER_FRAME_MEMORY_BYTES (128 * 1024 * 1024)
 class Allocator;
 struct Pass;
 typedef struct backEndData_s {
