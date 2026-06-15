@@ -130,7 +130,7 @@ void	Svcmd_EntityList_f (void) {
 extern void G_StopCinematicSkip( void );
 extern void G_StartCinematicSkip( void );
 extern void ExitEmplacedWeapon( gentity_t *ent );
-static void Svcmd_ExitView_f( void )
+static void Svcmd_ExitView_f( bool skipCutsceneOnly )
 {
 extern cvar_t	*g_skippingcin;
 	static int exitViewDebounce = 0;
@@ -150,7 +150,7 @@ extern cvar_t	*g_skippingcin;
 			G_StartCinematicSkip();
 		}
 	}
-	else if ( !G_ClearViewEntity( player ) )
+	else if ( !G_ClearViewEntity( player ) && !skipCutsceneOnly )
 	{//didn't exit control of a droid or turret
 		//okay, now try exiting emplaced guns or AT-ST's
 		if ( player->s.eFlags & EF_LOCKED_TO_WEAPON )
@@ -162,6 +162,12 @@ extern cvar_t	*g_skippingcin;
 			GEntity_UseFunc( player->activator, player, player );
 		}
 	}
+}
+
+template <bool skipCutsceneOnly>
+static void Svcmd_ExitView_f(void)
+{
+	Svcmd_ExitView_f(skipCutsceneOnly);
 }
 
 gentity_t *G_GetSelfForPlayerCmd( void )
@@ -954,7 +960,8 @@ static svcmd_t svcmds[] = {
 
 	{ "nexttestaxes",				G_NextTestAxes,								CMD_NONE },
 
-	{ "exitview",					Svcmd_ExitView_f,							CMD_NONE },
+	{ "exitview",					Svcmd_ExitView_f<false>,					CMD_NONE },
+	{ "exitcutscene",				Svcmd_ExitView_f<true>,						CMD_NONE },
 
 	{ "iknowkungfu",				Svcmd_IKnowKungfu_f,						CMD_CHEAT },
 
