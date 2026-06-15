@@ -660,6 +660,8 @@ extern	vmCvar_t		cg_scaleVehicleSensitivity;
 // extern	vmCvar_t		cg_trueflip;
 // extern	vmCvar_t		cg_truespin;
 
+extern	vmCvar_t		cg_allowFirstPersonSpecialMove;
+
 extern	vmCvar_t		cg_hudRatio;
 
 void CG_NewClientinfo( int clientNum );
