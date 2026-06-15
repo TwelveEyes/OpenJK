@@ -857,6 +857,8 @@ Ghoul2 Insert End
 		if ( s1->weapon == WP_THERMAL
 			|| s1->weapon == WP_DET_PACK
 			|| s1->weapon == WP_TRIP_MINE
+			|| (cent->gent&&cent->gent->e_UseFunc==useF_turret_base_use)
+			|| (cent->gent&&cent->gent->e_UseFunc==useF_pas_use)
 			|| (cent->gent&&cent->gent->e_UseFunc==useF_ammo_power_converter_use)
 			|| (cent->gent&&cent->gent->e_UseFunc==useF_shield_power_converter_use)
 			|| (s1->eFlags&EF_FORCE_VISIBLE) )
