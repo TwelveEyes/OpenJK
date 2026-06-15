@@ -9014,6 +9014,21 @@ static void PM_FinishWeaponChange( void ) {
 	if ( pm->gent && pm->gent->client && pm->gent->client->NPC_class == CLASS_ATST )
 	{//do nothing
 	}
+	else if ( weapon == WP_MELEE )
+	{//player wants to fist
+		if ( pm->gent )
+		{// remove gun if we had it.
+			G_RemoveWeaponModels( pm->gent );
+		}
+
+		if ( pm->gent )
+		{//cg_saberAutoThird should also apply to fists
+			if ( (pm->ps->clientNum < MAX_CLIENTS||PM_ControlledByPlayer()) && cg_saberAutoThird.integer )
+			{
+				gi.cvar_set( "cg_thirdperson", "1" );
+			}
+		}
+	}
 	else if ( weapon == WP_SABER )
 	{//turn on the lightsaber
 		//FIXME: somehow sometimes I still end up with 2 weapons in hand... usually if I
