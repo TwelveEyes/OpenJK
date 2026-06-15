@@ -9423,6 +9423,11 @@ void PM_SetSaberMove(saberMoveName_t newMove)
 		anim = BOTH_SABERSTAFF_STANCE;
 	}
 	*/
+	else if ( pm->ps->saberAnimLevel > FORCE_LEVEL_1
+		   && pm->ps->forcePowerDebounce[FP_SABER_DEFENSE] > level.time
+		   && PM_SaberInReturn( newMove ) )
+	{//use fast return anims for reflection a la JK2
+	}
 	else if ( pm->ps->saberAnimLevel > FORCE_LEVEL_1 &&
 		 !PM_SaberInIdle( newMove ) && !PM_SaberInParry( newMove ) && !PM_SaberInKnockaway( newMove ) && !PM_SaberInBrokenParry( newMove ) && !PM_SaberInReflect( newMove ) && !PM_SaberInSpecial( newMove ))
 	{//readies, parries and reflections have only 1 level
