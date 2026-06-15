@@ -361,19 +361,19 @@ jobs:
       matrix:
         include:
           - artifact_dir: OpenJK-windows-x86-Release-Non-Portable/JediAcademy
-            artifact_name: OpenJK-rend2-windows-x86.zip
+            artifact_name: OpenJK-windows-x86.zip
             zip: true
 
           - artifact_dir: OpenJK-windows-x86_64-Release-Non-Portable/JediAcademy
-            artifact_name: OpenJK-rend2-windows-x86_64.zip
+            artifact_name: OpenJK-windows-x86_64.zip
             zip: true
 
           - artifact_dir: OpenJK-linux-x86-Release-Non-Portable
-            artifact_name: OpenJK-rend2-linux-x86.tar.gz
+            artifact_name: OpenJK-linux-x86.tar.gz
             zip: false
 
           - artifact_dir: OpenJK-linux-x86_64-Release-Non-Portable
-            artifact_name: OpenJK-rend2-linux-x86_64.tar.gz
+            artifact_name: OpenJK-linux-x86_64.tar.gz
             zip: false
 
           #- artifact_dir: OpenJK-macos-x86_64-Release-Non-Portable
