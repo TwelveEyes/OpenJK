@@ -1510,7 +1510,7 @@ void ForceSeeing( gentity_t *self )
 	WP_ForcePowerStart( self, FP_SEE, 0 );
 
 	G_Sound( self, CHAN_AUTO, G_SoundIndex("sound/weapons/force/see.wav") );
-	G_Sound( self, TRACK_CHANNEL_5, seeLoopSound );
+	// G_Sound( self, TRACK_CHANNEL_5, seeLoopSound );
 }
 
 void ForceProtect( gentity_t *self )
