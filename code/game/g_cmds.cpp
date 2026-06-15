@@ -1060,6 +1060,9 @@ void G_SetTauntAnim( gentity_t *ent, int taunt )
 	{
 		return;
 	}
+
+	gi.cvar_set("cg_thirdperson", "1");
+
 	if ( !ent->client->ps.torsoAnimTimer
 		&& !ent->client->ps.legsAnimTimer
 		&& !ent->client->ps.weaponTime
