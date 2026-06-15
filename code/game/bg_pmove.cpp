@@ -9364,11 +9364,6 @@ void PM_SetSaberMove(saberMoveName_t newMove)
 		}
 		//FIXME: also dual
 	}
-	else if ( pm->ps->saberAnimLevel > FORCE_LEVEL_1
-		   && ( PM_SaberInParry( pm->ps->saberMove ) || PM_SaberInReflect( pm->ps->saberMove ) )
-		   && PM_SaberInReturn( newMove ) )
-	{//use fast return anims for deflection a la JK2
-	}
 	else if ( pm->ps->saberAnimLevel == SS_STAFF && newMove >= LS_S_TL2BR && newMove < LS_REFLECT_LL )
 	{//staff has an entirely new set of anims, besides special attacks
 		//FIXME: include ready and draw/putaway?
