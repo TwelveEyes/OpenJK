@@ -29,6 +29,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "g_vehicles.h"
 #include "../qcommon/tri_coll_test.h"
 #include "../cgame/cg_local.h"
+#include "../cgame/cg_media.h"
 
 #define JK2_RAGDOLL_GRIPNOHEALTH
 
@@ -395,6 +396,18 @@ void G_CreateG2AttachedWeaponModel( gentity_t *ent, const char *psWeaponModel, i
 			strcat (weaponModel, "_w");
 		}
 		strcat (weaponModel, ".glm");	//and change to ghoul2
+	}
+
+	if ( !Q_stricmpn( "imp", ent->NPC_type, 3 )
+		|| !Q_stricmp( "stormpilot", ent->NPC_type ) )
+	{//Gross hardcoded hack for certain imp npcs to use the imp_pistol model - all to avoid expanding the weapons enum
+		if ( ent->client->ps.weapon == WP_BLASTER_PISTOL )
+		{
+			if ( cgs.media.impPistol )
+			{
+				Q_strncpyz(weaponModel, "models/weapons2/imp_pistol/pistol_w.glm", sizeof(weaponModel));
+			}
+		}
 	}
 
 	// give us a saber model
