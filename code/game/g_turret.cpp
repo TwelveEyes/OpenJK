@@ -1930,6 +1930,14 @@ qboolean place_portable_assault_sentry( gentity_t *self, vec3_t origin, vec3_t a
 void ion_cannon_think( gentity_t *self )
 //----------------------------------------
 {
+	const char *info = CG_ConfigString( CS_SERVERINFO );
+	const char *mapname = Info_ValueForKey( info, "mapname" );
+
+	if ( !Q_stricmp( mapname, "artus_topside" ) )
+	{
+		VectorSet( self->s.modelScale, 1.0f, 1.0f, 1.0f ); //Ion cannons are smaller in outcast
+	}
+
 	if ( self->spawnflags & 2 )
 	{
 		if ( self->count )
@@ -2064,10 +2072,6 @@ Huge ion cannon, like the ones at the rebel base on Hoth.
 void SP_misc_ion_cannon( gentity_t *base )
 //-----------------------------------------------------
 {
-	const char *info = CG_ConfigString( CS_SERVERINFO );
-	const char *mapname = Info_ValueForKey( info, "mapname" );
-	const float size = !Q_stricmp( mapname, "artus_topside" ) ? 1.0f : 2.0f; //Ion cannons are smaller in outcast
-
 	G_SetAngles( base, base->s.angles );
 
 	G_SetOrigin(base, base->s.origin);
@@ -2075,7 +2079,7 @@ void SP_misc_ion_cannon( gentity_t *base )
 	base->s.modelindex = G_ModelIndex( "models/map_objects/imp_mine/ion_cannon.glm" );
 	base->playerModel = gi.G2API_InitGhoul2Model( base->ghoul2, "models/map_objects/imp_mine/ion_cannon.glm", base->s.modelindex, NULL_HANDLE, NULL_HANDLE, 0, 0 );
 	base->s.radius = 320.0f;
-	VectorSet( base->s.modelScale, size, size, size );
+	VectorSet( base->s.modelScale, 2.0f, 2.0f, 2.0f );
 
 	base->rootBone = gi.G2API_GetBoneIndex( &base->ghoul2[base->playerModel], "model_root", qtrue );
 	base->torsoBolt = gi.G2API_AddBolt( &base->ghoul2[base->playerModel], "*flash02" );
@@ -2308,7 +2312,7 @@ void panel_turret_shoot( gentity_t *self, vec3_t org, vec3_t dir)
 {
 	const char *info = CG_ConfigString( CS_SERVERINFO );
 	const char *mapname = Info_ValueForKey( info, "mapname" );
-	const short outcastTurret = ( !Q_stricmp(mapname, "ns_starpad") || !Q_stricmp(mapname, "doom_detention") );
+	const short outcastTurret = ( !Q_stricmp( mapname, "ns_starpad" ) || !Q_stricmp( mapname, "doom_detention" ) );
 
 	short missileType, missileVector, missileOffset;
 
