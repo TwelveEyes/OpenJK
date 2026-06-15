@@ -10326,7 +10326,9 @@ void PmoveSingle (pmove_t *pmove) {
 			|| (pm->cmd.buttons&BUTTON_FORCEGRIP)
 			|| (pm->cmd.buttons&BUTTON_FORCE_LIGHTNING)
 			|| (pm->cmd.buttons&BUTTON_FORCE_DRAIN)
-			|| pm->cmd.upmove )
+			|| pm->cmd.upmove
+			|| pm->cmd.rightmove
+			|| pm->cmd.forwardmove )
 		{//stop the anim
 			if ( pm->ps->legsAnim == BOTH_MEDITATE
 				&& pm->ps->torsoAnim == BOTH_MEDITATE )
@@ -10362,11 +10364,6 @@ void PmoveSingle (pmove_t *pmove) {
 			}
 			if ( pm->ps->legsTimer > 0 || pm->ps->torsoTimer > 0 )
 			{
-				stiffenedUp = qtrue;
-				PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
-				pm->cmd.rightmove = 0;
-				pm->cmd.upmove = 0;
-				pm->cmd.forwardmove = 0;
 				pm->cmd.buttons = 0;
 			}
 		}
@@ -10374,11 +10371,6 @@ void PmoveSingle (pmove_t *pmove) {
 	else if ( pm->ps->legsAnim == BOTH_MEDITATE_END
 		&& pm->ps->legsTimer > 0 )
 	{
-		stiffenedUp = qtrue;
-		PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
-        pm->cmd.rightmove = 0;
-		pm->cmd.upmove = 0;
-		pm->cmd.forwardmove = 0;
 		pm->cmd.buttons = 0;
 	}
 	else if (pm->ps->legsAnim == BOTH_FORCELAND1 ||
