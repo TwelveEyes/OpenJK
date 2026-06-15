@@ -399,8 +399,9 @@ void G_CreateG2AttachedWeaponModel( gentity_t *ent, const char *psWeaponModel, i
 	}
 
 	if ( !Q_stricmpn( "imp", ent->NPC_type, 3 )
-		|| !Q_stricmp( "stormpilot", ent->NPC_type ) )
-	{//Gross hardcoded hack for certain imp npcs to use the imp_pistol model - all to avoid expanding the weapons enum
+		|| !Q_stricmp( "stormpilot", ent->NPC_type )
+		|| !Q_stricmpn( "bespincop", ent->NPC_type, 9 ) )
+	{//Gross hardcoded hack for certain npcs to use the imp_pistol model - all to avoid expanding the weapons enum
 		if ( ent->client->ps.weapon == WP_BLASTER_PISTOL )
 		{
 			if ( cgs.media.impPistol )
