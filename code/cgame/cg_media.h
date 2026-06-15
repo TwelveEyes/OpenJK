@@ -346,7 +346,7 @@ typedef struct
 	fxHandle_t	forceConfusion;
 	fxHandle_t	forceLightning;
 	fxHandle_t	forceLightningWide;
-	//fxHandle_t	forceInvincibility;
+	fxHandle_t	forceInvincibility;
 	fxHandle_t	forceHeal;
 
 	//new stuff for Jedi Academy

@@ -234,7 +234,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		//theFxScheduler.RegisterEffect( "saber/fire" );//was "sparks/spark"
 
 		cgs.effects.forceHeal			= theFxScheduler.RegisterEffect( "force/heal" );
-		//cgs.effects.forceInvincibility	= theFxScheduler.RegisterEffect( "force/invin" );
+		cgs.effects.forceInvincibility	= theFxScheduler.RegisterEffect( "force/invin" );
 		cgs.effects.forceConfusion		= theFxScheduler.RegisterEffect( "force/confusion" );
 		cgs.effects.forceLightning		= theFxScheduler.RegisterEffect( "force/lightning" );
 		cgs.effects.forceLightningWide	= theFxScheduler.RegisterEffect( "force/lightningwide" );
