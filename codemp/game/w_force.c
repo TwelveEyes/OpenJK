@@ -5541,8 +5541,8 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 				return qfalse;
 			}
 		
-			if ( Q_irand( 1, 3 ) > self->client->ps.fd.forcePowerLevel[FP_SPEED] )
-			{//more likely to fail on lower force speed level. always succeeds at max force speed level
+			if ( Q_irand( 0, 2 ) >= self->client->ps.fd.forcePowerLevel[FP_SPEED] )
+			{//more likely to fail on lower force speed level
 				return qfalse;
 			}
 		}
@@ -5605,9 +5605,12 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 
 		self->client->ps.powerups[PW_SPEEDBURST] = level.time + 100;
 
-		if (g_forceDodge.integer == 2)
+		if (self->client->ps.fd.forcePowerLevel[FP_SEE] < FORCE_LEVEL_3)
 		{
-			ForceSpeed( self, 500 );
+			if (g_forceDodge.integer == 2)
+			{
+				ForceSpeed( self, 500 );
+			}
 		}
 		else
 		{

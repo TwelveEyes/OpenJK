@@ -2139,8 +2139,8 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 			}
 		}
 		//check force speed power level to determine if I should be able to dodge it
-		if ( Q_irand( 1, 3 ) > self->client->ps.forcePowerLevel[FP_SPEED] )
-		{//more likely to fail on lower force speed level. always succeeds at max force speed level
+		if ( Q_irand( 0, 2 ) >= self->client->ps.forcePowerLevel[FP_SPEED] )
+		{//more likely to fail on lower force speed level
 			return qfalse;
 		}
 	}
@@ -2164,6 +2164,11 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 		}
 	}
 
+	if ( !self->s.number && hitLoc == HL_NONE )
+	{//player should always have a hit location, use chest as fallback
+		hitLoc = HL_CHEST;
+	}
+
 	switch( hitLoc )
 	{
 	case HL_NONE:
@@ -2177,7 +2182,7 @@ qboolean Jedi_DodgeEvasion( gentity_t *self, gentity_t *shooter, trace_t *tr, in
 	case HL_WAIST:
 		if ( !self->s.number )
 		{//don't force the player to jump
-			return qfalse;
+			dodgeAnim = Q_irand( BOTH_DODGE_FL, BOTH_DODGE_R );
 		}
 		else
 		{
