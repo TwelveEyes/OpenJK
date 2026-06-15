@@ -2543,6 +2543,7 @@ void SP_misc_panel_turret( gentity_t *self )
 	self->soundPos2 = G_SoundIndex( "sound/movers/camera_off.mp3" );
 
 	G_SoundIndex( "sound/movers/objects/ladygun_fire" );
+	G_EffectIndex("emplaced/muzzle_flash");
 	G_EffectIndex("ships/imp_blastermuzzleflash");
 
 	G_SetOrigin( self, self->s.origin );
