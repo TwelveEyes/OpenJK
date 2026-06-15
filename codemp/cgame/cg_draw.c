@@ -924,7 +924,7 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD, float hudRatio )
 		trap->R_SetColor( colorTable[CT_YELLOW] );
 		if (focusItem)
 		{
-			CG_DrawProportionalString(focusItem->window.rect.x, focusItem->window.rect.y, "--", NUM_FONT_SMALL, focusItem->window.foreColor);
+			CG_DrawProportionalString(SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * hudRatio, focusItem->window.rect.y, "--", NUM_FONT_SMALL, focusItem->window.foreColor);
 		}
 	}
 	else

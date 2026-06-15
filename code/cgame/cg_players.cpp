@@ -6801,7 +6801,7 @@ static void CG_AddSaberBlades( centity_t *cent, int renderfx, vec3_t origin, vec
  ================
  */
 //Get the point in the leg animation and return a percentage of the current point in the anim between 0 and the total anim length (0.0f - 1.0f)
-float GetSelfLegAnimPoint(void)
+/* float GetSelfLegAnimPoint(void)
 {
 	float		current	  = 0.0f;
 	int			end		  = 0;
@@ -6824,7 +6824,7 @@ float GetSelfLegAnimPoint(void)
 	
 	return 0.0f;
 
-}
+} */
 
 /*
  ================
@@ -6833,7 +6833,7 @@ float GetSelfLegAnimPoint(void)
  ================
  */
 //Get the point in the torso animation and return a percentage of the current point in the anim between 0 and the total anim length (0.0f - 1.0f)
-float GetSelfTorsoAnimPoint(void)
+/* float GetSelfTorsoAnimPoint(void)
 {
 	float		current	  = 0.0f;
 	int			end		  = 0;
@@ -6855,7 +6855,7 @@ float GetSelfTorsoAnimPoint(void)
 	}
 	
 	return 0.0f;
-}
+} */
 
 /*
  ===============
@@ -6872,8 +6872,8 @@ float GetSelfTorsoAnimPoint(void)
 
 void SmoothTrueView(vec3_t eyeAngles)
 {
-	float LegAnimPoint = GetSelfLegAnimPoint();
-	float TorsoAnimPoint = GetSelfTorsoAnimPoint();
+	// float LegAnimPoint = GetSelfLegAnimPoint();
+	// float TorsoAnimPoint = GetSelfTorsoAnimPoint();
 	
 	//counter
 	int		i;
@@ -7778,7 +7778,7 @@ Ghoul2 Insert Start
 				VectorCopy( cg.refdef.vieworg, OldeyeOrigin);
 				
 				//set the player's view origin
-				gi.G2API_GiveMeVectorFromMatrix(eyeMatrix, ORIGIN, cg.refdef.vieworg);
+				gi.G2API_GiveMeVectorFromMatrix( eyeMatrix, ORIGIN, cg.refdef.vieworg );
 				
 				//Find the orientation of the eye tag surface
 				//I based this on coordsys.h that I found at http://www.xs4all.nl/~hkuiper/cwmtx/html/coordsys_8h-source.html
@@ -7832,7 +7832,7 @@ Ghoul2 Insert Start
 				eyeAngles[YAW] -= 90;
 
 				//Do all the Eye "movement" and simplified moves here.
-				SmoothTrueView(eyeAngles);
+				SmoothTrueView( eyeAngles );
 				
 				//set the player view angles
 				VectorCopy( eyeAngles, cg.refdefViewAngles );
