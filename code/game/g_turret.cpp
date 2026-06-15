@@ -2064,6 +2064,10 @@ Huge ion cannon, like the ones at the rebel base on Hoth.
 void SP_misc_ion_cannon( gentity_t *base )
 //-----------------------------------------------------
 {
+	const char *info = CG_ConfigString( CS_SERVERINFO );
+	const char *mapname = Info_ValueForKey( info, "mapname" );
+	const float size = !Q_stricmp( mapname, "artus_topside" ) ? 1.0f : 2.0f; //Ion cannons are smaller in outcast
+
 	G_SetAngles( base, base->s.angles );
 
 	G_SetOrigin(base, base->s.origin);
@@ -2071,7 +2075,7 @@ void SP_misc_ion_cannon( gentity_t *base )
 	base->s.modelindex = G_ModelIndex( "models/map_objects/imp_mine/ion_cannon.glm" );
 	base->playerModel = gi.G2API_InitGhoul2Model( base->ghoul2, "models/map_objects/imp_mine/ion_cannon.glm", base->s.modelindex, NULL_HANDLE, NULL_HANDLE, 0, 0 );
 	base->s.radius = 320.0f;
-	VectorSet( base->s.modelScale, 1.0f, 1.0f, 1.0f );
+	VectorSet( base->s.modelScale, size, size, size );
 
 	base->rootBone = gi.G2API_GetBoneIndex( &base->ghoul2[base->playerModel], "model_root", qtrue );
 	base->torsoBolt = gi.G2API_AddBolt( &base->ghoul2[base->playerModel], "*flash02" );
