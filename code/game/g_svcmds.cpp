@@ -150,7 +150,7 @@ extern cvar_t	*g_skippingcin;
 			G_StartCinematicSkip();
 		}
 	}
-	else if ( !G_ClearViewEntity( player ) && !skipCutsceneOnly )
+	else if ( !skipCutsceneOnly && !G_ClearViewEntity( player ) )
 	{//didn't exit control of a droid or turret
 		//okay, now try exiting emplaced guns or AT-ST's
 		if ( player->s.eFlags & EF_LOCKED_TO_WEAPON )
