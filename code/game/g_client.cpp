@@ -2294,7 +2294,7 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 		//these are precached in g_items, ClearRegisteredItems()
 		client->ps.stats[STAT_WEAPONS] = ( 1 << WP_NONE );
 		client->ps.inventory[INV_ELECTROBINOCULARS] = 1;
-		ent->client->ps.inventory[INV_BACTA_CANISTER] = 1;
+		//ent->client->ps.inventory[INV_BACTA_CANISTER] = 1;
 
 		// give EITHER the saber or the stun baton..never both
 		if ( spawnPoint->spawnflags & 32 ) // STUN_BATON
