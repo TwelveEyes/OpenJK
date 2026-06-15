@@ -3,13 +3,13 @@ name: build
 on:
   workflow_dispatch:
   push:
-    branches: [rend2-builds]
+    branches: [master]
     paths-ignore:
       - "**.md"
       - ".gitignore"
       - "docs/*"
   pull_request:
-    branches: [rend2-builds]
+    branches: [master]
     paths-ignore:
       - "**.md"
       - ".gitignore"
@@ -347,7 +347,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "latest"
           prerelease: false
-          title: Latest rend2 builds
+          title: Latest Build
           files: |
             *.zip
             *.tar.gz
