@@ -2028,7 +2028,10 @@ static qboolean G_Dismember( gentity_t *ent, vec3_t point,
 	*/
 	gi.G2API_StopBoneAnimIndex( &limb->ghoul2[limb->playerModel], limb->hipsBone );
 
-	gi.G2API_SetRootSurface( limb->ghoul2, limb->playerModel, limbName );
+	if ( !(gi.G2API_SetRootSurface( limb->ghoul2, limb->playerModel, limbName )) )
+	{
+		return qfalse;
+	}
 	/*
 	if ( limbBone && hitLoc != HL_WAIST )
 	{//play the dismember anim on the limb?

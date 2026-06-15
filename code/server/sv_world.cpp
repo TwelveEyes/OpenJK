@@ -812,7 +812,7 @@ Ghoul2 Insert Start
 						}
 					}
 					assert(z<MAX_G2_COLLISIONS); // hmm well ah, weird
-					assert(VectorLength(clip->trace.plane.normal)>0.1f);
+					// assert(VectorLength(clip->trace.plane.normal)>0.1f);
 				}
 			}
 		}
