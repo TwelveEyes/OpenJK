@@ -2293,6 +2293,7 @@ qboolean ClientSpawn(gentity_t *ent, SavedGameJustLoaded_e eSavedGameJustLoaded 
 		// give default weapons
 		//these are precached in g_items, ClearRegisteredItems()
 		client->ps.stats[STAT_WEAPONS] = ( 1 << WP_NONE );
+		client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_MELEE );
 		client->ps.inventory[INV_ELECTROBINOCULARS] = 1;
 		//ent->client->ps.inventory[INV_BACTA_CANISTER] = 1;
 
