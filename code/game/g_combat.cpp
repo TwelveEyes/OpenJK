@@ -181,6 +181,8 @@ gentity_t *TossClientItems( gentity_t *self )
 	}
 	else if ( weapon == WP_BLASTER_PISTOL )
 	{//FIXME: either drop the pistol and make the pickup only give ammo or drop ammo
+		item = FindItemForAmmo( AMMO_BLASTER );
+		dropped = Drop_Item( self, item, 0, qtrue );
 	}
 	else if ( weapon == WP_STUN_BATON
 		|| weapon == WP_MELEE )
@@ -288,7 +290,7 @@ gentity_t *TossClientItems( gentity_t *self )
 		{
 			item = FindItemForAmmo( AMMO_BLASTER );
 		}
-		Drop_Item( self, item, 0, qtrue );
+		dropped = Drop_Item( self, item, 0, qtrue );
 	}
 	else if ( self->client->NPC_class == CLASS_MARK2 )
 	{
@@ -301,7 +303,7 @@ gentity_t *TossClientItems( gentity_t *self )
 		{
 			item = FindItemForAmmo( AMMO_POWERCELL );
 		}
-		Drop_Item( self, item, 0, qtrue );
+		dropped = Drop_Item( self, item, 0, qtrue );
 	}
 
 	return dropped;//NOTE: presumes only drop one thing
