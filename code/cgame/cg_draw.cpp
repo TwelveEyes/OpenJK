@@ -2482,6 +2482,48 @@ void CG_DrawHealthBar(centity_t *cent, float chX, float chY, float chW, float ch
 	CG_FillRect(x+(percent*chW), y+1.0f, chW-(percent*chW)-1.0f, chH-1.0f, cColor);
 }
 
+//draw the force bar based on current "force" and maxforce
+void CG_DrawForceBar(centity_t *cent, float chX, float chY, float chW, float chH)
+{
+	vec4_t aColor;
+	vec4_t cColor;
+	float x = chX-(chW/2);
+	float y = chY-chH;
+	float percent = 0.0f;
+
+	if ( !cent || !cent->gent || !cent->gent->client || !cent->gent->client->ps.forcePower )
+	{
+		return;
+	}
+	percent = ((float)cent->gent->client->ps.forcePower/(float)cent->gent->client->ps.forcePowerMax);
+	if (percent <= 0)
+	{
+		return;
+	}
+
+	//color of the bar
+	//hostile
+	aColor[0] = 0.0f;
+	aColor[1] = 0.0f;
+	aColor[2] = 1.0f;
+	aColor[3] = 0.4f;
+
+	//color of greyed out "missing force"
+	cColor[0] = 0.5f;
+	cColor[1] = 0.5f;
+	cColor[2] = 0.5f;
+	cColor[3] = 0.4f;
+
+	//draw the background (black)
+	CG_DrawRect(x, y, chW, chH, 1.0f, colorTable[CT_BLACK]);
+
+	//now draw the part to show how much force there is in the color specified
+	CG_FillRect(x+1.0f, y+1.0f, (percent*chW)-1.0f, chH-1.0f, aColor);
+
+	//then draw the other part greyed out
+	CG_FillRect(x+(percent*chW), y+1.0f, chW-(percent*chW)-1.0f, chH-1.0f, cColor);
+}
+
 #define MAX_HEALTH_BAR_ENTS 32
 int cg_numHealthBarEnts = 0;
 int cg_healthBarEnts[MAX_HEALTH_BAR_ENTS];
@@ -2503,6 +2545,7 @@ void CG_DrawHealthBars( void )
 			if ( CG_WorldCoordToScreenCoordFloat( pos, &chX, &chY ) )
 			{//on screen
 				CG_DrawHealthBar( cent, chX, chY, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT );
+				CG_DrawForceBar( cent, chX, chY+8, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT );
 			}
 		}
 	}
