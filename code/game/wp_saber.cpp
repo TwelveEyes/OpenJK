@@ -13795,17 +13795,6 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 					{//we don't damage the empty vehicle
 						gripEnt->painDebounceTime = 0;
 						int gripDmg = forceGripDamage[self->client->ps.forcePowerLevel[FP_GRIP]];
-						if ( gripLevel != -1 )
-						{
-							if ( gripLevel == 1 )
-							{
-								gripDmg = floor((float)gripDmg/3.0f);
-							}
-							else //if ( gripLevel == 2 )
-							{
-								gripDmg = floor((float)gripDmg/1.5f);
-							}
-						}
 						G_Damage( gripEnt, self, self, dir, gripOrg, gripDmg, DAMAGE_NO_ARMOR, MOD_CRUSH );//MOD_???
 					}
 					if ( gripEnt->s.number )
