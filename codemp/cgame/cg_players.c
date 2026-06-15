@@ -8540,28 +8540,26 @@ void SmoothTrueView(centity_t *cent, vec3_t eyeAngles)
 	//CG_Printf("cg.refdef.viewangles: %f, %f, %f\n", cg.refdefViewAngles[0], cg.refdefViewAngles[1], cg.refdefViewAngles[2]);
 	
 	
-	
-	//RAFIXME: See if I can find a link this to the prediction stuff.  I think the snap is of just the last gamestate snap
-	
+		
 	//Rolls
 	/* if ( cg_trueroll.integer )
 	{
-		if ( ( (cg.snap->ps.legsAnim) == BOTH_WALL_RUN_LEFT )
-			|| ( (cg.snap->ps.legsAnim) == BOTH_WALL_RUN_RIGHT )
-			|| ( (cg.snap->ps.legsAnim) == BOTH_WALL_RUN_LEFT_STOP )
-			|| ( (cg.snap->ps.legsAnim) == BOTH_WALL_RUN_RIGHT_STOP )
-			|| ( (cg.snap->ps.legsAnim) == BOTH_WALL_RUN_LEFT_FLIP )
-			|| ( (cg.snap->ps.legsAnim) == BOTH_WALL_RUN_RIGHT_FLIP )
-			|| ( (cg.snap->ps.legsAnim) == BOTH_WALL_FLIP_LEFT )
-			|| ( (cg.snap->ps.legsAnim) == BOTH_WALL_FLIP_RIGHT ) )
+		if ( ( (cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_LEFT )
+			|| ( (cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_RIGHT )
+			|| ( (cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_LEFT_STOP )
+			|| ( (cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_RIGHT_STOP )
+			|| ( (cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_LEFT_FLIP )
+			|| ( (cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_RIGHT_FLIP )
+			|| ( (cg.predictedPlayerState.legsAnim) == BOTH_WALL_FLIP_LEFT )
+			|| ( (cg.predictedPlayerState.legsAnim) == BOTH_WALL_FLIP_RIGHT ) )
 		{//Roll moves that look good with eye range
 			eyeRange = qtrue;
 			DidSpecial = qtrue;
 		}
 		else if ( cg_trueroll.integer == 1 )
 		{//Use simple roll for the more complicated rolls
-			if ( ( (cg.snap->ps.legsAnim) == BOTH_FLIP_L )
-				|| ( (cg.snap->ps.legsAnim) == BOTH_ROLL_L ) )
+			if ( ( (cg.predictedPlayerState.legsAnim) == BOTH_FLIP_L )
+				|| ( (cg.predictedPlayerState.legsAnim) == BOTH_ROLL_L ) )
 			{//Left rolls
 				VectorCopy( cg.refdefViewAngles, eyeAngles );
 				eyeAngles[2] += AngleNormalize180( (360 * LegAnimPoint) );
@@ -8569,8 +8567,8 @@ void SmoothTrueView(centity_t *cent, vec3_t eyeAngles)
 				eyeRange = qfalse;
 				DidSpecial = qtrue;
 			}
-			else if( ((cg.snap->ps.legsAnim) == BOTH_FLIP_R)
-					|| ((cg.snap->ps.legsAnim) == BOTH_ROLL_R) )
+			else if( ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_R)
+					|| ((cg.predictedPlayerState.legsAnim) == BOTH_ROLL_R) )
 			{//Right rolls
 				VectorCopy( cg.refdefViewAngles, eyeAngles );
 				eyeAngles[2] += AngleNormalize180( ( 360 - (360 * LegAnimPoint) ) );
@@ -8581,28 +8579,28 @@ void SmoothTrueView(centity_t *cent, vec3_t eyeAngles)
 		}
 		else
 		{//You're here because you're using cg_trueroll.integer == 2
-			if ( ((cg.snap->ps.legsAnim) == BOTH_FLIP_L)
-				|| ((cg.snap->ps.legsAnim) == BOTH_ROLL_L)
-				|| ((cg.snap->ps.legsAnim) == BOTH_FLIP_R)
-				|| ((cg.snap->ps.legsAnim) == BOTH_ROLL_R) )
+			if ( ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_L)
+				|| ((cg.predictedPlayerState.legsAnim) == BOTH_ROLL_L)
+				|| ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_R)
+				|| ((cg.predictedPlayerState.legsAnim) == BOTH_ROLL_R) )
 			{//Roll animation, lock the eyemovement
 				eyeRange = qfalse;
 				DidSpecial = qtrue;
 			}
 		}
 	}
-	else */ if ( ((cg.snap->ps.legsAnim) == BOTH_WALL_RUN_LEFT)
-			 || ((cg.snap->ps.legsAnim) == BOTH_WALL_RUN_RIGHT)
-			 || ((cg.snap->ps.legsAnim) == BOTH_WALL_RUN_LEFT_STOP)
-			 || ((cg.snap->ps.legsAnim) ==	BOTH_WALL_RUN_RIGHT_STOP)
-			 || ((cg.snap->ps.legsAnim) == BOTH_WALL_RUN_LEFT_FLIP)
-			 || ((cg.snap->ps.legsAnim) == BOTH_WALL_RUN_RIGHT_FLIP)
-			 || ((cg.snap->ps.legsAnim) == BOTH_WALL_FLIP_LEFT)
-			 || ((cg.snap->ps.legsAnim) == BOTH_WALL_FLIP_RIGHT)
-			 || ((cg.snap->ps.legsAnim) == BOTH_FLIP_L)
-			 || ((cg.snap->ps.legsAnim) == BOTH_ROLL_L)
-			 || ((cg.snap->ps.legsAnim) == BOTH_FLIP_R)
-			 || ((cg.snap->ps.legsAnim) == BOTH_ROLL_R) )
+	else */ if ( ((cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_LEFT)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_RIGHT)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_LEFT_STOP)
+			 || ((cg.predictedPlayerState.legsAnim) ==	BOTH_WALL_RUN_RIGHT_STOP)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_LEFT_FLIP)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_WALL_RUN_RIGHT_FLIP)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_WALL_FLIP_LEFT)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_WALL_FLIP_RIGHT)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_L)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_ROLL_L)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_R)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_ROLL_R) )
 	{//you don't want rolling so use cg.refdef.viewangles as the view
 		UseRefDef = qtrue;
 	}
@@ -8610,15 +8608,15 @@ void SmoothTrueView(centity_t *cent, vec3_t eyeAngles)
 	//Flips
 	/* if( cg_trueflip.integer )
 	{
-		if( cg.snap->ps.legsAnim == BOTH_WALL_FLIP_BACK1 )
+		if( cg.predictedPlayerState.legsAnim == BOTH_WALL_FLIP_BACK1 )
 		{//Flip moves that look good with the eyemovement locked
 			eyeRange = qfalse;
 			DidSpecial = qtrue;
 		}
 		else if ( cg_trueflip.integer == 1 )
 		{//Use simple flip for the more complicated flips
-			if ( ((cg.snap->ps.legsAnim) == BOTH_FLIP_F)
-				|| ((cg.snap->ps.legsAnim) == BOTH_ROLL_F) )
+			if ( ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_F)
+				|| ((cg.predictedPlayerState.legsAnim) == BOTH_ROLL_F) )
 			{//forward flips
 				VectorCopy( cg.refdefViewAngles, eyeAngles );
 				eyeAngles[0] += AngleNormalize180( 360 - (360 * LegAnimPoint) );
@@ -8626,9 +8624,9 @@ void SmoothTrueView(centity_t *cent, vec3_t eyeAngles)
 				eyeRange = qfalse;
 				DidSpecial = qtrue;
 			}
-			else if ( ((cg.snap->ps.legsAnim) == BOTH_FLIP_B)
-					 || ((cg.snap->ps.legsAnim) == BOTH_ROLL_B)
-					 || ((cg.snap->ps.legsAnim) == BOTH_FLIP_BACK1) )
+			else if ( ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_B)
+					 || ((cg.predictedPlayerState.legsAnim) == BOTH_ROLL_B)
+					 || ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_BACK1) )
 			{//back flips
 				VectorCopy( cg.refdefViewAngles, eyeAngles );
 				eyeAngles[0] += AngleNormalize180( (360 * LegAnimPoint) );
@@ -8639,23 +8637,23 @@ void SmoothTrueView(centity_t *cent, vec3_t eyeAngles)
 		}
 		else
 		{//You're here because you're using cg_trueflip.integer = 2
-			if ( ( (cg.snap->ps.legsAnim) == BOTH_FLIP_F )
-				|| ( (cg.snap->ps.legsAnim) == BOTH_ROLL_F )
-				|| ( (cg.snap->ps.legsAnim) == BOTH_FLIP_B )
-				|| ( (cg.snap->ps.legsAnim) == BOTH_ROLL_B )
-				|| ( (cg.snap->ps.legsAnim) == BOTH_FLIP_BACK1 ) )
+			if ( ( (cg.predictedPlayerState.legsAnim) == BOTH_FLIP_F )
+				|| ( (cg.predictedPlayerState.legsAnim) == BOTH_ROLL_F )
+				|| ( (cg.predictedPlayerState.legsAnim) == BOTH_FLIP_B )
+				|| ( (cg.predictedPlayerState.legsAnim) == BOTH_ROLL_B )
+				|| ( (cg.predictedPlayerState.legsAnim) == BOTH_FLIP_BACK1 ) )
 			{//Flip animation and using cg_trueflip.integer = 2, lock the eyemovement
 				eyeRange = qfalse;
 				DidSpecial = qtrue;
 			}
 		}
 	}
-	else */ if ( ((cg.snap->ps.legsAnim) == BOTH_WALL_FLIP_BACK1)
-			 || ((cg.snap->ps.legsAnim) == BOTH_FLIP_F)
-			 || ((cg.snap->ps.legsAnim) == BOTH_ROLL_F)
-			 || ((cg.snap->ps.legsAnim) == BOTH_FLIP_B)
-			 || ((cg.snap->ps.legsAnim) == BOTH_ROLL_B)
-			 || ((cg.snap->ps.legsAnim) == BOTH_FLIP_BACK1) )
+	else */ if ( ((cg.predictedPlayerState.legsAnim) == BOTH_WALL_FLIP_BACK1)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_F)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_ROLL_F)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_B)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_ROLL_B)
+			 || ((cg.predictedPlayerState.legsAnim) == BOTH_FLIP_BACK1) )
 	{//you don't want flipping so use cg.refdef.viewangles as the view
 		UseRefDef = qtrue;
 	}
@@ -8664,32 +8662,32 @@ void SmoothTrueView(centity_t *cent, vec3_t eyeAngles)
 	{
 		if ( cg_truespin.integer == 1 )
 		{//Do a simulated Spin for the more complicated spins
-			if ( ((cg.snap->ps.torsoAnim) == BOTH_T1_TL_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T1__L_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T1__L__R)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T1_BL_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T1_BL__R)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T1_BL_TR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T2__L_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T2_BL_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T2_BL__R)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T3__L_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T3_BL_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T3_BL__R)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T4__L_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T4_BL_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T4_BL__R)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T5_TL_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T5__L_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T5__L__R)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T5_BL_BR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T5_BL__R)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_T5_BL_TR)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_ATTACK_BACK)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_CROUCHATTACKBACK1)
-				|| ((cg.snap->ps.torsoAnim) == BOTH_BUTTERFLY_LEFT)
+			if ( ((cg.predictedPlayerState.torsoAnim) == BOTH_T1_TL_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T1__L_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T1__L__R)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T1_BL_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T1_BL__R)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T1_BL_TR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T2__L_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T2_BL_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T2_BL__R)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T3__L_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T3_BL_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T3_BL__R)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T4__L_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T4_BL_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T4_BL__R)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T5_TL_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T5__L_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T5__L__R)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T5_BL_BR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T5_BL__R)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_T5_BL_TR)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_ATTACK_BACK)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_CROUCHATTACKBACK1)
+				|| ((cg.predictedPlayerState.torsoAnim) == BOTH_BUTTERFLY_LEFT)
 				//This technically has 2 spins and seems to have been labeled wrong
-				|| ((cg.snap->ps.legsAnim) == BOTH_FJSS_TR_BL) )
+				|| ((cg.predictedPlayerState.legsAnim) == BOTH_FJSS_TR_BL) )
 			{//Left Spins
 				VectorCopy( cg.refdefViewAngles, eyeAngles );
 				eyeAngles[1] += AngleNormalize180( (360 - (360 * TorsoAnimPoint)) );
@@ -8697,31 +8695,31 @@ void SmoothTrueView(centity_t *cent, vec3_t eyeAngles)
 				eyeRange = qfalse;
 				DidSpecial = qtrue;
 			}
-			else if ( ((cg.snap->ps.torsoAnim) == BOTH_T1_BR_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T1__R__L)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T1__R_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T1_TR_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T1_BR_TL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T1_BR__L)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T2_BR__L)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T2_BR_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T2__R_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T3_BR__L)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T3_BR_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T3__R_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T4_BR__L)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T4_BR_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T4__R_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T5_BR_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T5__R__L)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T5__R_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T5_TR_BL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T5_BR_TL)
-					 || ((cg.snap->ps.torsoAnim) == BOTH_T5_BR__L)
+			else if ( ((cg.predictedPlayerState.torsoAnim) == BOTH_T1_BR_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T1__R__L)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T1__R_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T1_TR_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T1_BR_TL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T1_BR__L)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T2_BR__L)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T2_BR_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T2__R_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T3_BR__L)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T3_BR_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T3__R_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T4_BR__L)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T4_BR_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T4__R_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T5_BR_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T5__R__L)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T5__R_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T5_TR_BL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T5_BR_TL)
+					 || ((cg.predictedPlayerState.torsoAnim) == BOTH_T5_BR__L)
 					 //This technically has 2 spins
-					 || ((cg.snap->ps.legsAnim) == BOTH_BUTTERFLY_RIGHT)
+					 || ((cg.predictedPlayerState.legsAnim) == BOTH_BUTTERFLY_RIGHT)
 					 //This technically has 2 spins and seems to have been labeled wrong
-					 || ((cg.snap->ps.legsAnim) == BOTH_FJSS_TL_BR) )
+					 || ((cg.predictedPlayerState.legsAnim) == BOTH_FJSS_TL_BR) )
 			{//Right Spins
 				VectorCopy( cg.refdefViewAngles, eyeAngles );
 				eyeAngles[1] += AngleNormalize180( (360 * TorsoAnimPoint) );
@@ -8732,52 +8730,52 @@ void SmoothTrueView(centity_t *cent, vec3_t eyeAngles)
 		}
 		else
 		{//You're here because you're using cg_truespin.integer == 2
-			if ( PM_SpinningSaberAnim( (cg.snap->ps.torsoAnim) )
-				&& ((cg.snap->ps.torsoAnim)  != BOTH_JUMPFLIPSLASHDOWN1)
-				&& ((cg.snap->ps.torsoAnim)  != BOTH_JUMPFLIPSTABDOWN) )
+			if ( PM_SpinningSaberAnim( (cg.predictedPlayerState.torsoAnim) )
+				&& ((cg.predictedPlayerState.torsoAnim)  != BOTH_JUMPFLIPSLASHDOWN1)
+				&& ((cg.predictedPlayerState.torsoAnim)  != BOTH_JUMPFLIPSTABDOWN) )
 			{//Flip animation and using cg_trueflip.integer = 2, lock the eyemovement
 				eyeRange = qfalse;
 				DidSpecial = qtrue;
 			}
 		}
 	}
-	else */ if ( BG_SpinningSaberAnim( (cg.snap->ps.torsoAnim) )
-				&& ((cg.snap->ps.torsoAnim)  != BOTH_JUMPFLIPSLASHDOWN1)
-				&& ((cg.snap->ps.torsoAnim)  != BOTH_JUMPFLIPSTABDOWN) )
+	else */ if ( BG_SpinningSaberAnim( (cg.predictedPlayerState.torsoAnim) )
+				&& ((cg.predictedPlayerState.torsoAnim)  != BOTH_JUMPFLIPSLASHDOWN1)
+				&& ((cg.predictedPlayerState.torsoAnim)  != BOTH_JUMPFLIPSTABDOWN) )
 	{//you don't want spinning so use cg.refdef.viewangles as the view
 		UseRefDef = qtrue;
 	}
-	else if ( (cg.snap->ps.legsAnim) == BOTH_JUMPATTACK6)
+	else if ( (cg.predictedPlayerState.legsAnim) == BOTH_JUMPATTACK6)
 	{
 		UseRefDef = qtrue;
 	}
 	
 	//Prevent camera flicker while landing.
-	if ( ((cg.snap->ps.legsAnim)  == BOTH_LAND1)
-		|| ((cg.snap->ps.legsAnim)  == BOTH_LAND2)
-		|| ((cg.snap->ps.legsAnim)  == BOTH_LANDBACK1)
-		|| ((cg.snap->ps.legsAnim)  == BOTH_LANDLEFT1)
-		|| ((cg.snap->ps.legsAnim)  == BOTH_LANDRIGHT1) )
+	if ( ((cg.predictedPlayerState.legsAnim)  == BOTH_LAND1)
+		|| ((cg.predictedPlayerState.legsAnim)  == BOTH_LAND2)
+		|| ((cg.predictedPlayerState.legsAnim)  == BOTH_LANDBACK1)
+		|| ((cg.predictedPlayerState.legsAnim)  == BOTH_LANDLEFT1)
+		|| ((cg.predictedPlayerState.legsAnim)  == BOTH_LANDRIGHT1) )
 	{
 		UseRefDef = qtrue;
 	}
 	
 	//Prevent the camera flicker while switching to the saber.
-	if ( ( (cg.snap->ps.torsoAnim) ==	BOTH_STAND2TO1 )
-		|| ( (cg.snap->ps.torsoAnim) == BOTH_STAND1TO2 ) )
+	if ( ( (cg.predictedPlayerState.torsoAnim) ==	BOTH_STAND2TO1 )
+		|| ( (cg.predictedPlayerState.torsoAnim) == BOTH_STAND1TO2 ) )
 	{
 		UseRefDef = qtrue;
 	}
 	
 	//special camera view for blue backstab
-	if ( (cg.snap->ps.torsoAnim) == BOTH_A2_STABBACK1)
+	if ( (cg.predictedPlayerState.torsoAnim) == BOTH_A2_STABBACK1)
 	{
 		eyeRange = qfalse;
 		DidSpecial = qtrue;
 	}
 	
-	if ( ( (cg.snap->ps.torsoAnim) == BOTH_JUMPFLIPSLASHDOWN1)
-		|| ( (cg.snap->ps.torsoAnim) == BOTH_JUMPFLIPSLASHDOWN1) )
+	if ( ( (cg.predictedPlayerState.torsoAnim) == BOTH_JUMPFLIPSLASHDOWN1)
+		|| ( (cg.predictedPlayerState.torsoAnim) == BOTH_JUMPFLIPSLASHDOWN1) )
 	{
 		eyeRange = qfalse;
 		DidSpecial = qtrue;
