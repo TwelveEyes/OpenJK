@@ -2182,7 +2182,20 @@ void CG_NextWeapon_f( void ) {
 		}
 		else if ( cg.weaponSelect == WP_DET_PACK )
 		{
-			cg.weaponSelect = firstWeapon;
+			if (cg.snap->ps.stats[ STAT_WEAPONS ] & ( 1 << WP_STUN_BATON ))
+			{// Hack to allow forward selection of the stun baton or bryar pistol instead of skipping "over" them.
+			 // Technically they aren't being skipped at all as they appear later in the enum, but at the start of
+			 // ingame weapon selection. 
+				cg.weaponSelect = WP_STUN_BATON;
+			}
+			else if (cg.snap->ps.stats[ STAT_WEAPONS ] & ( 1 << WP_BRYAR_PISTOL ))
+			{
+				cg.weaponSelect = WP_BRYAR_PISTOL;
+			}
+			else
+			{
+				cg.weaponSelect = firstWeapon;
+			}
 		}
 		else
 		{
