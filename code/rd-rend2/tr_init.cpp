@@ -1537,7 +1537,7 @@ void R_Register( void )
 	r_externalGLSL = ri_Cvar_Get_NoComm( "r_externalGLSL", "0", CVAR_LATCH, "" );
 
 	r_hdr = ri_Cvar_Get_NoComm( "r_hdr", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable rendering in HDR" );
-	r_floatLightmap = ri_Cvar_Get_NoComm( "r_floatLightmap", "0", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable HDR lightmap support" );
+	r_floatLightmap = ri_Cvar_Get_NoComm( "r_floatLightmap", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable HDR lightmap support" );
 
 	r_toneMap = ri_Cvar_Get_NoComm( "r_toneMap", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable tonemapping" );
 	r_forceToneMap = ri_Cvar_Get_NoComm( "r_forceToneMap", "0", CVAR_CHEAT, "" );
@@ -1551,7 +1551,7 @@ void R_Register( void )
 	r_forceAutoExposureMax = ri_Cvar_Get_NoComm( "r_forceAutoExposureMax", "2.0", CVAR_CHEAT, "" );
 
 	r_smaa = ri_Cvar_Get_NoComm("r_smaa", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable SMAA");
-	r_smaa_quality = ri_Cvar_Get_NoComm("r_smaa_quality", "2", CVAR_ARCHIVE | CVAR_LATCH, "0: LOW | 1: MEDIUM | 2: HIGH | 3: ULTRA");
+	r_smaa_quality = ri_Cvar_Get_NoComm("r_smaa_quality", "3", CVAR_ARCHIVE | CVAR_LATCH, "0: LOW | 1: MEDIUM | 2: HIGH | 3: ULTRA");
 
 	r_cameraExposure = ri_Cvar_Get_NoComm( "r_cameraExposure", "0", CVAR_CHEAT, "" );
 
@@ -1563,20 +1563,20 @@ void R_Register( void )
 	r_deluxeMapping = ri_Cvar_Get_NoComm( "r_deluxeMapping", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable reading deluxemaps when compiled with q3map2" );
 	r_deluxeSpecular = ri_Cvar_Get_NoComm("r_deluxeSpecular", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable/scale the specular response from deluxemaps");
 	r_cubeMapping = ri_Cvar_Get_NoComm( "r_cubeMapping", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable cubemapping" );
-	r_cubeMappingBounces = ri_Cvar_Get_NoComm("r_cubeMappingBounces", "1", CVAR_ARCHIVE | CVAR_LATCH, "Renders cubemaps multiple times to get reflections in reflections");
+	r_cubeMappingBounces = ri_Cvar_Get_NoComm("r_cubeMappingBounces", "2", CVAR_ARCHIVE | CVAR_LATCH, "Renders cubemaps multiple times to get reflections in reflections");
 	ri.Cvar_CheckRange(r_cubeMappingBounces, 0, 2, qfalse);
 	r_baseNormalX = ri_Cvar_Get_NoComm( "r_baseNormalX", "1.0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_baseNormalY = ri_Cvar_Get_NoComm( "r_baseNormalY", "1.0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_baseParallax = ri_Cvar_Get_NoComm( "r_baseParallax", "0.05", CVAR_ARCHIVE | CVAR_LATCH, "" );
    	r_baseSpecular = ri_Cvar_Get_NoComm( "r_baseSpecular", "0.04", CVAR_ARCHIVE | CVAR_LATCH, "" ); 
-	r_dlightMode = ri_Cvar_Get_NoComm( "r_dlightMode", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
+	r_dlightMode = ri_Cvar_Get_NoComm( "r_dlightMode", "2", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_pshadowDist = ri_Cvar_Get_NoComm( "r_pshadowDist", "128", CVAR_ARCHIVE, "" );
 	r_imageUpsample = ri_Cvar_Get_NoComm( "r_imageUpsample", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_imageUpsampleMaxSize = ri_Cvar_Get_NoComm( "r_imageUpsampleMaxSize", "1024", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_imageUpsampleType = ri_Cvar_Get_NoComm( "r_imageUpsampleType", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
-	r_genNormalMaps = ri_Cvar_Get_NoComm( "r_genNormalMaps", "0", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable generating normal maps from diffuse maps" );
+	r_genNormalMaps = ri_Cvar_Get_NoComm( "r_genNormalMaps", "1", CVAR_ARCHIVE | CVAR_LATCH, "Disable/enable generating normal maps from diffuse maps" );
 
-	r_forceSun = ri_Cvar_Get_NoComm( "r_forceSun", "0", CVAR_CHEAT, "" );
+	r_forceSun = ri_Cvar_Get_NoComm( "r_forceSun", "1", CVAR_CHEAT, "" );
 	r_forceSunMapLightScale = ri_Cvar_Get_NoComm( "r_forceSunMapLightScale", "1.0", CVAR_CHEAT, "" );
 	r_forceSunLightScale = ri_Cvar_Get_NoComm( "r_forceSunLightScale", "1.0", CVAR_CHEAT, "" );
 	r_forceSunAmbientScale = ri_Cvar_Get_NoComm( "r_forceSunAmbientScale", "0.5", CVAR_CHEAT, "" );
@@ -1689,7 +1689,7 @@ void R_Register( void )
 	r_drawBuffer = ri_Cvar_Get_NoComm( "r_drawBuffer", "GL_BACK", CVAR_CHEAT, "" );
 	r_lockpvs = ri_Cvar_Get_NoComm ("r_lockpvs", "0", CVAR_CHEAT, "");
 	r_noportals = ri_Cvar_Get_NoComm ("r_noportals", "0", CVAR_CHEAT, "");
-	r_shadows = ri_Cvar_Get_NoComm( "cg_shadows", "4", 0, "" );
+	r_shadows = ri_Cvar_Get_NoComm( "cg_shadows", "1", 0, "" );
 
 	r_marksOnTriangleMeshes = ri_Cvar_Get_NoComm("r_marksOnTriangleMeshes", "0", CVAR_ARCHIVE, "");
 
