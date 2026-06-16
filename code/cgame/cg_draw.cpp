@@ -2104,7 +2104,7 @@ static void CG_DrawZoomMask( void )
 		{
 			// draw blue tinted distortion mask, trying to make it as small as is necessary to fill in the viewable area
 			cgi_R_SetColor( colorTable[CT_WHITE] );
-			CG_DrawPic( 34, 48, 570, 362, cgs.media.binocularStatic );
+			CG_DrawPic( 0, 0, 640, 480, cgs.media.binocularStatic );
 		}
 
 		CG_DrawBinocularNumbers( power );
@@ -2286,7 +2286,7 @@ static void CG_DrawZoomMask( void )
 		if ( power )
 		{
 			cgi_R_SetColor( colorTable[CT_WHITE] );
-			CG_DrawPic( 34, 29, 580, 410, cgs.media.laGogglesStatic );
+			CG_DrawPic( 0, 0, 640, 480, cgs.media.laGogglesStatic );
 
 			CG_DrawPic( 570, 140, 12, 160, cgs.media.laGogglesSideBit );
 
