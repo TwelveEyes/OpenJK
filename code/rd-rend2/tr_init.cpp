@@ -1682,7 +1682,7 @@ void R_Register( void )
 	r_drawBuffer = ri_Cvar_Get_NoComm( "r_drawBuffer", "GL_BACK", CVAR_CHEAT, "" );
 	r_lockpvs = ri_Cvar_Get_NoComm ("r_lockpvs", "0", CVAR_CHEAT, "");
 	r_noportals = ri_Cvar_Get_NoComm ("r_noportals", "0", CVAR_CHEAT, "");
-	r_shadows = ri_Cvar_Get_NoComm( "cg_shadows", "1", 0, "" );
+	r_shadows = ri_Cvar_Get_NoComm( "cg_shadows", "4", 0, "" );
 
 	r_marksOnTriangleMeshes = ri_Cvar_Get_NoComm("r_marksOnTriangleMeshes", "0", CVAR_ARCHIVE, "");
 
