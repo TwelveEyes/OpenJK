@@ -1691,7 +1691,7 @@ void R_Register( void )
 	r_noportals = ri_Cvar_Get_NoComm ("r_noportals", "0", CVAR_CHEAT, "");
 	r_shadows = ri_Cvar_Get_NoComm( "cg_shadows", "1", 0, "" );
 
-	r_marksOnTriangleMeshes = ri_Cvar_Get_NoComm("r_marksOnTriangleMeshes", "0", CVAR_ARCHIVE, "");
+	r_marksOnTriangleMeshes = ri_Cvar_Get_NoComm("r_marksOnTriangleMeshes", "1", CVAR_ARCHIVE, "");
 
 	r_aviMotionJpegQuality = ri_Cvar_Get_NoComm("r_aviMotionJpegQuality", "90", CVAR_ARCHIVE, "");
 	r_screenshotJpegQuality = ri_Cvar_Get_NoComm("r_screenshotJpegQuality", "90", CVAR_ARCHIVE, "");
