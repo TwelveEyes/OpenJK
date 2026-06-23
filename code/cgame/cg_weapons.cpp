@@ -1602,7 +1602,7 @@ void CG_DrawDataPadWeaponSelect( void )
 			weaponInfo = &cg_weapons[weaponDPOrder[weaponSelectI]];
 
 			// Draw graphic to show weapon has ammo or no ammo
-			if (!CG_WeaponCheck(i))
+			if (!CG_WeaponCheck(weaponDPOrder[weaponSelectI]))
 			{
 				CG_DrawPic( holdX, graphicYPos, smallIconSize_x, smallIconSize_y, weaponInfo->weaponIconNoAmmo );
 			}
