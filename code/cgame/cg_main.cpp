@@ -185,7 +185,7 @@ Ghoul2 Insert End
 	return -1;
 }
 
-static void CG_Set2DRatio(void) {
+void CG_Set2DRatio(void) {
 	if (cg_hudRatio.integer)
 		cgs.widthRatioCoef = (float)(SCREEN_WIDTH * cgs.glconfig.vidHeight) / (float)(SCREEN_HEIGHT * cgs.glconfig.vidWidth);
 	else

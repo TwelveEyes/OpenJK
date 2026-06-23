@@ -435,6 +435,7 @@ static void CG_LoadBar(void)
 int CG_WeaponCheck( int weaponIndex );
 
 // For printing load screen icons
+extern void CG_Set2DRatio( void );
 const int	MAXLOADICONSPERROW = 8;		// Max icons displayed per row
 const int	MAXLOADWEAPONS = MAX_PLAYER_WEAPONS;
 const int	MAXLOAD_FORCEICONSIZE = 40;	// Size of force power icons
@@ -462,6 +463,8 @@ static int CG_DrawLoadWeaponsPrintRow( const char *itemName, int weaponsBits,int
 	{
 		return(0);
 	}
+
+	CG_Set2DRatio();
 
 	cgi_R_SetColor( color );
 
@@ -492,7 +495,7 @@ static int CG_DrawLoadWeaponsPrintRow( const char *itemName, int weaponsBits,int
 	//		}
 	//		else
 			{
-				CG_DrawPic( holdX, y+yOffset, iconSize, iconSize, weaponInfo->weaponIcon );
+				CG_DrawPic( holdX, y+yOffset, iconSize*cgs.widthRatioCoef, iconSize, weaponInfo->weaponIcon );
 			}
 
 			printedIconCnt++;
@@ -572,6 +575,8 @@ static int CG_DrawLoadForcePrintRow( const char *itemName, int forceBits,int row
 		return(0);
 	}
 
+	CG_Set2DRatio();
+
 	cgi_R_SetColor( color );
 
 	// calculate placement of weapon icons
@@ -588,7 +593,7 @@ static int CG_DrawLoadForcePrintRow( const char *itemName, int forceBits,int row
 		{
 			endIndex = i;
 
-			CG_DrawPic( holdX, y+yOffset, MAXLOAD_FORCEICONSIZE, MAXLOAD_FORCEICONSIZE, force_icons[showPowers[i]] );
+			CG_DrawPic( holdX, y+yOffset, MAXLOAD_FORCEICONSIZE*cgs.widthRatioCoef, MAXLOAD_FORCEICONSIZE, force_icons[showPowers[i]] );
 
 			printedIconCnt++;
 			if (printedIconCnt==MAXLOADICONSPERROW)
