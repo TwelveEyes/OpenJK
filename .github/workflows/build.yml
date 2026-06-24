@@ -94,11 +94,11 @@ jobs:
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
-      - name: Clear Base Folder
-        if: ${{ matrix.build_type == 'Release' }}
-        working-directory: ${{ github.workspace }}
-        shell: bash
-        run: rm ./build/bin/JediAcademy/base/cgame${{ matrix.arch }}.dll ./build/bin/JediAcademy/base/jampgame${{ matrix.arch }}.dll ./build/bin/JediAcademy/base/ui${{ matrix.arch }}.dll
+      # - name: Clear Base Folder
+      #   if: ${{ matrix.build_type == 'Release' }}
+      #   working-directory: ${{ github.workspace }}
+      #   shell: bash
+      #   run: rm ./build/bin/JediAcademy/base/cgame${{ matrix.arch }}.dll ./build/bin/JediAcademy/base/jampgame${{ matrix.arch }}.dll ./build/bin/JediAcademy/base/ui${{ matrix.arch }}.dll
 
       - uses: actions/upload-artifact@v4
         if: ${{ matrix.build_type == 'Release' }}
@@ -185,7 +185,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         shell: bash
         run: |
-          rm -r ./install/JediAcademy/base/*
+          # rm -r ./install/JediAcademy/base/*
           cp ./pk3/jacutscenefixes.pk3 ./install/JediAcademy/base/
           cp ./pk3/jasecretitems.pk3 ./install/JediAcademy/base/
           cp ./pk3/jashaderfixes.pk3 ./install/JediAcademy/base/
