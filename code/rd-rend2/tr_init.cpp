@@ -2052,10 +2052,12 @@ static void R_ShutdownBackEndFrameData()
 			qglUnmapBuffer(GL_ARRAY_BUFFER);
 			qglUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
+#ifdef _G2_GORE
 			R_BindVBO(frame->goreVBO);
 			R_BindIBO(frame->goreIBO);
 			qglUnmapBuffer(GL_ARRAY_BUFFER);
 			qglUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+#endif
 		}
 
 		for ( int j = 0; j < MAX_GPU_TIMERS; j++ )
