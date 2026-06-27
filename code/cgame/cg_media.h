@@ -237,6 +237,7 @@ typedef struct {
 	qhandle_t	DPForcePowerOverlay;
 
 	qhandle_t	bdecal_burnmark1;
+	qhandle_t	bdecal_bigburnmark1;
 	qhandle_t	bdecal_saberglowmark;
 
 	qhandle_t	messageLitOn;
