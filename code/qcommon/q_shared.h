@@ -2270,6 +2270,8 @@ using playerState_t = PlayerStateBase<saberInfo_t>;
 
 #define	BUTTON_FORCE_FOCUS	256			// any key whatsoever
 
+#define BUTTON_KICK			512
+
 #define	MOVE_RUN			120			// if forwardmove or rightmove are >= MOVE_RUN,
 										// then BUTTON_WALKING should be set
 
