@@ -3120,7 +3120,7 @@ void CG_MissileHitPlayer( centity_t *cent, int weapon, vec3_t origin, vec3_t dir
 		break;
 
 	case WP_CONCUSSION:
-		CG_MissileMarkPlayer( other, origin, dir );
+		CG_MissileMarkPlayer( other, origin, dir, cgs.media.bdecal_bigburnmark1, 24.0f );
 		FX_ConcHitPlayer( origin, dir, humanoid );
 		break;
 
