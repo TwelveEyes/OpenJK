@@ -11128,10 +11128,10 @@ qboolean PM_PickAutoMultiKick( qboolean allowSingles )
 qboolean PM_SaberThrowable( void )
 {
 	//ugh, hard-coding this is bad...
-	if ( pm->ps->saberAnimLevel == SS_STAFF )
+	/* if ( pm->ps->saberAnimLevel == SS_STAFF )
 	{
 		return qfalse;
-	}
+	} */
 
 	if ( !(pm->ps->saber[0].saberFlags&SFL_NOT_THROWABLE) )
 	{//yes, this saber is always throwable
@@ -11170,6 +11170,20 @@ qboolean PM_CheckAltKickAttack( void )
 		&& pm->ps->SaberActive()
 		&& !(pm->ps->saber[0].saberFlags&SFL_NO_KICKS)//okay to do kicks with this saber
 		&& (!pm->ps->dualSabers || !(pm->ps->saber[1].saberFlags&SFL_NO_KICKS) )//okay to do kicks with this saber
+		)
+	{
+		return qtrue;
+	}
+	return qfalse;
+}
+
+qboolean PM_CheckPlayerKickAttack( void )
+{
+	if( pm->cmd.buttons & BUTTON_KICK
+		&& ( pm->ps->clientNum < MAX_CLIENTS || PM_ControlledByPlayer() )
+		&& !(pm->cmd.buttons & BUTTON_ATTACK)
+		&& !(pm->cmd.buttons & BUTTON_ALT_ATTACK)
+		&& (!PM_FlippingAnim(pm->ps->legsAnim) || pm->ps->legsAnimTimer <= 250)
 		)
 	{
 		return qtrue;
@@ -12272,7 +12286,7 @@ void PM_WeaponLightsaber(void)
 			&& !(pm->cmd.buttons&BUTTON_ATTACK)//not trying to swing the saber
 			&& (pm->cmd.forwardmove||pm->cmd.rightmove) )//trying to kick in a specific direction
 		{
-			if ( PM_CheckAltKickAttack() )//trying to do a kick
+			if ( PM_CheckPlayerKickAttack() || PM_CheckAltKickAttack() )//trying to do a kick
 			{//allow them to do the kick now!
 				pm->ps->weaponTime = 0;
 				PM_CheckKick();
@@ -12489,7 +12503,7 @@ void PM_WeaponLightsaber(void)
 		}
 	}
 
-	if ( PM_CheckAltKickAttack() )
+	if ( PM_CheckPlayerKickAttack() || PM_CheckAltKickAttack() )
 	{//trying to do a kick
 		//FIXME: in-air kicks?
 		if ( pm->ps->saberAnimLevel == SS_STAFF
@@ -13395,6 +13409,37 @@ static void PM_Weapon( void )
 			}
 		}
 		return;
+	}
+
+	//has player requested a kick with +kick?
+	if (pm->ps->weapon != WP_SABER && PM_CheckPlayerKickAttack()
+		&&(cg.zoomMode == 3 || !cg.zoomMode)
+		)
+	{
+		pm->ps->weaponTime = 0;
+		PM_CheckKick();
+		return;
+	}
+	//when anim is finished clean the sabermove
+	if (pm->ps->weapon != WP_SABER && !(pm->cmd.buttons & BUTTON_KICK)
+		&& (pm->ps->clientNum < MAX_CLIENTS || PM_ControlledByPlayer())
+		&& (cg.zoomMode == 3 || !cg.zoomMode)
+		&& PM_KickMove(pm->ps->saberMove)
+		&& !PM_KickingAnim(pm->ps->torsoAnim)
+		&& !PM_KickingAnim(pm->ps->legsAnim)
+		)
+	{
+		pm->ps->saberMove = LS_NONE;
+	}
+	//don't interrupt the kick
+	if (pm->ps->weapon != WP_SABER && PM_KickingAnim(pm->ps->torsoAnim)
+		&& (pm->ps->clientNum < MAX_CLIENTS || PM_ControlledByPlayer())
+		&& (cg.zoomMode == 3 || !cg.zoomMode)
+		)
+	{
+		pm->cmd.buttons &= ~BUTTON_ATTACK;
+		pm->cmd.buttons &= ~BUTTON_ALT_ATTACK;
+
 	}
 
 	if ( PM_InKnockDown( pm->ps ) || PM_InRoll( pm->ps ))
