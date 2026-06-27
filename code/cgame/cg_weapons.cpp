@@ -3006,7 +3006,7 @@ void CG_MissileHitWall( centity_t *cent, int weapon, vec3_t origin, vec3_t dir, 
 
 /*
 -------------------------
-CG_MissileHitPlayer
+CG_MissileMarkPlayer
 -------------------------
 */
 void CG_MissileMarkPlayer( gentity_t *hit, vec3_t origin, vec3_t normal, qhandle_t mark = cgs.media.bdecal_burnmark1, float size = flrand(3.5, 4.0) )
