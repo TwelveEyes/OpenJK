@@ -1124,7 +1124,7 @@ void FX_BryarAltHitPlayer( vec3_t origin, vec3_t normal, qboolean humanoid );
 void FX_BlasterProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
 void FX_BlasterAltFireThink( centity_t *cent, const struct weaponInfo_s *weapon );
 void FX_BlasterWeaponHitWall( vec3_t origin, vec3_t normal );
-void FX_BlasterWeaponHitPlayer( gentity_t *hit, vec3_t origin, vec3_t normal, qboolean humanoid );
+void FX_BlasterWeaponHitPlayer( vec3_t origin, vec3_t normal, qboolean humanoid );
 
 void FX_DisruptorMainShot( vec3_t start, vec3_t end );
 void FX_DisruptorAltShot( vec3_t start, vec3_t end, qboolean full );
@@ -1165,11 +1165,11 @@ void FX_ATSTMainProjectileThink( centity_t *cent, const struct weaponInfo_s *wea
 
 void FX_TuskenShotProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
 void FX_TuskenShotWeaponHitWall( vec3_t origin, vec3_t normal );
-void FX_TuskenShotWeaponHitPlayer( gentity_t *hit, vec3_t origin, vec3_t normal, qboolean humanoid );
+void FX_TuskenShotWeaponHitPlayer( vec3_t origin, vec3_t normal, qboolean humanoid );
 
 void FX_NoghriShotProjectileThink( centity_t *cent, const struct weaponInfo_s *weapon );
 void FX_NoghriShotWeaponHitWall( vec3_t origin, vec3_t normal );
-void FX_NoghriShotWeaponHitPlayer( gentity_t *hit, vec3_t origin, vec3_t normal, qboolean humanoid );
+void FX_NoghriShotWeaponHitPlayer( vec3_t origin, vec3_t normal, qboolean humanoid );
 
 void CG_BounceEffect( centity_t *cent, int weapon, vec3_t origin, vec3_t normal );
 void CG_MissileStick( centity_t *cent, int weapon, vec3_t origin );
