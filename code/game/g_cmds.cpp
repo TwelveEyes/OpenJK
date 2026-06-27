@@ -207,6 +207,7 @@ void G_Give( gentity_t *ent, const char *name, const char *args, int argc )
 	if ( give_all || !Q_stricmp( name, "weapons" ) )
 	{
 		ent->client->ps.stats[STAT_WEAPONS] = (1 << (WP_MELEE)) - ( 1 << WP_NONE );
+		ent->client->ps.stats[STAT_WEAPONS] |= ((1 << WP_STUN_BATON) | (1 << WP_BRYAR_PISTOL));
 		if ( !give_all )
 			return;
 	}
