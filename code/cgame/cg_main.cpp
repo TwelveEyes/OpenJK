@@ -1415,6 +1415,7 @@ static void CG_RegisterGraphics( void ) {
 
 	//gore decal shaders -rww
 	cgs.media.bdecal_burnmark1		= cgi_R_RegisterShader( "gfx/damage/burnmark1" );
+	cgs.media.bdecal_bigburnmark1	= cgi_R_RegisterShader( "gfx/damage/bodybigburnmark1" );
 	cgs.media.bdecal_saberglowmark	= cgi_R_RegisterShader( "gfx/damage/saberglowmark" );
 
 	cg.loadLCARSStage = 5;

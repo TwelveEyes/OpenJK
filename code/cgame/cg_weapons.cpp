@@ -3009,6 +3009,21 @@ void CG_MissileHitWall( centity_t *cent, int weapon, vec3_t origin, vec3_t dir, 
 CG_MissileHitPlayer
 -------------------------
 */
+void CG_MissileMarkPlayer( gentity_t *hit, vec3_t origin, vec3_t normal, qhandle_t mark = cgs.media.bdecal_burnmark1, float size = flrand(3.5, 4.0) )
+{
+	//temporary? just testing out the damage skin stuff -rww
+	if ( hit && hit->client && hit->ghoul2.size() )
+	{
+		CG_AddGhoul2Mark(mark, size, origin, normal, hit->s.number,
+			hit->client->ps.origin, hit->client->renderInfo.legsYaw, hit->ghoul2, hit->s.modelScale, Q_irand(10000, 13000));
+	}
+}
+
+/*
+-------------------------
+CG_MissileHitPlayer
+-------------------------
+*/
 
 void CG_MissileHitPlayer( centity_t *cent, int weapon, vec3_t origin, vec3_t dir, qboolean altFire )
 {
@@ -3037,6 +3052,7 @@ void CG_MissileHitPlayer( centity_t *cent, int weapon, vec3_t origin, vec3_t dir
 	case WP_BRYAR_PISTOL:
 	case WP_BLASTER_PISTOL:
 	case WP_JAWA:
+		CG_MissileMarkPlayer( other, origin, dir );
 		if ( altFire )
 		{
 			FX_BryarAltHitPlayer( origin, dir, humanoid );
@@ -3048,25 +3064,30 @@ void CG_MissileHitPlayer( centity_t *cent, int weapon, vec3_t origin, vec3_t dir
 		break;
 
 	case WP_BLASTER:
-		FX_BlasterWeaponHitPlayer( other, origin, dir, humanoid );
+		CG_MissileMarkPlayer( other, origin, dir );
+		FX_BlasterWeaponHitPlayer( origin, dir, humanoid );
 		break;
 
 	case WP_BOWCASTER:
+		CG_MissileMarkPlayer( other, origin, dir );
 		FX_BowcasterHitPlayer( origin, dir, humanoid );
 		break;
 
 	case WP_REPEATER:
 		if ( altFire )
 		{
+			CG_MissileMarkPlayer( other, origin, dir, cgs.media.bdecal_bigburnmark1, 24.0f );
 			FX_RepeaterAltHitPlayer( origin, dir, humanoid );
 		}
 		else
 		{
+			CG_MissileMarkPlayer( other, origin, dir );
 			FX_RepeaterHitPlayer( origin, dir, humanoid );
 		}
 		break;
 
 	case WP_DEMP2:
+		CG_MissileMarkPlayer( other, origin, dir );
 		if ( !altFire )
 		{
 			FX_DEMP2_HitPlayer( origin, dir, humanoid );
@@ -3083,63 +3104,77 @@ void CG_MissileHitPlayer( centity_t *cent, int weapon, vec3_t origin, vec3_t dir
 	case WP_FLECHETTE:
 		if ( altFire )
 		{
+			CG_MissileMarkPlayer( other, origin, dir, cgs.media.bdecal_bigburnmark1, 24.0f );
 			theFxScheduler.PlayEffect( "flechette/alt_blow", origin, dir );
 		}
 		else
 		{
+			CG_MissileMarkPlayer( other, origin, dir );
 			FX_FlechetteWeaponHitPlayer( origin, dir, humanoid );
 		}
 		break;
 
 	case WP_ROCKET_LAUNCHER:
+		CG_MissileMarkPlayer( other, origin, dir, cgs.media.bdecal_bigburnmark1, 24.0f );
 		FX_RocketHitPlayer( origin, dir, humanoid );
 		break;
 
 	case WP_CONCUSSION:
+		CG_MissileMarkPlayer( other, origin, dir );
 		FX_ConcHitPlayer( origin, dir, humanoid );
 		break;
 
 	case WP_THERMAL:
+		CG_MissileMarkPlayer( other, origin, dir, cgs.media.bdecal_bigburnmark1, 24.0f );
 		theFxScheduler.PlayEffect( "thermal/explosion", origin, dir );
 		theFxScheduler.PlayEffect( "thermal/shockwave", origin );
 		break;
 
 	case WP_EMPLACED_GUN:
+		CG_MissileMarkPlayer( other, origin, dir );
 		FX_EmplacedHitPlayer( origin, dir, (qboolean)(cent->gent&&cent->gent->alt_fire) );
 		break;
 
 	case WP_TRIP_MINE:
+		CG_MissileMarkPlayer( other, origin, dir, cgs.media.bdecal_bigburnmark1, 24.0f );
 		theFxScheduler.PlayEffect( "tripmine/explosion", origin, dir );
 		break;
 
 	case WP_DET_PACK:
+		CG_MissileMarkPlayer( other, origin, dir, cgs.media.bdecal_bigburnmark1, 24.0f );
 		theFxScheduler.PlayEffect( "detpack/explosion", origin, dir );
 		break;
 
 	case WP_TURRET:
+		CG_MissileMarkPlayer( other, origin, dir );
 		theFxScheduler.PlayEffect( "turret/flesh_impact", origin, dir );
 		break;
 
 	case WP_ATST_MAIN:
+		CG_MissileMarkPlayer( other, origin, dir );
 		FX_EmplacedHitWall( origin, dir, qfalse );
 		break;
 
 	case WP_ATST_SIDE:
 		if ( altFire )
 		{
+			CG_MissileMarkPlayer( other, origin, dir, cgs.media.bdecal_bigburnmark1, 24.0f );
 			theFxScheduler.PlayEffect( "atst/side_alt_explosion", origin, dir );
 		}
 		else
 		{
+			CG_MissileMarkPlayer( other, origin, dir );
 			theFxScheduler.PlayEffect( "atst/side_main_impact", origin, dir );
 		}
 		break;
 	case WP_TUSKEN_RIFLE:
-		FX_TuskenShotWeaponHitPlayer( other, origin, dir, humanoid );
+		CG_MissileMarkPlayer( other, origin, dir );
+		FX_TuskenShotWeaponHitPlayer( origin, dir, humanoid );
 		break;
 
 	case WP_NOGHRI_STICK:
-		FX_NoghriShotWeaponHitPlayer( other, origin, dir, humanoid );
+		CG_MissileMarkPlayer( other, origin, dir );
+		FX_NoghriShotWeaponHitPlayer( origin, dir, humanoid );
 		break;
 	}
 }
