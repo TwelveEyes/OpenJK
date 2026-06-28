@@ -1784,7 +1784,7 @@ public:
                             disarmBonus += 1 + saber[1].disarmBonus;
 						}
 					}
-					disarmBonus += forcePowerLevel[FP_SABER_DEFENSE];
+					disarmBonus += forcePowerLevel[FP_SABER_OFFENSE];
 					return disarmBonus;
 				};
 	int			SaberParryBonus( void )
