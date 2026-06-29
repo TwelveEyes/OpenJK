@@ -802,7 +802,7 @@ qboolean RE_InitDissolve(qboolean bForceCircularExtroWipe)
 				//
 				
 				Dissolve.pDissolve = R_FindImageFile(	"gfx/2d/iris_mono", type, flags);
-				Dissolve.pDissolve = R_FindImageFile(	"textures/common/dissolve", type, flags);
+				Dissolve.pDissolve = R_FindImageFile(	"textures/common/dissolve", type, IMGFLAG_NONE);
 			}
 
 			switch (Dissolve.eDissolveType)
@@ -821,7 +821,7 @@ qboolean RE_InitDissolve(qboolean bForceCircularExtroWipe)
 
 				default:
 				{
-					Dissolve.pDissolve = R_FindImageFile(	"textures/common/dissolve", type, flags);
+					Dissolve.pDissolve = R_FindImageFile(	"textures/common/dissolve", type, IMGFLAG_NONE);
 				}
 				break;
 			}
