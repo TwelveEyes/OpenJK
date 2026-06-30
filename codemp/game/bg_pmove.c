@@ -6660,6 +6660,7 @@ Generates weapon events and modifes the weapon counter
 ==============
 */
 extern int PM_KickMoveForConditions(void);
+extern qboolean PM_CheckAltKickAttack(void);
 static void PM_Weapon( void )
 {
 	int		addTime;
@@ -7390,7 +7391,7 @@ static void PM_Weapon( void )
 	}
 
 	// check for fire
-	if ( ! (pm->cmd.buttons & (BUTTON_ATTACK|BUTTON_ALT_ATTACK)))
+	if ( ! (pm->cmd.buttons & (BUTTON_ATTACK|BUTTON_ALT_ATTACK|BUTTON_KICK)))
 	{
 		pm->ps->weaponTime = 0;
 		pm->ps->weaponstate = WEAPON_READY;
@@ -7459,7 +7460,7 @@ static void PM_Weapon( void )
 	{
 		PM_StartTorsoAnim( BOTH_ATTACK4 );
 	}
-	else if (pm->ps->weapon == WP_MELEE)
+	else if ((pm->cmd.buttons & BUTTON_KICK && PM_CheckAltKickAttack())||pm->ps->weapon == WP_MELEE)
 	{ //special anims for standard melee attacks
 		//Alternate between punches and use the anim length as weapon time.
 		if (!pm->ps->m_iVehicleNum)
@@ -7512,8 +7513,9 @@ static void PM_Weapon( void )
 	#endif
 #endif
 			}
-			else if (pm->debugMelee &&
-				(pm->cmd.buttons & BUTTON_ALT_ATTACK))
+			else if ((pm->cmd.buttons & BUTTON_KICK && PM_CheckAltKickAttack())||
+				(pm->debugMelee &&
+				(pm->cmd.buttons & BUTTON_ALT_ATTACK)))
 			{ //kicks
 				if (!BG_KickingAnim(pm->ps->torsoAnim) &&
 					!BG_KickingAnim(pm->ps->legsAnim))
