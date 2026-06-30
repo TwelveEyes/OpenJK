@@ -11186,6 +11186,11 @@ qboolean PM_CheckPlayerKickAttack( void )
 		&& (!PM_FlippingAnim(pm->ps->legsAnim) || pm->ps->legsAnimTimer <= 250)
 		)
 	{
+		if( pm->gent->flags & FL_LOCK_PLAYER_WEAPONS ) // yes this locked weapons check also includes kicks
+		{
+			CG_PlayerLockedWeaponSpeech( qfalse );
+			return qfalse;
+		}
 		return qtrue;
 	}
 	return qfalse;
