@@ -1683,6 +1683,8 @@ static const cmdList_t inputCmds[] =
 	{ "-force_lightning", NULL, IN_Button10Up, NULL },
 	{ "+force_drain", "Hold to use drain force power", IN_Button11Down, NULL },
 	{ "-force_drain", NULL, IN_Button11Up, NULL },
+	{ "+kick", "Kick Attack", IN_Button12Down, NULL },
+	{ "-kick", NULL, IN_Button12Up, NULL },
 	{ "+button0", "Button 0", IN_Button0Down, NULL },
 	{ "-button0", NULL, IN_Button0Up, NULL },
 	{ "+button1", "Button 1", IN_Button1Down, NULL },

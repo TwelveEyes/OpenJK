@@ -2705,10 +2705,10 @@ qboolean PM_CheckAltKickAttack( void )
 			return qfalse;
 		}
 	}
-	if ( (pm->cmd.buttons&BUTTON_ALT_ATTACK)
+	if ( (pm->cmd.buttons&(BUTTON_ALT_ATTACK|BUTTON_KICK))
 		//&& (!(pm->ps->pm_flags&PMF_ALT_ATTACK_HELD)||PM_SaberInReturn(pm->ps->saberMove))
 		&& (!BG_FlippingAnim(pm->ps->legsAnim)||pm->ps->legsTimer<=250)
-		&& (pm->ps->fd.saberAnimLevel == SS_STAFF/*||!pm->ps->saber[0].throwable*/) && !pm->ps->saberHolstered )
+		/* && (pm->ps->fd.saberAnimLevel == SS_STAFF *//*||!pm->ps->saber[0].throwable*//* ) && !pm->ps->saberHolstered */ )
 	{
 		return qtrue;
 	}
@@ -2903,7 +2903,7 @@ void PM_WeaponLightsaber(void)
 			PM_SetAnim(SETANIM_TORSO,PM_GetSaberStance(),SETANIM_FLAG_OVERRIDE);
 		}
 
-		if (pm->ps->weaponTime < 1 && ((pm->cmd.buttons & BUTTON_ALT_ATTACK) || (pm->cmd.buttons & BUTTON_ATTACK)))
+		if (pm->ps->weaponTime < 1 && ((pm->cmd.buttons & BUTTON_KICK) || (pm->cmd.buttons & BUTTON_ALT_ATTACK) || (pm->cmd.buttons & BUTTON_ATTACK)))
 		{
 			if (pm->ps->duelTime < pm->cmd.serverTime)
 			{
@@ -2914,6 +2914,7 @@ void PM_WeaponLightsaber(void)
 				}
 				else
 				{
+					pm->cmd.buttons &= ~BUTTON_KICK;
 					pm->cmd.buttons &= ~BUTTON_ALT_ATTACK;
 					pm->cmd.buttons &= ~BUTTON_ATTACK;
 				}
@@ -2965,9 +2966,9 @@ void PM_WeaponLightsaber(void)
 		pm->cmd.buttons &= ~BUTTON_ALT_ATTACK;
 	}
 
-	if ( (pm->cmd.buttons & BUTTON_ALT_ATTACK) )
+	if ( (pm->cmd.buttons & (BUTTON_ALT_ATTACK | BUTTON_KICK)) )
 	{ //might as well just check for a saber throw right here
-		if (pm->ps->fd.saberAnimLevel == SS_STAFF)
+		if ( (pm->cmd.buttons & BUTTON_KICK) || ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->saberCanThrow) )
 		{ //kick instead of doing a throw
 			//if in a saber attack return anim, can interrupt it with a kick
 			if ( pm->ps->weaponTime > 0//can't fire yet
@@ -3434,8 +3435,7 @@ weapChecks:
 	// *********************************************************
 	// Check for WEAPON ATTACK
 	// *********************************************************
-	if (pm->ps->fd.saberAnimLevel == SS_STAFF &&
-		(pm->cmd.buttons & BUTTON_ALT_ATTACK))
+	if ((pm->cmd.buttons & BUTTON_KICK) || ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->saberCanThrow))
 	{ //ok, try a kick I guess.
 		int kickMove = -1;
 
@@ -3502,6 +3502,7 @@ weapChecks:
 
 	//this is never a valid regular saber attack button
 	pm->cmd.buttons &= ~BUTTON_ALT_ATTACK;
+	pm->cmd.buttons &= ~BUTTON_KICK;
 
 	if(!delayed_fire)
 	{
@@ -3520,7 +3521,7 @@ weapChecks:
 			newmove = LS_R_T2B;
 		}
 		// check for fire
-		else if ( !(pm->cmd.buttons & (BUTTON_ATTACK|BUTTON_ALT_ATTACK)) )
+		else if ( !(pm->cmd.buttons & (BUTTON_ATTACK|BUTTON_ALT_ATTACK|BUTTON_KICK)) )
 		{//not attacking
 			pm->ps->weaponTime = 0;
 
