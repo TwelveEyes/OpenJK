@@ -365,21 +365,30 @@ if(BuildMPEngine)
 	endif()
 
 	# OpenAL (is optionally included for Windows)
-	if (MSVC AND NOT WIN64)
+	if (MSVC)
 		if(UseInternalOpenAL)
-			# There's a libs/OpenAL32.lib
-			# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
-			find_library(OpenALLibrary NAMES OpenAL32 PATHS ${OpenJKLibDir})
-			if(NOT OpenALLibrary)
-				message(FATAL_ERROR "UseInternalOpenAL enabled, but lib/OpenAL32.lib not found!")
-			endif(NOT OpenALLibrary)
+			if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+				# There's a libs/OpenAL32.lib
+				# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
+				find_library(OpenALLibrary NAMES OpenAL32 PATHS ${OpenJKLibDir})
+				if(NOT OpenALLibrary)
+					message(FATAL_ERROR "UseInternalOpenAL enabled, but libs/OpenAL32.lib not found!")
+				endif(NOT OpenALLibrary)
+			else()
+				# There's a libs/OpenAL32.x86_64.lib
+				# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
+				find_library(OpenALLibrary NAMES OpenAL32.x86_64 PATHS ${OpenJKLibDir})
+				if(NOT OpenALLibrary)
+					message(FATAL_ERROR "UseInternalOpenAL enabled, but libs/OpenAL32.x86_64.lib not found!")
+				endif(NOT OpenALLibrary)
+			endif()
 			set(MPEngineLibraries ${MPEngineLibraries} ${OpenALLibrary})
 		else(UseInternalOpenAL)
 			find_package(OpenAL REQUIRED)
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OPENAL_INCLUDE_DIR})
 			set(MPEngineLibraries ${MPEngineLibraries} ${OPENAL_LIBRARY})
 		endif(UseInternalOpenAL)
-	endif()
+	endif(MSVC)
 
 	if(UseInternalSDL2)
 		if(CMAKE_SIZEOF_VOID_P EQUAL 4)
