@@ -79,4 +79,3 @@ sfxHandle_t	S_RegisterSound( const char *sample );
 extern qboolean s_shutUp;
 
 void S_FreeAllSFXMem(void);
-void S_Activate(qboolean activate);

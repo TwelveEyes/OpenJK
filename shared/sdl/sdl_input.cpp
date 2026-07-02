@@ -926,14 +926,14 @@ static void IN_ProcessEvents( void )
 					case SDL_WINDOWEVENT_FOCUS_LOST:
 					{
 						Cvar_SetValue( "com_unfocused", 1 );
-						S_Activate( qfalse );
+						SNDDMA_Activate( qfalse );
 						break;
 					}
 
 					case SDL_WINDOWEVENT_FOCUS_GAINED:
 					{
 						Cvar_SetValue( "com_unfocused", 0 );
-						S_Activate( qtrue );
+						SNDDMA_Activate( qtrue );
 						break;
 					}
 				}

@@ -1858,27 +1858,6 @@ void S_StopAllSounds(void) {
 }
 
 /*
-===============
-S_Activate
-
-(De)activates sound playback
-===============
-*/
-void S_Activate(qboolean activate)
-{
-#ifdef USE_OPENAL
-	if (s_UseOpenAL)
-	{
-		S_AL_MuteAllSounds((qboolean)!activate);
-	}
-	else
-#endif
-	{
-		SNDDMA_Activate(activate);
-	}
-}
-
-/*
 ==============================================================
 
 continuous looping sounds are added each frame
