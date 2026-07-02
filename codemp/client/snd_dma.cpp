@@ -492,7 +492,7 @@ void S_Init( void ) {
 	{
 		int i, j;
 
-		ALCdevice *ALCDevice = alcOpenDevice((ALubyte*)"DirectSound3D");
+		ALCdevice *ALCDevice = alcOpenDevice((ALCchar*)"DirectSound3D");
 		if (!ALCDevice)
 			return;
 
@@ -1855,6 +1855,27 @@ void S_StopAllSounds(void) {
 	S_StopBackgroundTrack();
 
 	S_StopSounds();
+}
+
+/*
+===============
+S_Activate
+
+(De)activates sound playback
+===============
+*/
+void S_Activate(qboolean activate)
+{
+#ifdef USE_OPENAL
+	if (s_UseOpenAL)
+	{
+		S_AL_MuteAllSounds((qboolean)!activate);
+	}
+	else
+#endif
+	{
+		SNDDMA_Activate(activate);
+	}
 }
 
 /*
@@ -3556,20 +3577,6 @@ void AL_UpdateRawSamples()
 		alGetSourcei(s_channels[0].alSource, AL_SOURCE_STATE, &state);
 		if (state != AL_PLAYING)
 		{
-			// Stopped playing ... due to buffer underrun
-			// Unqueue any buffers still on the Source (they will be PROCESSED), and restart playback
-			alGetSourcei(s_channels[0].alSource, AL_BUFFERS_PROCESSED, &processed);
-			while (processed)
-			{
-				alSourceUnqueueBuffers(s_channels[0].alSource, 1, &buffer);
-				processed--;
-				alGetBufferi(buffer, AL_SIZE, &size);
-				alDeleteBuffers(1, &buffer);
-
-				// Update sg.soundtime (+= number of samples played (number of bytes / 4))
-				s_soundtime += (size >> 2);
-			}
-
 #ifdef _DEBUG
 			Com_OPrintf("Restarting / Starting playback of Raw Samples\n");
 #endif
@@ -5325,7 +5332,7 @@ void InitEAXManager()
 	s_bEALFileLoaded = false;
 
 	// Check for EAX 4.0 support
-	s_bEAX = alIsExtensionPresent((ALubyte*)"EAX4.0");
+	s_bEAX = alIsExtensionPresent((ALCchar*)"EAX4.0");
 
 	if (s_bEAX)
 	{
@@ -5334,7 +5341,7 @@ void InitEAXManager()
 	else
 	{
 		// Support for EAXUnified (automatic translation of EAX 4.0 calls into EAX 3.0)
-		if ((alIsExtensionPresent((ALubyte*)"EAX3.0")) && (alIsExtensionPresent((ALubyte*)"EAX4.0Emulated")))
+		if ((alIsExtensionPresent((ALCchar*)"EAX3.0")) && (alIsExtensionPresent((ALCchar*)"EAX4.0Emulated")))
 		{
 			s_bEAX = AL_TRUE;
 			Com_Printf("Found EAX 4.0 EMULATION support\n");
@@ -5343,10 +5350,10 @@ void InitEAXManager()
 
 	if (s_bEAX)
 	{
-		s_eaxSet = (EAXSet)alGetProcAddress((ALubyte*)"EAXSet");
+		s_eaxSet = (EAXSet)alGetProcAddress((ALCchar*)"EAXSet");
 		if (s_eaxSet == NULL)
 			s_bEAX = false;
-		s_eaxGet = (EAXGet)alGetProcAddress((ALubyte*)"EAXGet");
+		s_eaxGet = (EAXGet)alGetProcAddress((ALCchar*)"EAXGet");
 		if (s_eaxGet == NULL)
 			s_bEAX = false;
 	}
@@ -5354,7 +5361,11 @@ void InitEAXManager()
 	// If we have detected EAX support, then try and load the EAX Manager DLL
 	if (s_bEAX)
 	{
+#ifdef _WIN64
+		s_hEAXManInst = LoadLibrary("EAXMan64.dll");
+#else
 		s_hEAXManInst = LoadLibrary("EAXMan.dll");
+#endif
 		if (s_hEAXManInst)
 		{
 			lpEAXManagerCreateFn = (LPEAXMANAGERCREATE)GetProcAddress(s_hEAXManInst, "EaxManagerCreate");
@@ -5411,6 +5422,8 @@ void InitEAXManager()
 					return;
 				}
 			}
+		} else {
+			Com_Printf("Warning: Failed to load EaxMan.dll\n");
 		}
 	}
 
