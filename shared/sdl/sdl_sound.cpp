@@ -313,7 +313,23 @@ SNDDMA_Activate
 (De)activates sound playback
 ===============
 */
+#ifdef USE_OPENAL
+extern int s_UseOpenAL;
+#endif
+
 void SNDDMA_Activate( qboolean activate )
 {
+#ifdef USE_OPENAL
+	if ( s_UseOpenAL )
+	{
+		S_AL_MuteAllSounds( (qboolean)!activate );
+	}
+#endif
+
+	if ( activate )
+	{
+		S_ClearSoundBuffer();
+	}
+
 	SDL_PauseAudioDevice( dev, !activate );
 }
