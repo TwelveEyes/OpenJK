@@ -3388,7 +3388,7 @@ static void CG_DrawRocketLocking( int lockEntNum, int lockTime )
 
 			cgi_R_SetColor( color );
 
-			CG_DrawPic( cx - sz, cy - sz * 2, sz * 2, sz * 2, cgi_R_RegisterShaderNoMip( "gfx/2d/lock" ));
+			CG_DrawPic( cx - sz * cgs.widthRatioCoef, cy - sz * 2, sz * 2 * cgs.widthRatioCoef, sz * 2, cgi_R_RegisterShaderNoMip( "gfx/2d/lock" ));
 		}
 	}
 }
