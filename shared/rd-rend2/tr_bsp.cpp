@@ -3350,8 +3350,7 @@ void R_LoadWeatherZones(world_t *worldData, lump_t *brushesLump, lump_t *sidesLu
 
 		if (tr.weatherSystem->weatherBrushType != currentBrushType)
 		{
-			Com_Error(ERR_DROP, "Weather Effect: Both Indoor and Outdoor brushs encountered in map.\n");
-			return;
+			continue;
 		}
 
 		vec4_t planes[64];
